@@ -62,7 +62,7 @@
           "options": {
             "port": 8001,
             "host": "0.0.0.0",
-            "allowedHosts": ["client"]
+            "allowedHosts": ["main-client"]
           },
           "configurations": {
             "production": {
