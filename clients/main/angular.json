@@ -2,7 +2,10 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -62,7 +65,9 @@
           "options": {
             "port": 8001,
             "host": "0.0.0.0",
-            "allowedHosts": ["main-client"]
+            "allowedHosts": [
+              "main-client"
+            ]
           },
           "configurations": {
             "production": {
@@ -76,6 +81,15 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
