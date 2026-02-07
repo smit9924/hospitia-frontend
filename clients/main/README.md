@@ -1,59 +1,31 @@
-# Main
+## Typography
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.5.
+The application **self-hosts its primary UI font** instead of loading it from Google Fonts at runtime.
 
-## Development server
+### Font Files
+- The **Roboto** font files are downloaded from Google Fonts.
+- They are stored locally under: `src/assets/fonts/Roboto`
+- This approach avoids external runtime dependencies and improves performance, reliability, and control over font loading.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+### Font Registration
+- Global `@font-face` rules are defined in: `src/styles/_fonts.scss`
+- These rules register the local font files as web fonts for use throughout the application.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+### Generic Font Family Naming
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+All `@font-face` declarations use a **generic, semantic font-family name**: `FontFamilyUI`, instead of referencing the physical font name (for e.g. `Roboto`) directly.
 
-```bash
-ng generate component component-name
-```
+#### Why this matters
+- **Future-proofing**: If the UI font changes in the future, only the `src` URLs in the `@font-face` declarations need to be updated.
+- **Zero refactors**: No changes are required in CSS, Angular Material typography configuration, or component styles.
+- **Single source of truth**: All typography (including Angular Material M3 theming) references `FontFamilyUI`.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+This ensures that the application’s typography remains consistent and maintainable over time.
 
-```bash
-ng generate --help
-```
 
-## Building
 
-To build the project run:
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
