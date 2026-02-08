@@ -1,7 +1,11 @@
-.typography-guide {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.typography-data-card {
+
+  .typography-data-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+  }
 
   .typo-guide-heading {
     margin-bottom: 24px;
@@ -20,6 +24,7 @@
       .typography-data-card-subtitle {
         display: flex;
         gap: 8px;
+        color: var(--color-text-secondary);
       }
     }
   }

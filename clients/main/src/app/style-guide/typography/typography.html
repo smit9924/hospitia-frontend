@@ -1,55 +1,99 @@
-<div class="typography-guide card">
-  <h1 class="typo-guide-heading heading-large">Typography</h1>
+<!-- Root card -->
+<mat-card class="typography-data-card" appearance="outlined">
 
-  <!-- Typograph: Heading Text -->
-  <div class="card">
-    <h2 class="title-wrapper heading-medium">
-      Heading Text
-    </h2>
-    <div class="typography-data-card-wrapper">
-      @for(headingData of headingFontSizeData; track headingData.id) {
-        <mat-card class="typography-data-card" appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ headingData.title }}</mat-card-title>
-            <mat-card-subtitle class="typography-data-card-subtitle">
-              <span>Class: {{ headingData.class }}</span>
-              <mat-divider [vertical]="true"/>
-              <span>Font size: {{ headingData.fontSizeRem }}</span>
-              <mat-divider [vertical]="true"/>
-              <span>Font weight: {{ headingData.fontWeight }}</span>
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <span class="{{ headingData.class }}">{{ sentence }}</span>
-          </mat-card-content>
-        </mat-card>
-      }
-    </div>
-  </div>
+  <!-- Guide header -->
+  <mat-card-header class="typo-guide-heading">
+    <mat-card-title>Typography</mat-card-title>
+  </mat-card-header>
 
-  <!-- Typography: Body Text -->
-  <div class="card">
-    <h2 class="title-wrapper heading-medium">
-      Body Text
-    </h2>
-    <div class="typography-data-card-wrapper">
-      @for(bodyFontData of bodyFontSizeData; track bodyFontData.id) {
-        <mat-card class="typography-data-card" appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ bodyFontData.title }}</mat-card-title>
-            <mat-card-subtitle class="typography-data-card-subtitle">
-              <span>Class: {{ bodyFontData.class }}</span>
-              <mat-divider [vertical]="true"/>
-              <span>Font size: {{ bodyFontData.fontSizeRem }}</span>
-              <mat-divider [vertical]="true"/>
-              <span>Font weight: {{ bodyFontData.fontWeight }}</span>
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <span class="{{ bodyFontData.class }}">{{ sentence }}</span>
-          </mat-card-content>
-        </mat-card>
-      }
-    </div>
-  </div>
-</div>
+  <!-- Guide content -->
+  <mat-card-content class="typography-data-card-content">
+
+    <!-- ================================= -->
+    <!-- Typography Section: Headings Text -->
+    <!-- ================================= -->
+    <mat-card>
+      <mat-card-header class="typo-guide-heading">
+        <mat-card-title>Heading Text</mat-card-title>
+      </mat-card-header>
+
+      <!-- Section content -->
+      <mat-card-content>
+        <div class="typography-data-card-wrapper">
+
+          @for (headingData of headingFontSizeData; track headingData.id) {
+
+            <!-- Individual heading style preview card -->
+            <mat-card class="typography-data-card" appearance="outlined">
+
+              <!-- Heading metadata -->
+              <mat-card-header>
+                <mat-card-title>{{ headingData.title }}</mat-card-title>
+                <mat-card-subtitle class="typography-data-card-subtitle">
+                  <span>Class: {{ headingData.class }}</span>
+                  <mat-divider vertical />
+                  <span>Font size: {{ headingData.fontSizeRem }}</span>
+                  <mat-divider vertical />
+                  <span>Font weight: {{ headingData.fontWeight }}</span>
+                </mat-card-subtitle>
+              </mat-card-header>
+
+              <!-- Live typography preview -->
+              <mat-card-content>
+                <span [class]="headingData.class">
+                  {{ sentence }}
+                </span>
+              </mat-card-content>
+
+            </mat-card>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- ============================= -->
+    <!-- Typography Section: Body Text -->
+    <!-- ============================= -->
+    <mat-card>
+
+      <!-- Section header -->
+      <mat-card-header class="typo-guide-heading">
+        <mat-card-title>Body Text</mat-card-title>
+      </mat-card-header>
+
+      <!-- Section content -->
+      <mat-card-content class="typo-guide-heading">
+        <div class="typography-data-card-wrapper">
+
+          @for (bodyFontData of bodyFontSizeData; track bodyFontData.id) {
+
+            <!-- Individual body text style preview card -->
+            <mat-card class="typography-data-card" appearance="outlined">
+
+              <!-- Body text metadata -->
+              <mat-card-header>
+                <mat-card-title>{{ bodyFontData.title }}</mat-card-title>
+                <mat-card-subtitle class="typography-data-card-subtitle">
+                  <span>Class: {{ bodyFontData.class }}</span>
+                  <mat-divider vertical />
+                  <span>Font size: {{ bodyFontData.fontSizeRem }}</span>
+                  <mat-divider vertical />
+                  <span>Font weight: {{ bodyFontData.fontWeight }}</span>
+                </mat-card-subtitle>
+              </mat-card-header>
+
+              <!-- Live typography preview -->
+              <mat-card-content>
+                <span [class]="bodyFontData.class">
+                  {{ sentence }}
+                </span>
+              </mat-card-content>
+
+            </mat-card>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </mat-card-content>
+</mat-card>
