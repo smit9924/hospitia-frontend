@@ -1,0 +1,55 @@
+<div class="typography-guide card">
+  <h1 class="typo-guide-heading heading-large">Typography</h1>
+
+  <!-- Typograph: Heading Text -->
+  <div class="card">
+    <h2 class="title-wrapper heading-medium">
+      Heading Text
+    </h2>
+    <div class="typography-data-card-wrapper">
+      @for(headingData of headingFontSizeData; track headingData.id) {
+        <mat-card class="typography-data-card" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ headingData.title }}</mat-card-title>
+            <mat-card-subtitle class="typography-data-card-subtitle">
+              <span>Class: {{ headingData.class }}</span>
+              <mat-divider [vertical]="true"/>
+              <span>Font size: {{ headingData.fontSizeRem }}</span>
+              <mat-divider [vertical]="true"/>
+              <span>Font weight: {{ headingData.fontWeight }}</span>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="{{ headingData.class }}">{{ sentence }}</span>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+
+  <!-- Typography: Body Text -->
+  <div class="card">
+    <h2 class="title-wrapper heading-medium">
+      Body Text
+    </h2>
+    <div class="typography-data-card-wrapper">
+      @for(bodyFontData of bodyFontSizeData; track bodyFontData.id) {
+        <mat-card class="typography-data-card" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ bodyFontData.title }}</mat-card-title>
+            <mat-card-subtitle class="typography-data-card-subtitle">
+              <span>Class: {{ bodyFontData.class }}</span>
+              <mat-divider [vertical]="true"/>
+              <span>Font size: {{ bodyFontData.fontSizeRem }}</span>
+              <mat-divider [vertical]="true"/>
+              <span>Font weight: {{ bodyFontData.fontWeight }}</span>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="{{ bodyFontData.class }}">{{ sentence }}</span>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+</div>

@@ -1,3 +1,7 @@
+/*
+  Font-face declarations define our UI font weights and sources so components use a consistent type system.
+  The app loads local Roboto assets once and applies them via FontFamilyUI across typography styles.
+*/
 @font-face {
     font-family: 'FontFamilyUI';
     font-style: normal;
@@ -78,3 +82,80 @@
         url('/assets/fonts/Roboto/static/ttf/Roboto-Black.ttf') format('truetype');
     font-display: swap;
 }
+
+/* ***End*** */
+
+
+/**
+ * Typography system
+ * Common semantic utility classes used system-wide to apply consistent
+ * font family, size, weight, and line-height. Class names express intent
+ * and scale, not HTML elements or fixed values.
+ */
+
+@mixin typo-common {
+    line-height: 1.5;
+    margin: 0;
+    font-family: 'FontFamilyUI', sans-serif;
+}
+
+/* Headings */
+
+.heading-extra-large {
+    font-size: 2.5rem;
+    font-weight: 700;
+    @include typo-common;
+}
+
+.heading-large {
+    font-size: 2rem;
+    font-weight: 600;
+    @include typo-common;
+}
+
+.heading-medium {
+    font-size: 1.75rem;
+    font-weight: 600;
+    @include typo-common;
+}
+
+.heading-small {
+    font-size: 1.5rem;
+    font-weight: 500;
+    @include typo-common;
+}
+
+.heading-extra-small {
+    font-size: 1.25rem;
+    font-weight: 500;
+    @include typo-common;
+}
+
+.heading-tiny {
+    font-size: 1.125rem;
+    font-weight: 500;
+    @include typo-common;
+}
+
+/* Body text */
+
+.body-large {
+    font-size: 1rem;
+    font-weight: 400;
+    @include typo-common;
+}
+
+.body-medium {
+    font-size: 0.875rem;
+    font-weight: 400;
+    @include typo-common;
+}
+
+.body-small {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.4;
+    @include typo-common;
+}
+
+/* ***End*** */
