@@ -1,0 +1,62 @@
+:root {
+    /* Brand colors */
+    --color-primary: #ffea00;
+    --color-secondary: #ffa000;
+
+    /* Backgrounds */
+    --color-background: #ffffff;
+    --color-surface: #e0e0e0;
+
+    /* Text */
+    --color-text-primary: #333333;
+    --color-text-secondary: #6B6B6B;
+    --color-text-inverse: #ffffff;
+
+    /* Borders & dividers */
+    --color-border: #e0e0e0;
+
+    /* States */
+    --color-hover: rgba(0, 0, 0, 0.04);
+    --color-focus: rgba(255, 234, 0, 0.4);
+
+    /* Shadows */
+
+    /* subtle cards */
+    --color-shadow-1: rgba(0, 0, 0, 0.08);
+    /* raised cards */
+    --color-shadow-2: rgba(0, 0, 0, 0.12);
+    /* modals / popups */
+    --color-shadow-3: rgba(0, 0, 0, 0.16);
+}
+
+
+[data-theme="dark"] {
+    /* Brand colors */
+    --color-primary: #ffea00;
+    --color-secondary: #ffa000;
+
+    /* Backgrounds */
+    --color-background: #000000;
+    --color-surface: #333333;
+
+    /* Text */
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #e0e0e0;
+    --color-text-inverse: #000000;
+
+    /* Borders & dividers */
+    --color-border: #333333;
+
+    /* States */
+    --color-hover: rgba(255, 255, 255, 0.08);
+    --color-focus: rgba(255, 234, 0, 0.6);
+
+    /* Shadows */
+
+    /* subtle elevation */
+    --color-shadow-1: rgba(255, 255, 255, 0.4);
+    /* raised cards */
+    --color-shadow-2: rgba(0, 0, 0, 0.55);
+    /* overlays */
+    --color-shadow-3: rgba(0, 0, 0, 0.7);
+}
