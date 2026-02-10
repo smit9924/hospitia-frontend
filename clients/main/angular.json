@@ -14,10 +14,13 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
-          "path": "src/app/components"
+          "path": "src/app/components",
+          "type": "component"
         },
         "@schematics/angular:service": {
-          "path": "src/app/services"
+          "path": "src/app/services",
+          "type": "service",
+          "flat": true
         },
         "@schematics/angular:guard": {
           "path": "src/app/guards"
