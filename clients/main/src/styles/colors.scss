@@ -19,14 +19,8 @@
     --color-hover: rgba(0, 0, 0, 0.04);
     --color-focus: rgba(255, 234, 0, 0.4);
 
-    /* Shadows */
-
-    /* subtle cards */
-    --color-shadow-1: rgba(0, 0, 0, 0.08);
-    /* raised cards */
-    --color-shadow-2: rgba(0, 0, 0, 0.12);
-    /* modals / popups */
-    --color-shadow-3: rgba(0, 0, 0, 0.16);
+    /* backdrpop */
+    --color-backdrop: #000000cc;
 }
 
 
@@ -50,13 +44,4 @@
     /* States */
     --color-hover: rgba(255, 255, 255, 0.08);
     --color-focus: rgba(255, 234, 0, 0.6);
-
-    /* Shadows */
-
-    /* subtle elevation */
-    --color-shadow-1: rgba(255, 255, 255, 0.4);
-    /* raised cards */
-    --color-shadow-2: rgba(0, 0, 0, 0.55);
-    /* overlays */
-    --color-shadow-3: rgba(0, 0, 0, 0.7);
 }
