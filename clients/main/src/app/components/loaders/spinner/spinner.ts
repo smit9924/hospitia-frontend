@@ -4,11 +4,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-spinner',
   imports: [
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
-  templateUrl: './spinner.component.html',
-  styleUrl: './spinner.component.scss',
+  templateUrl: './spinner.html',
+  styleUrl: './spinner.scss',
 })
-export class SpinnerComponent {
+export class Spinner {
 
 }

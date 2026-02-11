@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoaderContainer } from './components/loaders/loader-container/loader-container';
-import { LoaderService } from './services/loader.service';
+import { Loader } from './services/loader';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
@@ -16,7 +16,7 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './app.scss'
 })
 export class App {
-  private loaderService: LoaderService = inject(LoaderService);
+  private loaderService: Loader = inject(Loader);
 
   protected readonly title = signal('main');
   protected loading: Observable<boolean>;

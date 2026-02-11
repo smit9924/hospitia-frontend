@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class LoaderService {
+export class Loader {
   private loaderSubject = new BehaviorSubject<boolean>(false);
 
   loading$ = this.loaderSubject.asObservable();
