@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { SpinnerComponent } from '../spinner/spinner.component';
+import { Spinner } from '../spinner/spinner';
 
 @Component({
   selector: 'app-loader-container',
   imports: [
-    SpinnerComponent
+    Spinner,
   ],
   templateUrl: './loader-container.html',
   styleUrl: './loader-container.scss',
