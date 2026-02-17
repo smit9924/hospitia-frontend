@@ -1,9 +1,10 @@
-import { Component, EventEmitter, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoaderContainer } from './components/loaders/loader-container/loader-container';
 import { Loader } from './services/loader';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { Icon } from './services/icon';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './app.scss'
 })
 export class App {
+  private readonly _iconService: Icon = inject(Icon);
   private loaderService: Loader = inject(Loader);
 
   protected readonly title = signal('main');
