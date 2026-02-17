@@ -3,88 +3,96 @@
   The app loads local Roboto assets once and applies them via FontFamilyUI across typography styles.
 */
 @font-face {
-    font-family: 'FontFamilyUI';
-    font-style: normal;
-    font-weight: 100;
-    src: url('/assets/fonts/Roboto/static/woff2/Roboto-Thin.woff2') format('woff2'),
-        url('/assets/fonts/Roboto/static/ttf/Roboto-Thin.ttf') format('truetype');
-    font-display: swap;
+  font-family: 'FontFamilyUI';
+  font-style: normal;
+  font-weight: 100;
+  src:
+    url('/assets/fonts/Roboto/static/woff2/Roboto-Thin.woff2') format('woff2'),
+    url('/assets/fonts/Roboto/static/ttf/Roboto-Thin.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'FontFamilyUI';
-    font-style: normal;
-    font-weight: 200;
-    src: url('/assets/fonts/Roboto/static/woff2/Roboto-ExtraLight.woff2') format('woff2'),
-        url('/assets/fonts/Roboto/static/ttf/Roboto-ExtraLight.ttf') format('truetype');
-    font-display: swap;
+  font-family: 'FontFamilyUI';
+  font-style: normal;
+  font-weight: 200;
+  src:
+    url('/assets/fonts/Roboto/static/woff2/Roboto-ExtraLight.woff2') format('woff2'),
+    url('/assets/fonts/Roboto/static/ttf/Roboto-ExtraLight.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'FontFamilyUI';
-    font-style: normal;
-    font-weight: 300;
-    src: url('/assets/fonts/Roboto/static/woff2/Roboto-Light.woff2') format('woff2'),
-        url('/assets/fonts/Roboto/static/ttf/Roboto-Light.ttf') format('truetype');
-    font-display: swap;
+  font-family: 'FontFamilyUI';
+  font-style: normal;
+  font-weight: 300;
+  src:
+    url('/assets/fonts/Roboto/static/woff2/Roboto-Light.woff2') format('woff2'),
+    url('/assets/fonts/Roboto/static/ttf/Roboto-Light.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'FontFamilyUI';
-    font-style: normal;
-    font-weight: 400;
-    src: url('/assets/fonts/Roboto/static/woff2/Roboto-Regular.woff2') format('woff2'),
-        url('/assets/fonts/Roboto/static/ttf/Roboto-Regular.ttf') format('truetype');
-    font-display: swap;
+  font-family: 'FontFamilyUI';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    url('/assets/fonts/Roboto/static/woff2/Roboto-Regular.woff2') format('woff2'),
+    url('/assets/fonts/Roboto/static/ttf/Roboto-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'FontFamilyUI';
-    font-style: normal;
-    font-weight: 500;
-    src: url('/assets/fonts/Roboto/static/woff2/Roboto-Medium.woff2') format('woff2'),
-        url('/assets/fonts/Roboto/static/ttf/Roboto-Medium.ttf') format('truetype');
-    font-display: swap;
+  font-family: 'FontFamilyUI';
+  font-style: normal;
+  font-weight: 500;
+  src:
+    url('/assets/fonts/Roboto/static/woff2/Roboto-Medium.woff2') format('woff2'),
+    url('/assets/fonts/Roboto/static/ttf/Roboto-Medium.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'FontFamilyUI';
-    font-style: normal;
-    font-weight: 600;
-    src: url('/assets/fonts/Roboto/static/woff2/Roboto-SemiBold.woff2') format('woff2'),
-        url('/assets/fonts/Roboto/static/ttf/Roboto-SemiBold.ttf') format('truetype');
-    font-display: swap;
+  font-family: 'FontFamilyUI';
+  font-style: normal;
+  font-weight: 600;
+  src:
+    url('/assets/fonts/Roboto/static/woff2/Roboto-SemiBold.woff2') format('woff2'),
+    url('/assets/fonts/Roboto/static/ttf/Roboto-SemiBold.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'FontFamilyUI';
-    font-style: normal;
-    font-weight: 700;
-    src: url('/assets/fonts/Roboto/static/woff2/Roboto-Bold.woff2') format('woff2'),
-        url('/assets/fonts/Roboto/static/ttf/Roboto-Bold.ttf') format('truetype');
-    font-display: swap;
+  font-family: 'FontFamilyUI';
+  font-style: normal;
+  font-weight: 700;
+  src:
+    url('/assets/fonts/Roboto/static/woff2/Roboto-Bold.woff2') format('woff2'),
+    url('/assets/fonts/Roboto/static/ttf/Roboto-Bold.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'FontFamilyUI';
-    font-style: normal;
-    font-weight: 800;
-    src: url('/assets/fonts/Roboto/static/woff2/Roboto-ExtraBold.woff2') format('woff2'),
-        url('/assets/fonts/Roboto/static/ttf/Roboto-ExtraBold.ttf') format('truetype');
-    font-display: swap;
+  font-family: 'FontFamilyUI';
+  font-style: normal;
+  font-weight: 800;
+  src:
+    url('/assets/fonts/Roboto/static/woff2/Roboto-ExtraBold.woff2') format('woff2'),
+    url('/assets/fonts/Roboto/static/ttf/Roboto-ExtraBold.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'FontFamilyUI';
-    font-style: normal;
-    font-weight: 900;
-    src: url('/assets/fonts/Roboto/static/woff2/Roboto-Black.woff2') format('woff2'),
-        url('/assets/fonts/Roboto/static/ttf/Roboto-Black.ttf') format('truetype');
-    font-display: swap;
+  font-family: 'FontFamilyUI';
+  font-style: normal;
+  font-weight: 900;
+  src:
+    url('/assets/fonts/Roboto/static/woff2/Roboto-Black.woff2') format('woff2'),
+    url('/assets/fonts/Roboto/static/ttf/Roboto-Black.ttf') format('truetype');
+  font-display: swap;
 }
 
 /* ***End*** */
-
 
 /**
  * Typography system
@@ -94,68 +102,68 @@
  */
 
 @mixin typo-common {
-    line-height: 1.5;
-    margin: 0;
-    font-family: 'FontFamilyUI', sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  font-family: 'FontFamilyUI', sans-serif;
 }
 
 /* Headings */
 
 .heading-extra-large {
-    font-size: 2.5rem;
-    font-weight: 700;
-    @include typo-common;
+  font-size: 2.5rem;
+  font-weight: 700;
+  @include typo-common;
 }
 
 .heading-large {
-    font-size: 2rem;
-    font-weight: 600;
-    @include typo-common;
+  font-size: 2rem;
+  font-weight: 600;
+  @include typo-common;
 }
 
 .heading-medium {
-    font-size: 1.75rem;
-    font-weight: 600;
-    @include typo-common;
+  font-size: 1.75rem;
+  font-weight: 600;
+  @include typo-common;
 }
 
 .heading-small {
-    font-size: 1.5rem;
-    font-weight: 500;
-    @include typo-common;
+  font-size: 1.5rem;
+  font-weight: 500;
+  @include typo-common;
 }
 
 .heading-extra-small {
-    font-size: 1.25rem;
-    font-weight: 500;
-    @include typo-common;
+  font-size: 1.25rem;
+  font-weight: 500;
+  @include typo-common;
 }
 
 .heading-tiny {
-    font-size: 1.125rem;
-    font-weight: 500;
-    @include typo-common;
+  font-size: 1.125rem;
+  font-weight: 500;
+  @include typo-common;
 }
 
 /* Body text */
 
 .body-large {
-    font-size: 1rem;
-    font-weight: 400;
-    @include typo-common;
+  font-size: 1rem;
+  font-weight: 400;
+  @include typo-common;
 }
 
 .body-medium {
-    font-size: 0.875rem;
-    font-weight: 400;
-    @include typo-common;
+  font-size: 0.875rem;
+  font-weight: 400;
+  @include typo-common;
 }
 
 .body-small {
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1.4;
-    @include typo-common;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  @include typo-common;
 }
 
 /* ***End*** */

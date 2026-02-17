@@ -15,7 +15,7 @@ export class Icon {
   }
 
   private registerIcon(): void {
-    for(const icon of IconList) {
+    for (const icon of IconList) {
       this.matIconRegistry.addSvgIcon(
         icon.name,
         this.sanatizer.bypassSecurityTrustResourceUrl(icon.src),

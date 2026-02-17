@@ -1,191 +1,184 @@
 /* Breakpoint to be used in media queries */
 $breakpoints: (
-    xs: 0,
-    sm: 576px,
-    md: 768px,
-    lg: 992px,
-    xl: 1200px,
-    xxl: 1400px,
-    xxxl: 2400px
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+  xxxl: 2400px,
 );
 
 :root {
-    @each $name, $value in $breakpoints {
-        --breakpoint-#{$name}: #{$value};
-    }
+  @each $name, $value in $breakpoints {
+    --breakpoint-#{$name}: #{$value};
+  }
 
-    // Set box-sizing to border-box for all elements by default
-    * {
-        box-sizing: border-box;
-    }
+  // Set box-sizing to border-box for all elements by default
+  * {
+    box-sizing: border-box;
+  }
 }
 
 /* ***End*** */
-
 
 /* Utility classes for spacing */
 $spacings: (
-    0: 0,
-    8: 8px,
-    16: 16px,
-    24: 24px,
-    40: 40px
+  0: 0,
+  8: 8px,
+  16: 16px,
+  24: 24px,
+  40: 40px,
 );
 
 @each $key, $space in $spacings {
+  /* Margin */
+  .mt-#{$key} {
+    margin-top: $space;
+  }
 
-    /* Margin */
-    .mt-#{$key} {
-        margin-top: $space;
-    }
+  .mb-#{$key} {
+    margin-bottom: $space;
+  }
 
-    .mb-#{$key} {
-        margin-bottom: $space;
-    }
+  .ml-#{$key} {
+    margin-left: $space;
+  }
 
-    .ml-#{$key} {
-        margin-left: $space;
-    }
+  .mr-#{$key} {
+    margin-right: $space;
+  }
 
-    .mr-#{$key} {
-        margin-right: $space;
-    }
+  .m-#{$key} {
+    margin: $space;
+  }
 
-    .m-#{$key} {
-        margin: $space;
-    }
+  /* Padding */
+  .pt-#{$key} {
+    padding-top: $space;
+  }
 
-    /* Padding */
-    .pt-#{$key} {
-        padding-top: $space;
-    }
+  .pb-#{$key} {
+    padding-bottom: $space;
+  }
 
-    .pb-#{$key} {
-        padding-bottom: $space;
-    }
+  .pl-#{$key} {
+    padding-left: $space;
+  }
 
-    .pl-#{$key} {
-        padding-left: $space;
-    }
+  .pr-#{$key} {
+    padding-right: $space;
+  }
 
-    .pr-#{$key} {
-        padding-right: $space;
-    }
+  .p-#{$key} {
+    padding: $space;
+  }
 
-    .p-#{$key} {
-        padding: $space;
-    }
-
-    .gap-#{$key} {
-        gap: $space;
-    }
+  .gap-#{$key} {
+    gap: $space;
+  }
 }
 
 /* ***End*** */
-
 
 /* Utility class for layout */
 .d-flex {
-    display: flex;
+  display: flex;
 }
 
 .flex-column {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .flex-row {
-    flex-direction: row;
+  flex-direction: row;
 }
 
 .justify-center {
-    justify-content: center;
+  justify-content: center;
 }
 
 .justify-flex-start {
-    justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 .justify-flex-end {
-    justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 .justify-space-between {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 .align-center {
-    align-items: center;
+  align-items: center;
 }
 
 .align-flex-start {
-    align-items: flex-start;
+  align-items: flex-start;
 }
 
 .align-flex-end {
-    align-items: flex-end;
+  align-items: flex-end;
 }
 
 .grow-1 {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .grow-0 {
-    flex-grow: 0;
+  flex-grow: 0;
 }
 
 .shrink-1 {
-    flex-shrink: 1;
+  flex-shrink: 1;
 }
 
 .shrink-0 {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 .wrap {
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .wrap-reverse {
-    flex-wrap: wrap-reverse;
+  flex-wrap: wrap-reverse;
 }
 /* ***End*** */
-
 
 /* Utility classes for dimensions */
 .h-100 {
-    height: 100%;
+  height: 100%;
 }
 
 .w-100 {
-    width: 100%;
+  width: 100%;
 }
 /* ***End*** */
-
 
 /* Utility classes for box-sizing */
 .box-border {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .box-content {
-    box-sizing: content-box;
+  box-sizing: content-box;
 }
 /* ***End*** */
-
 
 /* Utility classes for text colors */
 .text-primary {
-    color: var(--mat-sys-on-surface);
+  color: var(--mat-sys-on-surface);
 }
 
 .text-secondary {
-    color: var(--mat-sys-on-surface-variant);
+  color: var(--mat-sys-on-surface-variant);
 }
 /* ***End*** */
 
-
 /* Utility class for container */
 .content {
-    @extend .p-40;
+  @extend .p-40;
 }
 /* ***End*** */

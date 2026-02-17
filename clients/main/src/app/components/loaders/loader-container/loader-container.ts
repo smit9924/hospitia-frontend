@@ -3,12 +3,8 @@ import { Spinner } from '../spinner/spinner';
 
 @Component({
   selector: 'app-loader-container',
-  imports: [
-    Spinner,
-  ],
+  imports: [Spinner],
   templateUrl: './loader-container.html',
   styleUrl: './loader-container.scss',
 })
-export class LoaderContainer {
-
-}
+export class LoaderContainer {}

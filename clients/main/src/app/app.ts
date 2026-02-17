@@ -8,13 +8,9 @@ import { Icon } from './services/icon';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    LoaderContainer,
-    AsyncPipe,
-  ],
+  imports: [RouterOutlet, LoaderContainer, AsyncPipe],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
   private readonly _iconService: Icon = inject(Icon);
