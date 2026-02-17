@@ -9,7 +9,8 @@
     "test": "ng test",
     "jit": "node --max_old_space_size=2048 ./node_modules/@angular/cli/bin/ng serve",
     "lint": "ng lint",
-    "lint-fix": "ng lint --fix"
+    "lint-fix": "ng lint --fix",
+    "format": "prettier --write ."
   },
   "prettier": {
     "printWidth": 100,
@@ -43,7 +44,10 @@
     "@angular/compiler-cli": "^21.0.0",
     "angular-eslint": "21.1.0",
     "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "jsdom": "^27.1.0",
+    "prettier": "3.8.1",
     "typescript": "~5.9.2",
     "typescript-eslint": "8.47.0",
     "vitest": "^4.0.8"
