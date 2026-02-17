@@ -1,0 +1,101 @@
+<div class="login-container h-100 w-100 content d-flex justify-center align-center">
+    <mat-card class="login-card">
+        <mat-card-header class="d-flex justify-center mb-24">
+            <mat-card-title>
+                <h1 class="heading-large">Login</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit()">
+                <div class="d-flex flex-column gap-24">
+                    <!-- TEXT FIELD: Email -->
+                    <mat-form-field class="w-100">
+                        <mat-label>Email</mat-label>
+                        <mat-icon svgIcon="person" aria-hidden="false" class="login-icon" matPrefix></mat-icon>
+                        <input matInput  formControlName="email" type="email" placeholder="Enter your email">
+                        @if (loginForm.get('email')?.hasError('required')) {
+                            <mat-error>
+                                Email is required
+                            </mat-error>
+                        } @else if (loginForm.get('email')?.hasError('email')) {
+                            <mat-error>
+                                Please enter a valid email address
+                            </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <!-- TEXT FIELD: Password -->
+                    <mat-form-field class="w-100">
+                        <mat-label>Password</mat-label>
+                        <mat-icon svgIcon="lock" aria-hidden="false" class="login-icon" matPrefix></mat-icon>
+                        <input matInput  formControlName="password" type="{{showPassword ? 'text' : 'password'}}" placeholder="Enter your password">
+
+                        @if (showPassword) {
+                            <button matIconButton matSuffix aria-label="show password" (click)="togglePasswordVisibility()">
+                                <mat-icon svgIcon="visibility" aria-hidden="false"></mat-icon>
+                            </button>
+                        } @else {
+                            <button matIconButton matSuffix aria-label="hide password" (click)="togglePasswordVisibility()">
+                                <mat-icon svgIcon="visibilityOff" aria-hidden="false"></mat-icon>
+                            </button>
+                        }
+
+                        @if (loginForm.get('password')?.hasError('required')) {
+                            <mat-error>
+                                Password is required
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <!-- CHECKBOX: Remember me -->
+                <div class="d-flex w-100 justify-flex-start align-center mb-8">
+                    <mat-checkbox formControlName="rememberMe">
+                        <!-- [labelPosition]="labelPosition()"
+                        [disabled]="disabled()" -->
+                        Remember me
+                    </mat-checkbox>
+                </div>
+
+                <!-- BUTTON: Login -->
+                <button mat-raised-button  matButton="filled" class="w-100" type="submit" [disabled]="loginForm.invalid">
+                    Login
+                </button>
+
+                <!-- LINK: Forgot password -->
+                <div class="d-flex w-100 justify-flex-end align-center mt-8">
+                    <a matButton href="https://www.google.com/">
+                        Forgot password?
+                    </a>
+                </div>
+
+                <div class="d-flex w-100 gap-16 align-center mt-24 mb-24 pr-24 pl-24">
+                    <mat-divider class="grow-1" />
+                    <span class="body-small">OR CONTINUE WITH</span>
+                    <mat-divider class="grow-1" />
+                </div>
+
+                <!-- Social logins -->
+                <div class="social-login-buttons d-flex justify-center gap-16">
+                    <!-- BUTTON: Login with facebook -->
+                    <button matFab aria-label="Example icon button with a delete icon" class="br-100 button-facebook">
+                        <mat-icon svgIcon="facebookLogo" class="social-login-icon icon-facebook-logo" />
+                    </button>
+
+                    <!-- BUTTON: Login with twitter -->
+                    <button matFab aria-label="Example icon button with a delete icon" class="br-100 button-x-twitter">
+                        <mat-icon svgIcon="xTwitterLogo" class="social-login-icon icon-x-twitter-logo" />
+                    </button>
+
+                    <!-- BUTTON: Login with google -->
+                    <button matFab aria-label="Example icon button with a delete icon" class="br-100 button-google">
+                        <mat-icon svgIcon="googleLogo" class="social-login-icon icon-google-logo" />
+                    </button>
+                </div>
+
+                <!-- BUTTON: Sign up -->
+                <div></div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
