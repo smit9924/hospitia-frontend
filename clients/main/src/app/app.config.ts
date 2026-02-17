@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
       useValue: {
         appearance: 'outline',
         floatLabel: 'always',
-      }
+      },
     },
-  ]
+  ],
 };

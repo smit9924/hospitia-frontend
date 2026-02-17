@@ -7,14 +7,16 @@
 
 html {
   height: 100%;
-  @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: FontFamilyUI,
-    density: 0,
-  ));
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: FontFamilyUI,
+      density: 0,
+    )
+  );
 }
 
 body {
@@ -35,7 +37,6 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
-
 
 // Set the fill color of all `mat-icon` components to the current text color. This allows
 // icons to automatically adapt to the color of their surrounding text

@@ -4,15 +4,12 @@ import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-typography',
-  imports: [
-    MatCardModule,
-    MatDividerModule
-  ],
+  imports: [MatCardModule, MatDividerModule],
   templateUrl: './typography.html',
   styleUrl: './typography.scss',
 })
 export class Typography {
-  public sentence: string = "A quick brown fox jumps over the lazy dog.";
+  public sentence = 'A quick brown fox jumps over the lazy dog.';
   public headingFontSizeData = [
     {
       id: 1,
@@ -90,5 +87,4 @@ export class Typography {
       fontWeight: 400,
     },
   ];
-
 }

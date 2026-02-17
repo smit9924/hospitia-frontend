@@ -25,17 +25,8 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class Login {
   loginForm = new FormGroup({
-    email: new FormControl('',
-      [
-        Validators.required,
-        Validators.email
-      ]
-    ),
-    password: new FormControl('',
-      [
-        Validators.required,
-      ]
-    ),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
     rememberMe: new FormControl(''),
   });
   showPassword = false;
@@ -45,5 +36,6 @@ export class Login {
   }
 
   onLoginFormSubmit() {
+    return;
   }
 }

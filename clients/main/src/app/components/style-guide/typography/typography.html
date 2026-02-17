@@ -1,6 +1,5 @@
 <!-- Root card -->
 <mat-card class="typography-data-card" appearance="outlined">
-
   <!-- Guide header -->
   <mat-card-header class="mb-24">
     <mat-card-title>Typography</mat-card-title>
@@ -8,7 +7,6 @@
 
   <!-- Guide content -->
   <mat-card-content class="typography-data-card-content">
-
     <!-- ================================= -->
     <!-- Typography Section: Headings Text -->
     <!-- ================================= -->
@@ -20,12 +18,9 @@
       <!-- Section content -->
       <mat-card-content>
         <div class="typography-data-card-wrapper">
-
           @for (headingData of headingFontSizeData; track headingData.id) {
-
             <!-- Individual heading style preview card -->
             <mat-card class="typography-data-card" appearance="outlined">
-
               <!-- Heading metadata -->
               <mat-card-header>
                 <mat-card-title>{{ headingData.title }}</mat-card-title>
@@ -44,7 +39,6 @@
                   {{ sentence }}
                 </span>
               </mat-card-content>
-
             </mat-card>
           }
         </div>
@@ -55,7 +49,6 @@
     <!-- Typography Section: Body Text -->
     <!-- ============================= -->
     <mat-card>
-
       <!-- Section header -->
       <mat-card-header class="mb-24">
         <mat-card-title>Body Text</mat-card-title>
@@ -64,12 +57,9 @@
       <!-- Section content -->
       <mat-card-content class="mb-24">
         <div class="typography-data-card-wrapper">
-
           @for (bodyFontData of bodyFontSizeData; track bodyFontData.id) {
-
             <!-- Individual body text style preview card -->
             <mat-card class="typography-data-card" appearance="outlined">
-
               <!-- Body text metadata -->
               <mat-card-header>
                 <mat-card-title>{{ bodyFontData.title }}</mat-card-title>
@@ -88,12 +78,10 @@
                   {{ sentence }}
                 </span>
               </mat-card-content>
-
             </mat-card>
           }
         </div>
       </mat-card-content>
     </mat-card>
-
   </mat-card-content>
 </mat-card>

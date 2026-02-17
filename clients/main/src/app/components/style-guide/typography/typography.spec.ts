@@ -8,9 +8,8 @@ describe('Typography', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Typography]
-    })
-    .compileComponents();
+      imports: [Typography],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Typography);
     component = fixture.componentInstance;

@@ -8,9 +8,8 @@ describe('StyleGuide', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StyleGuide]
-    })
-    .compileComponents();
+      imports: [StyleGuide],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(StyleGuide);
     component = fixture.componentInstance;
