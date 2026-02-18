@@ -79,7 +79,7 @@
 
         <!-- LINK: Forgot password -->
         <div class="d-flex w-100 justify-flex-end align-center mt-8">
-          <a matButton href="https://www.google.com/"> Forgot password? </a>
+          <a matButton [routerLink]="APP_ROUTES.forgotPassword"> Forgot password? </a>
         </div>
 
         <div class="d-flex w-100 gap-16 align-center mt-24 mb-24 pr-24 pl-24">
@@ -109,7 +109,7 @@
         <!-- LINK: Sign up -->
         <div class="d-flex w-100 justify-center align-center mt-8">
           <span> Already have an account? </span>
-          <a matButton href="https://www.google.com/"> Sign up </a>
+          <a matButton [routerLink]="APP_ROUTES.signup"> Sign up </a>
         </div>
       </form>
     </mat-card-content>

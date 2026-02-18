@@ -7,6 +7,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { APP_ROUTES } from '../../../data/app-routes';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,11 +21,13 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatDividerModule,
     MatCheckboxModule,
+    RouterLink,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
+  APP_ROUTES = APP_ROUTES;
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
