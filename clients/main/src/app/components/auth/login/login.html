@@ -25,9 +25,9 @@
             <mat-label>Password</mat-label>
             <mat-icon svgIcon="lock" aria-hidden="false" class="login-icon" matPrefix></mat-icon>
             <input
+              type="{{ showPassword ? 'text' : 'password' }}"
               matInput
               formControlName="password"
-              type="{{ showPassword ? 'text' : 'password' }}"
               placeholder="Enter your password"
             />
 
