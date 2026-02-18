@@ -41,6 +41,8 @@ module.exports = defineConfig([
       angular.configs.templateRecommended,
       angular.configs.templateAccessibility,
     ],
-    rules: {},
+    rules: {
+        '@angular-eslint/template/attributes-order': 'error'
+    },
   }
 ]);
