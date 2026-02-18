@@ -89,37 +89,28 @@
         </div>
 
         <!-- Social logins -->
-        <div class="social-login-buttons d-flex justify-center gap-16">
+        <div class="social-login-buttons d-flex justify-center gap-16 mb-24">
           <!-- BUTTON: Login with facebook -->
-          <button
-            matFab
-            aria-label="Example icon button with a delete icon"
-            class="br-100 button-facebook"
-          >
+          <button matFab aria-label="Login with Facebook" class="br-100 button-facebook">
             <mat-icon svgIcon="facebookLogo" class="social-login-icon icon-facebook-logo" />
           </button>
 
-          <!-- BUTTON: Login with twitter -->
-          <button
-            matFab
-            aria-label="Example icon button with a delete icon"
-            class="br-100 button-x-twitter"
-          >
+          <!-- BUTTON: Login with X (twitter) -->
+          <button matFab aria-label="Login in with X (Twitter)" class="br-100 button-x-twitter">
             <mat-icon svgIcon="xTwitterLogo" class="social-login-icon icon-x-twitter-logo" />
           </button>
 
           <!-- BUTTON: Login with google -->
-          <button
-            matFab
-            aria-label="Example icon button with a delete icon"
-            class="br-100 button-google"
-          >
+          <button matFab aria-label="Login with Google" class="br-100 button-google">
             <mat-icon svgIcon="googleLogo" class="social-login-icon icon-google-logo" />
           </button>
         </div>
 
-        <!-- BUTTON: Sign up -->
-        <div></div>
+        <!-- LINK: Sign up -->
+        <div class="d-flex w-100 justify-center align-center mt-8">
+          <span> Already have an account? </span>
+          <a matButton href="https://www.google.com/"> Sign up </a>
+        </div>
       </form>
     </mat-card-content>
   </mat-card>
