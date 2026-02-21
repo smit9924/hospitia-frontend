@@ -43,14 +43,14 @@
 
 @media (min-width: 768px) and (max-width: 1400px) {
   .login-card {
-    width: 75%;
+    width: 50%;
   }
 }
 
 @media (min-width: 576px) and (max-width: 768px) {
   .login-container {
     .login-card {
-      width: 90%;
+      width: 70%;
     }
   }
 }
@@ -59,6 +59,15 @@
   .login-container {
     .login-card {
       width: 100%;
+    }
+  }
+
+  .social-login-buttons {
+    .button-facebook,
+    .button-x-twitter,
+    .button-google {
+      height: 45px;
+      width: 45px;
     }
   }
 }
