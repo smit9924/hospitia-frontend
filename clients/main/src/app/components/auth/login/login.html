@@ -1,18 +1,28 @@
-<div class="login-container h-100 w-100 content d-flex justify-center align-center">
+<main class="login-container h-100 w-100 content d-flex justify-center align-center">
   <mat-card class="login-card">
     <mat-card-header class="d-flex justify-center mb-24">
       <mat-card-title>
-        <h1 class="heading-large">Login</h1>
+        <h1 id="login-heading" class="heading-large">Login</h1>
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit()">
+      <form
+        aria-labelledby="login-heading"
+        [formGroup]="loginForm"
+        (ngSubmit)="onLoginFormSubmit()"
+      >
         <div class="d-flex flex-column gap-24">
           <!-- TEXT FIELD: Email -->
           <mat-form-field class="w-100">
             <mat-label>Email</mat-label>
             <mat-icon svgIcon="person" aria-hidden="false" class="login-icon" matPrefix></mat-icon>
-            <input matInput formControlName="email" type="email" placeholder="Enter your email" />
+            <input
+              matInput
+              formControlName="email"
+              type="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+            />
             @if (loginForm.get('email')?.hasError('required')) {
               <mat-error> Email is required </mat-error>
             } @else if (loginForm.get('email')?.hasError('email')) {
@@ -29,27 +39,23 @@
               matInput
               formControlName="password"
               placeholder="Enter your password"
+              autocomplete="current-password"
             />
 
-            @if (showPassword) {
-              <button
-                matIconButton
-                matSuffix
-                aria-label="show password"
-                (click)="togglePasswordVisibility()"
-              >
-                <mat-icon svgIcon="visibility" aria-hidden="false"></mat-icon>
-              </button>
-            } @else {
-              <button
-                matIconButton
-                matSuffix
-                aria-label="hide password"
-                (click)="togglePasswordVisibility()"
-              >
-                <mat-icon svgIcon="visibilityOff" aria-hidden="false"></mat-icon>
-              </button>
-            }
+            <button
+              matIconButton
+              matSuffix
+              aria-label="show password"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+              [attr.aria-pressed]="showPassword"
+              (click)="togglePasswordVisibility()"
+            >
+              @if (showPassword) {
+                <mat-icon svgIcon="visibility"></mat-icon>
+              } @else {
+                <mat-icon svgIcon="visibilityOff"></mat-icon>
+              }
+            </button>
 
             @if (loginForm.get('password')?.hasError('required')) {
               <mat-error> Password is required </mat-error>
@@ -58,10 +64,8 @@
         </div>
 
         <!-- CHECKBOX: Remember me -->
-        <div class="d-flex w-100 justify-flex-start align-center mb-8">
-          <mat-checkbox formControlName="rememberMe">
-            <!-- [labelPosition]="labelPosition()"
-                        [disabled]="disabled()" -->
+        <div class="d-flex w-100 justify-flex-start align-center my-8">
+          <mat-checkbox formControlName="rememberMe" aria-label="Remember me">
             Remember me
           </mat-checkbox>
         </div>
@@ -82,7 +86,7 @@
           <a matButton [routerLink]="APP_ROUTES.forgotPassword"> Forgot password? </a>
         </div>
 
-        <div class="d-flex w-100 gap-16 align-center mt-24 mb-24 pr-24 pl-24">
+        <div class="d-flex w-100 gap-16 align-center my-24 px-24">
           <mat-divider class="grow-1" />
           <span class="body-small">OR CONTINUE WITH</span>
           <mat-divider class="grow-1" />
@@ -114,4 +118,4 @@
       </form>
     </mat-card-content>
   </mat-card>
-</div>
+</main>
