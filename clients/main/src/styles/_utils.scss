@@ -53,6 +53,16 @@ $spacings: (
     margin: $space;
   }
 
+  .my-#{$key} {
+    margin-top: $space;
+    margin-bottom: $space;
+  }
+
+  .mx-#{$key} {
+    margin-right: $space;
+    margin-left: $space;
+  }
+
   /* Padding */
   .pt-#{$key} {
     padding-top: $space;
@@ -72,6 +82,16 @@ $spacings: (
 
   .p-#{$key} {
     padding: $space;
+  }
+
+  .py-#{$key} {
+    padding-top: $space;
+    padding-bottom: $space;
+  }
+
+  .px-#{$key} {
+    padding-right: $space;
+    padding-left: $space;
   }
 
   .gap-#{$key} {
