@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { APP_ROUTES } from '../../../data/app-routes';
 import { RouterLink } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,7 @@ import { RouterLink } from '@angular/router';
     MatDividerModule,
     MatCheckboxModule,
     RouterLink,
+    MatTooltipModule,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',

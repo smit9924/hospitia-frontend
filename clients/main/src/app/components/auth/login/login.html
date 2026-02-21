@@ -95,17 +95,32 @@
         <!-- Social logins -->
         <div class="social-login-buttons d-flex justify-center gap-16 mb-24">
           <!-- BUTTON: Login with facebook -->
-          <button matFab aria-label="Login with Facebook" class="br-100 button-facebook">
+          <button
+            matFab
+            aria-label="Login with Facebook"
+            class="br-100 button-facebook"
+            [matTooltip]="'Login with Facebook'"
+          >
             <mat-icon svgIcon="facebookLogo" class="social-login-icon icon-facebook-logo" />
           </button>
 
           <!-- BUTTON: Login with X (twitter) -->
-          <button matFab aria-label="Login in with X (Twitter)" class="br-100 button-x-twitter">
+          <button
+            matFab
+            aria-label="Login in with X (Twitter)"
+            class="br-100 button-x-twitter"
+            [matTooltip]="'Login with X (Twitter)'"
+          >
             <mat-icon svgIcon="xTwitterLogo" class="social-login-icon icon-x-twitter-logo" />
           </button>
 
           <!-- BUTTON: Login with google -->
-          <button matFab aria-label="Login with Google" class="br-100 button-google">
+          <button
+            matFab
+            aria-label="Login with Google"
+            class="br-100 button-google"
+            [matTooltip]="'Login with Google'"
+          >
             <mat-icon svgIcon="googleLogo" class="social-login-icon icon-google-logo" />
           </button>
         </div>
