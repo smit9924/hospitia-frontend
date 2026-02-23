@@ -1,0 +1,29 @@
+@if (isVisible()) {
+  <div
+    class="banner-container d-flex no-wrap gap-8 p-8"
+    [class]="{
+      'banner-info': type === BANNER_TYPES.INFO,
+      'banner-warning': type === BANNER_TYPES.WARNING,
+      'banner-error': type === BANNER_TYPES.ERROR,
+      'banner-success': type === BANNER_TYPES.SUCCESS,
+    }"
+  >
+    <!-- Banner content -->
+    <div class="banner-content grow-1 d-flex align-center justify-flex-start">
+      <ng-content select="banner-content"></ng-content>
+    </div>
+
+    <!-- BUTTON: Close -->
+    <div class="button-container">
+      <button
+        matFab
+        aria-label="Close banner"
+        class="close-button d-flex justify-center align-center"
+        [matTooltip]="'Close banner'"
+        (click)="hide()"
+      >
+        <mat-icon svgIcon="cross" class="cross-icon"></mat-icon>
+      </button>
+    </div>
+  </div>
+}
