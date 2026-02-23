@@ -1,0 +1,74 @@
+.banner-container {
+  border-radius: 5px;
+  .close-button {
+    height: 24px;
+    width: 24px;
+    padding: 0;
+    border-radius: 100%;
+
+    .cross-icon {
+      height: 80%;
+      width: 80%;
+    }
+  }
+}
+
+.banner-info {
+  background-color: var(--mat-sys-info-container);
+  color: var(--mat-sys-on-info-container);
+  border: 1px solid var(--mat-sys-info);
+
+  .close-button {
+    background-color: var(--mat-sys-surface);
+    border: 1px solid var(--mat-sys-info);
+
+    .cross-icon {
+      color: var(--mat-sys-on-info-container);
+    }
+  }
+}
+
+.banner-warning {
+  background-color: var(--mat-sys-warning-container);
+  color: var(--mat-sys-on-warning-container);
+  border: 1px solid var(--mat-sys-warning);
+
+  .close-button {
+    background-color: var(--mat-sys-surface);
+    border: 1px solid var(--mat-sys-warning);
+
+    .cross-icon {
+      color: var(--mat-sys-on-warning-container);
+    }
+  }
+}
+
+.banner-error {
+  background-color: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+  border: 1px solid var(--mat-sys-error);
+
+  .close-button {
+    background-color: var(--mat-sys-surface);
+    border: 1px solid var(--mat-sys-error);
+
+    .cross-icon {
+      color: var(--mat-sys-on-error-container);
+    }
+  }
+}
+
+.banner-success {
+  background-color: var(--mat-sys-success-container);
+  color: var(--mat-sys-on-success-container);
+  border: 1px solid var(--mat-sys-success);
+
+  .close-button {
+    background-color: var(--mat-sys-surface);
+    border: 1px solid var(--mat-sys-success);
+
+    .cross-icon {
+      color: var(--mat-sys-on-success-container);
+    }
+  }
+}

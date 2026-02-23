@@ -26,6 +26,31 @@
   --color-black: #000000;
   --color-facebook-blue: #1877f2;
   --color-google-red: #ea4335;
+
+  /* ============================================================
+   BANNER COLOR TOKENS (Add inside central colors.scss)
+   Using Material-like palette shades
+   ============================================================ */
+
+  /* INFO */
+  --mat-sys-info: #64b5f6; /* material blue 300 */
+  --mat-sys-info-container: #e3f2fd; /* material blue 50 */
+  --mat-sys-on-info-container: #0d47a1; /* material blue 900 */
+
+  /* WARNING */
+  --mat-sys-warning: #f59e0b;
+  --mat-sys-warning-container: #fef3c7;
+  --mat-sys-on-warning-container: #78350f;
+
+  /* ERROR */
+  --mat-sys-error: #ef5350; /* red 400 */
+  --mat-sys-error-container: #fdecea; /* red 50 */
+  --mat-sys-on-error-container: #b71c1c; /* red 900 */
+
+  /* SUCCESS */
+  --mat-sys-success: #66bb6a; /* green 400 */
+  --mat-sys-success-container: #edf7ed; /* green 50 */
+  --mat-sys-on-success-container: #1b5e20; /* green 900 */
 }
 
 [data-theme='dark'] {

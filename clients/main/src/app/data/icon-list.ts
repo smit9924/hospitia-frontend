@@ -31,4 +31,8 @@ export const IconList = [
     name: 'xTwitterLogo',
     src: 'assets/icons/x-twitter-logo.svg',
   },
+  {
+    name: 'cross',
+    src: 'assets/icons/cross.svg',
+  },
 ];
