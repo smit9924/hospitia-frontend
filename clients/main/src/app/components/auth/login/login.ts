@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { APP_ROUTES } from '../../../data/app-routes';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Auth } from '../../../services/auth';
 
 @Component({
   selector: 'app-login',
@@ -29,11 +30,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './login.scss',
 })
 export class Login {
+  private authService = inject(Auth);
   APP_ROUTES = APP_ROUTES;
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
-    rememberMe: new FormControl(''),
+    rememberMe: new FormControl(false),
   });
   showPassword = false;
 
@@ -43,5 +45,15 @@ export class Login {
 
   onLoginFormSubmit() {
     return;
+  }
+
+  login(): void {
+    const email = this.loginForm?.value?.email;
+    const password = this.loginForm?.value?.password;
+    const rememberMe = this.loginForm?.value?.rememberMe;
+
+    if (this.loginForm.valid) {
+      this.authService.login(email, password, rememberMe);
+    }
   }
 }
