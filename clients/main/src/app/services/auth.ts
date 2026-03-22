@@ -17,11 +17,7 @@ export class Auth {
     password: string | null | undefined,
     rememberMe: boolean | null | undefined,
   ): void {
-    if (
-      email != null &&
-      password != null &&
-      rememberMe != null
-    ) {
+    if (email != null && password != null && rememberMe != null) {
       const body = new HttpParams().set('username', email).set('password', password);
 
       this.http.post<LoginApiResponse>(apiRoutes.auth.login, body).subscribe({
