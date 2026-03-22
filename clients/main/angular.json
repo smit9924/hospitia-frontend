@@ -31,6 +31,12 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "hi": "src/locale/messages.hi.xlf"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -51,6 +57,9 @@
             ],
             "styles": [
               "src/styles/styles.scss"
+            ],
+            "polyfills": [
+              "@angular/localize/init"
             ]
           },
           "configurations": {
@@ -73,12 +82,14 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "localize": true
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "localize": ["en-US"]
             }
           },
           "defaultConfiguration": "development"
@@ -112,6 +123,14 @@
               "src/**/*.ts",
               "src/**/*.html"
             ]
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n",
+          "options": {
+            "outputPath": "src/locale",
+            "outFile": "messages.en-US.xlf",
+            "format": "xlf"
           }
         }
       }
