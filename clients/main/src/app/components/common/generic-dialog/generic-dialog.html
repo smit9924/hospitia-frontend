@@ -1,0 +1,53 @@
+<div>
+  <h2 class="pt-24 pr-16 pl-16 m-0">{{ title }}</h2>
+
+  <mat-dialog-content>
+    {{ contentText }}
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="d-flex justify-center gap-16">
+    @for (button of buttons; track $index) {
+      @if (button.type === GenericDialogButtonType.FILLED) {
+        <button
+          mat-raised-button
+          matButton="filled"
+          [mat-dialog-close]="button?.closeOnClick"
+          (click)="onButtonClick(button)"
+        >
+          {{ button.label }}
+        </button>
+      } @else if (button.type === GenericDialogButtonType.OUTLINED) {
+        <button
+          mat-stroked-button
+          matButton="outlined"
+          [mat-dialog-close]="button?.closeOnClick"
+          (click)="onButtonClick(button)"
+        >
+          {{ button.label }}
+        </button>
+      } @else if (button.type === GenericDialogButtonType.TONAL) {
+        <button
+          mat-flat-button
+          matButton="tonal"
+          [mat-dialog-close]="button?.closeOnClick"
+          (click)="onButtonClick(button)"
+        >
+          {{ button.label }}
+        </button>
+      } @else if (button.type === GenericDialogButtonType.LINK) {
+        <button matButton [mat-dialog-close]="button?.closeOnClick" (click)="onButtonClick(button)">
+          {{ button.label }}
+        </button>
+      } @else if (button.type === GenericDialogButtonType.ICON) {
+        <button
+          mat-icon-button
+          [mat-dialog-close]="button?.closeOnClick"
+          [attr.aria-label]="button.label"
+          (click)="onButtonClick(button)"
+        >
+          <mat-icon svgIcon="lock" aria-hidden="false" class="login-icon"></mat-icon>
+        </button>
+      }
+    }
+  </mat-dialog-actions>
+</div>
