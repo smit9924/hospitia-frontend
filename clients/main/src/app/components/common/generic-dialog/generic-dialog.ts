@@ -26,7 +26,7 @@ export class GenericDialog implements OnInit {
   }
 
   protected onButtonClick(button: GenericDialogButtonMetadata): void {
-    if(button.callback) {
+    if (button.callback) {
       button.callback();
     }
   }
