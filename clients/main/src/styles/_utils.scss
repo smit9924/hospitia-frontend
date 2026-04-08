@@ -13,7 +13,6 @@
     xxxl: 2400px,
   );
 
-:root {
   @each $name, $value in $breakpoints {
     --breakpoint-#{$name}: #{$value};
   }
@@ -22,281 +21,279 @@
   * {
     box-sizing: border-box;
   }
-}
 
-/* ***End*** */
+  /* ***End*** */
 
-/* Utility classes for spacing */
-$spacings: (
-  0: 0,
-  8: 8px,
-  16: 16px,
-  24: 24px,
-  40: 40px,
-);
+  /* Utility classes for spacing */
+  $spacings: (
+    0: 0,
+    8: 8px,
+    16: 16px,
+    24: 24px,
+    40: 40px,
+  );
 
-@each $key, $space in $spacings {
+  @each $key, $space in $spacings {
+    /* Margin */
+    .mt-#{$key} {
+      margin-top: $space;
+    }
 
-  /* Margin */
-  .mt-#{$key} {
-    margin-top: $space;
+    .mb-#{$key} {
+      margin-bottom: $space;
+    }
+
+    .ml-#{$key} {
+      margin-left: $space;
+    }
+
+    .mr-#{$key} {
+      margin-right: $space;
+    }
+
+    .m-#{$key} {
+      margin: $space;
+    }
+
+    .my-#{$key} {
+      margin-top: $space;
+      margin-bottom: $space;
+    }
+
+    .mx-#{$key} {
+      margin-right: $space;
+      margin-left: $space;
+    }
+
+    /* Padding */
+    .pt-#{$key} {
+      padding-top: $space;
+    }
+
+    .pb-#{$key} {
+      padding-bottom: $space;
+    }
+
+    .pl-#{$key} {
+      padding-left: $space;
+    }
+
+    .pr-#{$key} {
+      padding-right: $space;
+    }
+
+    .p-#{$key} {
+      padding: $space;
+    }
+
+    .py-#{$key} {
+      padding-top: $space;
+      padding-bottom: $space;
+    }
+
+    .px-#{$key} {
+      padding-right: $space;
+      padding-left: $space;
+    }
+
+    .gap-#{$key} {
+      gap: $space;
+    }
   }
 
-  .mb-#{$key} {
-    margin-bottom: $space;
+  /* ***End*** */
+
+  /* Utility class for layout */
+  .d-flex {
+    display: flex;
   }
 
-  .ml-#{$key} {
-    margin-left: $space;
+  .flex-column {
+    flex-direction: column;
   }
 
-  .mr-#{$key} {
-    margin-right: $space;
+  .flex-row {
+    flex-direction: row;
   }
 
-  .m-#{$key} {
-    margin: $space;
+  .justify-center {
+    justify-content: center;
   }
 
-  .my-#{$key} {
-    margin-top: $space;
-    margin-bottom: $space;
+  .justify-flex-start {
+    justify-content: flex-start;
   }
 
-  .mx-#{$key} {
-    margin-right: $space;
-    margin-left: $space;
+  .justify-flex-end {
+    justify-content: flex-end;
   }
 
-  /* Padding */
-  .pt-#{$key} {
-    padding-top: $space;
+  .justify-space-between {
+    justify-content: space-between;
   }
 
-  .pb-#{$key} {
-    padding-bottom: $space;
+  .align-center {
+    align-items: center;
   }
 
-  .pl-#{$key} {
-    padding-left: $space;
+  .align-flex-start {
+    align-items: flex-start;
   }
 
-  .pr-#{$key} {
-    padding-right: $space;
+  .align-flex-end {
+    align-items: flex-end;
   }
 
-  .p-#{$key} {
-    padding: $space;
+  .grow-1 {
+    flex-grow: 1;
   }
 
-  .py-#{$key} {
-    padding-top: $space;
-    padding-bottom: $space;
+  .grow-0 {
+    flex-grow: 0;
   }
 
-  .px-#{$key} {
-    padding-right: $space;
-    padding-left: $space;
+  .shrink-1 {
+    flex-shrink: 1;
   }
 
-  .gap-#{$key} {
-    gap: $space;
-  }
-}
-
-/* ***End*** */
-
-/* Utility class for layout */
-.d-flex {
-  display: flex;
-}
-
-.flex-column {
-  flex-direction: column;
-}
-
-.flex-row {
-  flex-direction: row;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-flex-start {
-  justify-content: flex-start;
-}
-
-.justify-flex-end {
-  justify-content: flex-end;
-}
-
-.justify-space-between {
-  justify-content: space-between;
-}
-
-.align-center {
-  align-items: center;
-}
-
-.align-flex-start {
-  align-items: flex-start;
-}
-
-.align-flex-end {
-  align-items: flex-end;
-}
-
-.grow-1 {
-  flex-grow: 1;
-}
-
-.grow-0 {
-  flex-grow: 0;
-}
-
-.shrink-1 {
-  flex-shrink: 1;
-}
-
-.shrink-0 {
-  flex-shrink: 0;
-}
-
-.wrap {
-  flex-wrap: wrap;
-}
-
-.wrap-reverse {
-  flex-wrap: wrap-reverse;
-}
-
-/* ***End*** */
-
-/* Utility classes for dimensions */
-.h-100 {
-  height: 100%;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.min-h-100 {
-  min-height: 100%;
-}
-
-.min-w-100 {
-  min-width: 100%;
-}
-
-.max-h-100 {
-  max-height: 100%;
-}
-
-.max-w-100 {
-  max-width: 100%;
-}
-
-.min-h-fit {
-  min-height: fit-content;
-}
-
-.min-w-fit {
-  min-width: fit-content;
-}
-
-.max-h-fit {
-  max-height: fit-content;
-}
-
-.max-w-fit {
-  max-width: fit-content;
-}
-
-/* ***End*** */
-
-/* Utility classes for border radius */
-$radii: (
-  0: 0,
-  4: 4px,
-  8: 8px,
-  12: 12px,
-  16: 16px,
-  24: 24px,
-  full: 100%,
-);
-
-@each $key, $radius in $radii {
-  .rounded-#{$key} {
-    border-radius: $radius;
+  .shrink-0 {
+    flex-shrink: 0;
   }
 
-  .rounded-tl-#{$key} {
-    border-top-left-radius: $radius;
+  .wrap {
+    flex-wrap: wrap;
   }
 
-  .rounded-tr-#{$key} {
-    border-top-right-radius: $radius;
+  .wrap-reverse {
+    flex-wrap: wrap-reverse;
   }
 
-  .rounded-bl-#{$key} {
-    border-bottom-left-radius: $radius;
+  /* ***End*** */
+
+  /* Utility classes for dimensions */
+  .h-100 {
+    height: 100%;
   }
 
-  .rounded-br-#{$key} {
-    border-bottom-right-radius: $radius;
+  .w-100 {
+    width: 100%;
   }
-}
 
-/* ***End*** */
-
-/* Utility classes for box-sizing */
-.box-border {
-  box-sizing: border-box;
-}
-
-.box-content {
-  box-sizing: content-box;
-}
-
-/* ***End*** */
-
-/* Utility classes for text colors */
-.text-primary {
-  color: var(--mat-sys-on-surface);
-}
-
-.text-secondary {
-  color: var(--mat-sys-on-surface-variant);
-}
-
-/* ***End*** */
-
-/* Utility class for container */
-@media screen and (min-width: 768px) {
-  .content {
-    padding: 40px;
+  .min-h-100 {
+    min-height: 100%;
   }
-}
 
-@media (min-width: 576px) and (max-width: 768px) {
-  .content {
-    padding: 24px;
+  .min-w-100 {
+    min-width: 100%;
   }
-}
 
-@media (min-width: 320px) and (max-width: 576px) {
-  .content {
-    padding: 16px;
+  .max-h-100 {
+    max-height: 100%;
   }
-}
 
-@media screen and (max-width: 320px) {
-  .content {
-    padding: 8px;
+  .max-w-100 {
+    max-width: 100%;
   }
-}
 
-/* ***End*** */
+  .min-h-fit {
+    min-height: fit-content;
+  }
+
+  .min-w-fit {
+    min-width: fit-content;
+  }
+
+  .max-h-fit {
+    max-height: fit-content;
+  }
+
+  .max-w-fit {
+    max-width: fit-content;
+  }
+
+  /* ***End*** */
+
+  /* Utility classes for border radius */
+  $radii: (
+    0: 0,
+    4: 4px,
+    8: 8px,
+    12: 12px,
+    16: 16px,
+    24: 24px,
+    full: 100%,
+  );
+
+  @each $key, $radius in $radii {
+    .rounded-#{$key} {
+      border-radius: $radius;
+    }
+
+    .rounded-tl-#{$key} {
+      border-top-left-radius: $radius;
+    }
+
+    .rounded-tr-#{$key} {
+      border-top-right-radius: $radius;
+    }
+
+    .rounded-bl-#{$key} {
+      border-bottom-left-radius: $radius;
+    }
+
+    .rounded-br-#{$key} {
+      border-bottom-right-radius: $radius;
+    }
+  }
+
+  /* ***End*** */
+
+  /* Utility classes for box-sizing */
+  .box-border {
+    box-sizing: border-box;
+  }
+
+  .box-content {
+    box-sizing: content-box;
+  }
+
+  /* ***End*** */
+
+  /* Utility classes for text colors */
+  .text-primary {
+    color: var(--mat-sys-on-surface);
+  }
+
+  .text-secondary {
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  /* ***End*** */
+
+  /* Utility class for container */
+  @media screen and (min-width: 768px) {
+    .content {
+      padding: 40px;
+    }
+  }
+
+  @media (min-width: 576px) and (max-width: 768px) {
+    .content {
+      padding: 24px;
+    }
+  }
+
+  @media (min-width: 320px) and (max-width: 576px) {
+    .content {
+      padding: 16px;
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    .content {
+      padding: 8px;
+    }
+  }
+
+  /* ***End*** */
 }
