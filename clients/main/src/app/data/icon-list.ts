@@ -35,4 +35,28 @@ export const IconList = [
     name: 'cross',
     src: 'assets/icons/cross.svg',
   },
+  {
+    name: 'success',
+    src: 'assets/icons/success.svg',
+  },
+  {
+    name: 'error',
+    src: 'assets/icons/error.svg',
+  },
+  {
+    name: 'warning',
+    src: 'assets/icons/warning.svg',
+  },
+  {
+    name: 'info',
+    src: 'assets/icons/info.svg',
+  },
+  {
+    name: 'notificationAdd',
+    src: 'assets/icons/notification-add.svg',
+  },
+  {
+    name: 'cancel',
+    src: 'assets/icons/cancel.svg',
+  },
 ];
