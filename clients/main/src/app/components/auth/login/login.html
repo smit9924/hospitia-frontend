@@ -6,11 +6,7 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form
-        aria-labelledby="login-heading"
-        [formGroup]="loginForm"
-        (ngSubmit)="login()"
-      >
+      <form aria-labelledby="login-heading" [formGroup]="loginForm" (ngSubmit)="login()">
         <div class="d-flex flex-column gap-24">
           <!-- TEXT FIELD: Email -->
           <mat-form-field class="w-100">
