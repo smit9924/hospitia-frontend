@@ -1,14 +1,17 @@
-/* Breakpoint to be used in media queries */
-$breakpoints: (
-  xxs: 0px,
-  xs: 320px,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px,
-  xxl: 1400px,
-  xxxl: 2400px,
-);
+:root {
+  // Wrap utility classes in :root to increase their specificity, ensuring they take precedence over other styles.
+
+  /* Breakpoint to be used in media queries */
+  $breakpoints: (
+    xxs: 0px,
+    xs: 320px,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px,
+    xxxl: 2400px,
+  );
 
 :root {
   @each $name, $value in $breakpoints {
@@ -33,6 +36,7 @@ $spacings: (
 );
 
 @each $key, $space in $spacings {
+
   /* Margin */
   .mt-#{$key} {
     margin-top: $space;
@@ -166,6 +170,7 @@ $spacings: (
 .wrap-reverse {
   flex-wrap: wrap-reverse;
 }
+
 /* ***End*** */
 
 /* Utility classes for dimensions */
@@ -208,6 +213,7 @@ $spacings: (
 .max-w-fit {
   max-width: fit-content;
 }
+
 /* ***End*** */
 
 /* Utility classes for border radius */
@@ -242,6 +248,7 @@ $radii: (
     border-bottom-right-radius: $radius;
   }
 }
+
 /* ***End*** */
 
 /* Utility classes for box-sizing */
@@ -252,6 +259,7 @@ $radii: (
 .box-content {
   box-sizing: content-box;
 }
+
 /* ***End*** */
 
 /* Utility classes for text colors */
@@ -262,6 +270,7 @@ $radii: (
 .text-secondary {
   color: var(--mat-sys-on-surface-variant);
 }
+
 /* ***End*** */
 
 /* Utility class for container */
@@ -282,9 +291,12 @@ $radii: (
     padding: 16px;
   }
 }
+
 @media screen and (max-width: 320px) {
   .content {
     padding: 8px;
   }
 }
+
 /* ***End*** */
+}
