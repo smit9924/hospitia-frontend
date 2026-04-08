@@ -210,6 +210,40 @@ $spacings: (
 }
 /* ***End*** */
 
+/* Utility classes for border radius */
+$radii: (
+  0: 0,
+  4: 4px,
+  8: 8px,
+  12: 12px,
+  16: 16px,
+  24: 24px,
+  full: 100%,
+);
+
+@each $key, $radius in $radii {
+  .rounded-#{$key} {
+    border-radius: $radius;
+  }
+
+  .rounded-tl-#{$key} {
+    border-top-left-radius: $radius;
+  }
+
+  .rounded-tr-#{$key} {
+    border-top-right-radius: $radius;
+  }
+
+  .rounded-bl-#{$key} {
+    border-bottom-left-radius: $radius;
+  }
+
+  .rounded-br-#{$key} {
+    border-bottom-right-radius: $radius;
+  }
+}
+/* ***End*** */
+
 /* Utility classes for box-sizing */
 .box-border {
   box-sizing: border-box;
