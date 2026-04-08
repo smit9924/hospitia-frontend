@@ -192,6 +192,22 @@ $spacings: (
 .max-w-100 {
   max-width: 100%;
 }
+
+.min-h-fit {
+  min-height: fit-content;
+}
+
+.min-w-fit {
+  min-width: fit-content;
+}
+
+.max-h-fit {
+  max-height: fit-content;
+}
+
+.max-w-fit {
+  max-width: fit-content;
+}
 /* ***End*** */
 
 /* Utility classes for box-sizing */
