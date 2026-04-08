@@ -1,0 +1,84 @@
+@use '@angular/material' as mat;
+
+html {
+  /**
+   * DEFAULT SNACKBAR
+   */
+  .close-button {
+    .cross-icon {
+      color: var(--mat-sys-surface);
+    }
+  }
+
+  /**
+   * SUCCESS SNACKBAR
+   */
+  .snackbar-success {
+    @include mat.snack-bar-overrides(
+      (
+        container-color: var(--mat-sys-success-container),
+        supporting-text-color: var(--mat-sys-on-success-container),
+      )
+    );
+
+    .close-button {
+      .cross-icon {
+        color: var(--mat-sys-on-success-container);
+      }
+    }
+  }
+
+  /**
+   * ERROR SNACKBAR
+   */
+  .snackbar-error {
+    @include mat.snack-bar-overrides(
+      (
+        container-color: var(--mat-sys-error-container),
+        supporting-text-color: var(--mat-sys-on-error-container),
+      )
+    );
+
+    .close-button {
+      .cross-icon {
+        color: var(--mat-sys-on-error-container);
+      }
+    }
+  }
+
+  /**
+   * WARNING SNACKBAR
+   */
+  .snackbar-warning {
+    @include mat.snack-bar-overrides(
+      (
+        container-color: var(--mat-sys-warning-container),
+        supporting-text-color: var(--mat-sys-on-warning-container),
+      )
+    );
+
+    .close-button {
+      .cross-icon {
+        color: var(--mat-sys-on-warning-container);
+      }
+    }
+  }
+
+  /**
+   * INFO SNACKBAR
+   */
+  .snackbar-info {
+    @include mat.snack-bar-overrides(
+      (
+        container-color: var(--mat-sys-info-container),
+        supporting-text-color: var(--mat-sys-on-info-container),
+      )
+    );
+
+    .close-button {
+      .cross-icon {
+        color: var(--mat-sys-on-info-container);
+      }
+    }
+  }
+}
