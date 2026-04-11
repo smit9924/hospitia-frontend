@@ -1,4 +1,6 @@
-<div class="loader-backdrop">
-  <!-- Spinner -->
-  <app-spinner />
-</div>
+@if (loading | async) {
+  <div class="loader-backdrop">
+    <!-- Spinner -->
+    <app-spinner />
+  </div>
+}
