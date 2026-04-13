@@ -270,6 +270,12 @@
 
   /* ***End*** */
 
+  /* Utility classes for background colors*/
+  .bg-inherit {
+    background-color: inherit;
+  }
+  /* ***End*** */
+
   /* Utility class for container */
   @media screen and (min-width: 768px) {
     .content {
