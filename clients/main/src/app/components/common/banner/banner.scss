@@ -1,16 +1,6 @@
-.banner-container {
-  border-radius: 5px;
-  .close-button {
-    height: 24px;
-    width: 24px;
-    padding: 0;
-    border-radius: 100%;
-
-    .cross-icon {
-      height: 80%;
-      width: 80%;
-    }
-  }
+.close-button {
+  height: 24px;
+  width: 24px;
 }
 
 .banner-info {
@@ -18,13 +8,8 @@
   color: var(--mat-sys-on-info-container);
   border: 1px solid var(--mat-sys-info);
 
-  .close-button {
-    background-color: var(--mat-sys-surface);
-    border: 1px solid var(--mat-sys-info);
-
-    .cross-icon {
-      color: var(--mat-sys-on-info-container);
-    }
+  .cross-icon {
+    color: var(--mat-sys-on-info-container);
   }
 }
 
@@ -33,13 +18,8 @@
   color: var(--mat-sys-on-warning-container);
   border: 1px solid var(--mat-sys-warning);
 
-  .close-button {
-    background-color: var(--mat-sys-surface);
-    border: 1px solid var(--mat-sys-warning);
-
-    .cross-icon {
-      color: var(--mat-sys-on-warning-container);
-    }
+  .cross-icon {
+    color: var(--mat-sys-on-warning-container);
   }
 }
 
@@ -48,13 +28,8 @@
   color: var(--mat-sys-on-error-container);
   border: 1px solid var(--mat-sys-error);
 
-  .close-button {
-    background-color: var(--mat-sys-surface);
-    border: 1px solid var(--mat-sys-error);
-
-    .cross-icon {
-      color: var(--mat-sys-on-error-container);
-    }
+  .cross-icon {
+    color: var(--mat-sys-on-error-container);
   }
 }
 
@@ -63,12 +38,7 @@
   color: var(--mat-sys-on-success-container);
   border: 1px solid var(--mat-sys-success);
 
-  .close-button {
-    background-color: var(--mat-sys-surface);
-    border: 1px solid var(--mat-sys-success);
-
-    .cross-icon {
-      color: var(--mat-sys-on-success-container);
-    }
+  .cross-icon {
+    color: var(--mat-sys-on-success-container);
   }
 }
