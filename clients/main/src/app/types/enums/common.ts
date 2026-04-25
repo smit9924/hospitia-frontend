@@ -28,3 +28,13 @@ export enum BANNER_TYPES {
   ERROR = 'error',
   SUCCESS = 'success',
 }
+
+export enum HTTP_REQ_TIMEOUT {
+  DISABLED = -1,
+  TIMEOUT_10S = 10000,
+  TIMEOUT_20S = 20000,
+  TIMEOUT_30S = 30000,
+  TIMEOUT_40S = 40000,
+  TIMEOUT_50S = 50000,
+  TIMEOUT_60S = 60000,
+}
