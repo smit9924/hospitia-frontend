@@ -17,6 +17,6 @@ export const appConfig: ApplicationConfig = {
         floatLabel: 'always',
       },
     },
-    provideHttpClient(withInterceptors([loaderInterceptor])),
+    provideHttpClient(withInterceptors([loaderInterceptor, httpConfigInterceptor])),
   ],
 };
