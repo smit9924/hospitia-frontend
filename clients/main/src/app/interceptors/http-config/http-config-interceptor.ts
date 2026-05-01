@@ -1,5 +1,5 @@
 import { HttpContextToken, HttpInterceptorFn } from '@angular/common/http';
-import { catchError, throwError, timeout, TimeoutError } from 'rxjs';
+import { catchError, throwError, timeout } from 'rxjs';
 import { HTTP_REQ_TIMEOUT } from '../../types/enums/common';
 
 export const REQUEST_TIMEOUT = new HttpContextToken<HTTP_REQ_TIMEOUT>(
