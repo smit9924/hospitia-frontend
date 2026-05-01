@@ -7,7 +7,7 @@ const apiBaseUrls = {
 export const apiRoutes = {
   // Authentication related APIs
   auth: {
-    login: `${apiBaseUrls.auth}/login/access-token`,
+    login: `${apiBaseUrls.auth}/login`,
   },
   // ***End***
 } as const;
