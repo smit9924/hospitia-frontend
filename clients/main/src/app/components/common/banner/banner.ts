@@ -13,7 +13,7 @@ import { BANNER_TYPES } from '../../../types/enums/common';
 export class Banner {
   @Input() type: BANNER_TYPES = BANNER_TYPES.INFO;
   public BANNER_TYPES = BANNER_TYPES;
-  isVisible = signal(true); // TODO: Revert this variable's value to false
+  isVisible = signal(false);
 
   show(): void {
     this.isVisible.set(true);
