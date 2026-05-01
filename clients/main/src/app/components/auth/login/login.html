@@ -6,6 +6,14 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
+      <!-- Banner -->
+      <div class="mb-24">
+        <app-banner #loginBanner>
+          <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+        </app-banner>
+      </div>
+
+      <!-- Form: Login -->
       <form aria-labelledby="login-heading" [formGroup]="loginForm" (ngSubmit)="login()">
         <div class="d-flex flex-column gap-24">
           <!-- TEXT FIELD: Email -->
