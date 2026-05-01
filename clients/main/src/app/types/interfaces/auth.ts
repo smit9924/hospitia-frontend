@@ -1,5 +1,7 @@
-export interface LoginApiResponse {
-  access_token: string;
-  refresh_token: string;
-  token_type: string;
+export interface LoginApiResponseDto {
+  accessToken: string;
+  accessTokenExpiry: string;
+  refreshToken: string;
+  refreshTokenExpiry: string;
+  tokenType: string;
 }
