@@ -26,6 +26,7 @@ export class Auth {
       data.accessTokenExpiryDate,
     );
     this.localstorageService.setItem(LOCAL_STORAGE_KEYS.refreshToken, data.refreshToken);
+    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.refreshTokenExpiry, data.refreshTokenExpiryDate);
   }
 
   logout(): void {
