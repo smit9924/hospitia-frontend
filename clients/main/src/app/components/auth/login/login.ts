@@ -17,7 +17,11 @@ import { LoginApiResponse } from '../../../types/models/auth/login-api-response'
 import { Banner } from '../../common/banner/banner';
 import { ApiErrorResponse } from '../../../types/interfaces/common';
 import { ErrorCodes } from '../../../types/enums/error-codes';
-import { BANNER_TYPES, GenericSnackbarDuration, GenericSnackbarType } from '../../../types/enums/common';
+import {
+  BANNER_TYPES,
+  GenericSnackbarDuration,
+  GenericSnackbarType,
+} from '../../../types/enums/common';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 

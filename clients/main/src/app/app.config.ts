@@ -7,6 +7,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { loaderInterceptor } from './interceptors/loader/loader-interceptor';
 import { httpConfigInterceptor } from './interceptors/http-config/http-config-interceptor';
 import { GlobalErrorHandler } from './error/global-error-handler';
+import { authInterceptor } from './interceptors/auth/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +24,8 @@ export const appConfig: ApplicationConfig = {
         floatLabel: 'always',
       },
     },
-    provideHttpClient(withInterceptors([loaderInterceptor, httpConfigInterceptor])),
+    provideHttpClient(
+      withInterceptors([loaderInterceptor, httpConfigInterceptor, authInterceptor]),
+    ),
   ],
 };
