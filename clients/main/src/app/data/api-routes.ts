@@ -8,6 +8,7 @@ export const apiRoutes = {
   // Authentication related APIs
   auth: {
     login: `${apiBaseUrls.auth}/login`,
+    refreshToken: `${apiBaseUrls.auth}/login/refresh-token`,
   },
   // ***End***
 } as const;

@@ -1,7 +1,7 @@
 import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { apiRoutes } from '../data/api-routes';
-import { LoginApiResponseDto } from '../types/interfaces/auth';
+import { LoginApiResponseDto, AccessTokenRenewalDto } from '../types/interfaces/auth';
 import { Localstorage } from './localstorage';
 import { Observable } from 'rxjs';
 import { LOCAL_STORAGE_KEYS } from '../data/localstorage-keys';
@@ -17,28 +17,43 @@ export class Auth {
 
   login(email: string, password: string, _rememberMe: boolean): Observable<LoginApiResponseDto> {
     const includeAuthTokenContext = new HttpContext().set(IncludeAuthToken, false);
-    const body = new HttpParams().set('username', email).set('password', password);
+    const body = new HttpParams()
+      .set('username', email)
+      .set('password', password)
+      .set('remember_me', _rememberMe);
     return this.http.post<LoginApiResponseDto>(apiRoutes.auth.login, body, {
       context: includeAuthTokenContext,
     });
   }
 
+  refreshAccessToken(): Observable<AccessTokenRenewalDto> {
+    return this.http.post<AccessTokenRenewalDto>(
+      apiRoutes.auth.refreshToken,
+      { refreshToken: this.refreshToken },
+      { context: new HttpContext().set(IncludeAuthToken, false) },
+    );
+  }
+
   setLoginSession(data: LoginApiResponse): void {
-    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.authToken, data.accessToken);
-    this.localstorageService.setItem(
-      LOCAL_STORAGE_KEYS.authTokenExpiry,
-      data.accessTokenExpiryDate,
-    );
-    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.refreshToken, data.refreshToken);
-    this.localstorageService.setItem(
-      LOCAL_STORAGE_KEYS.refreshTokenExpiry,
-      data.refreshTokenExpiryDate,
-    );
+    this.setAccessTokenSession(data.accessToken, data.accessTokenExpiry);
+    this.setRefreshTokenSession(data.refreshToken, data.refreshTokenExpiry);
+  }
+
+  setAccessTokenSession(accessToken: string, accessTokenExpiry: Date | string): void {
+    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.authToken, accessToken);
+    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.authTokenExpiry, accessTokenExpiry);
+  }
+
+  setRefreshTokenSession(refreshToken: string, refreshTokenExpiry: Date | string): void {
+    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.refreshToken, refreshToken);
+    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.refreshTokenExpiry, refreshTokenExpiry);
   }
 
   logout(): void {
     this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.authToken);
+    this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.authTokenExpiry);
     this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.refreshToken);
+    this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.refreshTokenExpiry);
   }
 
   get isLoggedIn(): boolean {
