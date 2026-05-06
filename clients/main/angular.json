@@ -25,7 +25,8 @@
           "path": "src/app/guards"
         },
         "@schematics/angular:interceptor": {
-          "path": "src/app/interceptors"
+          "path": "src/app/interceptors",
+          "flat": false
         }
       },
       "root": "",
