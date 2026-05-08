@@ -5,7 +5,14 @@
     <title>Main</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Default favicon (fallback) -->
+    <link rel="icon" href="favicon-light.png" type="image/png">
+
+    <!-- Dark mode favicon -->
+    <link rel="icon" href="favicon-light.png" type="image/png" media="(prefers-color-scheme: dark)">
+
+    <!-- Light mode favicon -->
+    <link rel="icon" href="favicon-dark.png" type="image/png" media="(prefers-color-scheme: light)">
   </head>
   <body>
     <app-root></app-root>
