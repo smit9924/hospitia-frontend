@@ -59,4 +59,8 @@ export const IconList = [
     name: 'cancel',
     src: 'assets/icons/cancel.svg',
   },
+  {
+    name: 'menu',
+    src: 'assets/icons/menu.svg',
+  },
 ];
