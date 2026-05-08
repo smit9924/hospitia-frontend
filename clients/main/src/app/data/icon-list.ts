@@ -63,4 +63,16 @@ export const IconList = [
     name: 'menu',
     src: 'assets/icons/menu.svg',
   },
+  {
+    name: 'lightMode',
+    src: 'assets/icons/light-mode.svg',
+  },
+  {
+    name: 'darkMode',
+    src: 'assets/icons/dark-mode.svg',
+  },
+  {
+    name: 'devices',
+    src: 'assets/icons/devices.svg',
+  },
 ];
