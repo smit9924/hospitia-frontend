@@ -1,0 +1,24 @@
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { ThemePreference } from '../../../types/enums/common';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Theme } from '../../../services/theme';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-theme-toggle',
+  imports: [MatButtonToggleModule, FormsModule, ReactiveFormsModule, MatIconModule],
+  templateUrl: './theme-toggle.html',
+  styleUrl: './theme-toggle.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ThemeToggle {
+  private themeService = inject(Theme);
+  $localize = $localize;
+  ThemePreference = ThemePreference;
+  fontStyleControl = new FormControl<ThemePreference>(this.themeService.themePreference());
+
+  changeTheme(event: MatButtonToggleChange): void {
+    this.themeService.setTheme(event.value);
+  }
+}

@@ -1,0 +1,37 @@
+<mat-button-toggle-group
+  name="themePreference"
+  aria-label="Select application theme"
+  i18n-aria-label
+  [formControl]="fontStyleControl"
+  (change)="changeTheme($event)"
+>
+  <!-- Toggle: Light Mode -->
+  <mat-button-toggle
+    aria-label="Light theme"
+    i18n-aria-label
+    [value]="ThemePreference.LIGHT"
+  >
+    <mat-icon svgIcon="lightMode" aria-hidden="true"></mat-icon>
+    {{ $localize`Light` }}
+  </mat-button-toggle>
+
+  <!-- Toggle: Dark Mode -->
+  <mat-button-toggle
+    aria-label="Dark theme"
+    i18n-aria-label
+    [value]="ThemePreference.DARK"
+  >
+    <mat-icon svgIcon="darkMode" aria-hidden="true"></mat-icon>
+    {{ $localize`Dark` }}
+  </mat-button-toggle>
+
+  <!-- Toggle: Device (System Preference) -->
+  <mat-button-toggle
+    aria-label="Device theme based on system preference"
+    i18n-aria-label
+    [value]="ThemePreference.AUTO"
+  >
+    <mat-icon svgIcon="devices" aria-hidden="true"></mat-icon>
+    {{ $localize`Device` }}
+  </mat-button-toggle>
+</mat-button-toggle-group>
