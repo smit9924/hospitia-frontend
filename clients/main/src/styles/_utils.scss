@@ -302,4 +302,64 @@
   }
 
   /* ***End*** */
+
+  /* Utility class for position */
+  .position-relative {
+    position: relative;
+  }
+
+  .position-absolute {
+    position: absolute;
+  }
+
+  .position-fixed {
+    position: fixed;
+  }
+
+  .position-sticky {
+    position: sticky;
+  }
+
+  .position-static {
+    position: static;
+  }
+
+  /* ***End*** */
+
+  /* Utility classes for positioning */
+  .top-0 {
+    top: 0;
+  }
+
+  .right-0 {
+    right: 0;
+  }
+
+  .left-0 {
+    left: 0;
+  }
+
+  .bottom-0 {
+    bottom: 0;
+  }
+
+  /* ***End*** */
+
+  /* Utility classes for Z-Index */
+  $zindex: (
+    0: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+  );
+
+  @each $key, $index in $zindex {
+    /* Margin */
+    .z-#{$key} {
+      z-index: $index;
+    }
+  }
+  /* ***End*** */
 }
