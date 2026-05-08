@@ -37,7 +37,7 @@ export class Theme implements OnDestroy {
     this.themePreference.set(themeClass);
 
     // Update active theme based on user preference
-    if(themeClass === ThemePreference.AUTO) {
+    if (themeClass === ThemePreference.AUTO) {
       this.activeTheme.set(this._activeTheme);
     } else {
       this.activeTheme.set(themeClass === ThemePreference.DARK ? ThemeType.DARK : ThemeType.LIGHT);
