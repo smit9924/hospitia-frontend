@@ -38,3 +38,14 @@ export enum HTTP_REQ_TIMEOUT {
   TIMEOUT_50S = 50000,
   TIMEOUT_60S = 60000,
 }
+
+export enum ThemePreference {
+  LIGHT = 'theme-light',
+  DARK = 'theme-dark',
+  AUTO = 'theme-auto',
+}
+
+export enum ThemeType {
+  LIGHT = 1,
+  DARK = 2,
+}

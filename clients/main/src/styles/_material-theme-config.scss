@@ -36,6 +36,18 @@ body {
   margin: 0;
   height: 100%;
 }
+
+.theme-dark {
+  color-scheme: dark;
+}
+
+.theme-light {
+  color-scheme: light;
+}
+
+.theme-auto {
+  color-scheme: light dark;
+}
 /* You can add global styles to this file, and also import other style files */
 
 // Set the fill color of all `mat-icon` components to the current text color. This allows
