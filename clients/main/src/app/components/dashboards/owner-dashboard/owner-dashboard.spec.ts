@@ -8,9 +8,8 @@ describe('OwnerDashboard', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OwnerDashboard]
-    })
-    .compileComponents();
+      imports: [OwnerDashboard],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(OwnerDashboard);
     component = fixture.componentInstance;
