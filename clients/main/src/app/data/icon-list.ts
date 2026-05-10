@@ -75,4 +75,20 @@ export const IconList = [
     name: 'devices',
     src: 'assets/icons/devices.svg',
   },
+  {
+    name: 'settings',
+    src: 'assets/icons/settings.svg',
+  },
+  {
+    name: 'logout',
+    src: 'assets/icons/logout.svg',
+  },
+  {
+    name: 'accountCircle',
+    src: 'assets/icons/account-circle.svg',
+  },
+  {
+    name: 'user',
+    src: 'assets/icons/user.svg',
+  },
 ];
