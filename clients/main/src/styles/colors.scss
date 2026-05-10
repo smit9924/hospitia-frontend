@@ -3,22 +3,6 @@
   --color-primary: #ffea00;
   --color-secondary: #ffa000;
 
-  /* Backgrounds */
-  --color-background: #ffffff;
-  --color-surface: #e0e0e0;
-
-  /* Text */
-  --color-text-primary: #333333;
-  --color-text-secondary: #6b6b6b;
-  --color-text-inverse: #ffffff;
-
-  /* Borders & dividers */
-  --color-border: #e0e0e0;
-
-  /* States */
-  --color-hover: rgba(0, 0, 0, 0.04);
-  --color-focus: rgba(255, 234, 0, 0.4);
-
   /* backdrpop */
   --color-backdrop: #000000cc;
 
@@ -33,9 +17,9 @@
    ============================================================ */
 
   /* INFO */
-  --mat-sys-info: #64b5f6; /* material blue 300 */
-  --mat-sys-info-container: #e3f2fd; /* material blue 50 */
-  --mat-sys-on-info-container: #0d47a1; /* material blue 900 */
+  --mat-sys-info: #64b5f6;
+  --mat-sys-info-container: #e3f2fd;
+  --mat-sys-on-info-container: #0d47a1;
 
   /* WARNING */
   --mat-sys-warning: #f59e0b;
@@ -43,34 +27,54 @@
   --mat-sys-on-warning-container: #78350f;
 
   /* ERROR */
-  --mat-sys-error: #ef5350; /* red 400 */
-  --mat-sys-error-container: #fdecea; /* red 50 */
-  --mat-sys-on-error-container: #b71c1c; /* red 900 */
+  --mat-sys-error: #ef5350;
+  --mat-sys-error-container: #fdecea;
+  --mat-sys-on-error-container: #b71c1c;
 
   /* SUCCESS */
-  --mat-sys-success: #66bb6a; /* green 400 */
-  --mat-sys-success-container: #edf7ed; /* green 50 */
-  --mat-sys-on-success-container: #1b5e20; /* green 900 */
+  --mat-sys-success: #66bb6a;
+  --mat-sys-success-container: #edf7ed;
+  --mat-sys-on-success-container: #1b5e20;
+
+  /* *** END BANNER COLOR TOKENS *** */
 }
 
-[data-theme='dark'] {
-  /* Brand colors */
-  --color-primary: #ffea00;
-  --color-secondary: #ffa000;
+@media (prefers-color-scheme: light) {
+  :root {
+    /* Backgrounds */
+    --color-background: #ffffff;
+    --color-surface: #e0e0e0;
 
-  /* Backgrounds */
-  --color-background: #000000;
-  --color-surface: #333333;
+    /* Text */
+    --color-text-primary: #333333;
+    --color-text-secondary: #6b6b6b;
+    --color-text-inverse: #ffffff;
 
-  /* Text */
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #e0e0e0;
-  --color-text-inverse: #000000;
+    /* Borders & dividers */
+    --color-border: #6b6b6b;
 
-  /* Borders & dividers */
-  --color-border: #333333;
+    /* States */
+    --color-hover: rgba(0, 0, 0, 0.04);
+    --color-focus: rgba(255, 234, 0, 0.4);
+  }
+}
 
-  /* States */
-  --color-hover: rgba(255, 255, 255, 0.08);
-  --color-focus: rgba(255, 234, 0, 0.6);
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Backgrounds */
+    --color-background: #000000;
+    --color-surface: #333333;
+
+    /* Text */
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #e0e0e0;
+    --color-text-inverse: #000000;
+
+    /* Borders & dividers */
+    --color-border: #e0e0e0;
+
+    /* States */
+    --color-hover: rgba(255, 255, 255, 0.08);
+    --color-focus: rgba(255, 234, 0, 0.6);
+  }
 }
