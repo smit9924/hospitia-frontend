@@ -1,0 +1,116 @@
+<nav class="nav d-flex align-center justify-center w-100 px-16 py-8 position-sticky top-0 z-2">
+  <div class="nav-inner-width justify-space-between align-center d-flex gap-16">
+    <!-- Left section -->
+    <div class="d-flex align-center gap-16">
+      <!-- Button: Menu -->
+      <button
+        mat-icon-button
+        aria-label="Menu"
+        i18n-aria-label="navigation menu button"
+        matTooltip="Menu"
+        i18n-matTooltip="navigation menu button"
+        class="rounded-4 button-menu d-flex align-items-center justify-content-center"
+        [matMenuTriggerFor]="navLinksMenu"
+      >
+        <mat-icon svgIcon="menu" aria-hidden="true" class="d-flex align-center justify-center" />
+      </button>
+
+      <!-- Menu: Links -->
+      <mat-menu #navLinksMenu="matMenu">
+        <div mat-menu-item>
+          <a matButton i18n [routerLink]="dashboardLink">Dashboard</a>
+        </div>
+      </mat-menu>
+
+      <!-- Brand Logo -->
+      <img
+        ngSrc="assets/logo/logo-full.png"
+        class="logo-full"
+        width="126"
+        height="42"
+        alt="'Logo'"
+        priority
+        i18n-alt
+      />
+      <img
+        ngSrc="assets/logo/logo-icon.png"
+        class="logo-icon"
+        width="42"
+        height="42"
+        alt="'Logo'"
+        priority
+        i18n-alt
+      />
+    </div>
+
+    <div class="link-container">
+      <ul class="nav-links-list d-flex gap-16 p-0 m-0">
+        <li class="body-large">
+          <a matButton i18n [routerLink]="dashboardLink">Dashboard</a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <!-- Button: Profile -->
+      <button
+        mat-icon-button
+        class="d-flex justify-center align-center profile-button rounded-full overflow-hidden"
+        aria-label="Profile options"
+        i18n-aria-label
+        matTooltip="Profile options"
+        i18n-matTooltip="Profile options tooltip"
+        [matMenuTriggerFor]="menu"
+      >
+        <!-- Image: User profile -->
+        <!-- <img
+          ngSrc="assets/images/john-profile-pic.jpg"
+          width="40"
+          height="40"
+          alt="User profile"
+          priority
+          i18n-alt
+        /> -->
+
+        <mat-icon
+          svgIcon="accountCircle"
+          aria-hidden="true"
+          class="d-flex align-center justify-center user-icon"
+        />
+      </button>
+      <!-- Menu: Profile -->
+      <mat-menu #menu="matMenu">
+        <!-- Menu Item: Settings -->
+        <button mat-menu-item>
+          <mat-icon
+            svgIcon="settings"
+            aria-hidden="true"
+            class="d-flex align-center justify-center"
+          />
+          <span i18n>Settings</span>
+        </button>
+
+        <!-- Menu Item: Display and Accessibility -->
+        <button mat-menu-item>
+          <mat-icon
+            svgIcon="darkMode"
+            aria-hidden="true"
+            class="d-flex align-center justify-center"
+          />
+          <span i18n>Display and Accessibility</span>
+        </button>
+
+        <!-- Menu Item: Log out -->
+        <button mat-menu-item>
+          <mat-icon
+            svgIcon="logout"
+            aria-hidden="true"
+            class="d-flex align-center justify-center"
+            (click)="logout()"
+          />
+          <span i18n>Log out</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</nav>

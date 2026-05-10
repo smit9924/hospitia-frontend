@@ -1,0 +1,66 @@
+.nav {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: var(--color-background);
+
+  .button-menu {
+    background: var(--mat-sys-surface-container);
+    color: var(--mat-sys-on-surface);
+
+    @media screen and (min-width: 769px) {
+      display: none;
+    }
+  }
+
+  .nav-inner-width {
+    width: 90%;
+  }
+
+  @media screen and (max-width: 768px) {
+    .nav-inner-width {
+      width: 95%;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .nav-inner-width {
+      width: 100%;
+    }
+  }
+
+  .nav-links-list {
+    list-style-type: none;
+  }
+
+  .link-container {
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .logo-full {
+    display: block;
+  }
+
+  .logo-icon {
+    display: none;
+  }
+
+  @media screen and (max-width: 320px) {
+    .logo-full {
+      display: none;
+    }
+
+    .logo-icon {
+      display: block;
+    }
+  }
+}
+
+.profile-button {
+  --mat-icon-button-icon-size: 40px;
+
+  .user-icon {
+    height: 100%;
+    width: 100%;
+  }
+}
