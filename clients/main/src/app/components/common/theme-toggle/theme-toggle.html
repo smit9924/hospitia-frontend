@@ -6,21 +6,13 @@
   (change)="changeTheme($event)"
 >
   <!-- Toggle: Light Mode -->
-  <mat-button-toggle
-    aria-label="Light theme"
-    i18n-aria-label
-    [value]="ThemePreference.LIGHT"
-  >
+  <mat-button-toggle aria-label="Light theme" i18n-aria-label [value]="ThemePreference.LIGHT">
     <mat-icon svgIcon="lightMode" aria-hidden="true"></mat-icon>
     {{ $localize`Light` }}
   </mat-button-toggle>
 
   <!-- Toggle: Dark Mode -->
-  <mat-button-toggle
-    aria-label="Dark theme"
-    i18n-aria-label
-    [value]="ThemePreference.DARK"
-  >
+  <mat-button-toggle aria-label="Dark theme" i18n-aria-label [value]="ThemePreference.DARK">
     <mat-icon svgIcon="darkMode" aria-hidden="true"></mat-icon>
     {{ $localize`Dark` }}
   </mat-button-toggle>
