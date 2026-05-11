@@ -1,0 +1,99 @@
+<div class="footer d-flex justify-center align-center w-100 pt-24 pb-24">
+  <div
+    class="footer-inner-width d-flex justify-space-between align-center flex-column gap-24 wrap rounded-16 p-24"
+  >
+    <div class="d-flex justify-space-between align-center wrap gap-16 w-100">
+      <!-- LOGO -->
+      <div class="d-flex flex-column gap-16 grow-1">
+        <!-- Brand Logo -->
+        <img
+          ngSrc="assets/logo/logo-full.png"
+          class="logo-full"
+          width="126"
+          height="42"
+          alt="'Logo'"
+          priority
+          i18n-alt
+        />
+        <img
+          ngSrc="assets/logo/logo-icon.png"
+          class="logo-icon"
+          width="42"
+          height="42"
+          alt="'Logo'"
+          priority
+          i18n-alt
+        />
+
+        <!-- Brand Description -->
+        <div class="body-small" i18n>
+          <p class="m-0">
+            Experience seamless stays with smart booking and personalized hospitality.
+          </p>
+          <p class="m-0">
+            Designed to simplify guest management for modern hotels and guest houses.
+          </p>
+        </div>
+      </div>
+
+      <!-- Links -->
+      <div class="grow-1">
+        <ul class="list-style-none d-flex justify-space-between gap-24 p-0 m-0 wrap">
+          <!-- Links: Product -->
+          <li>
+            <p class="body-medium font-weight-medium mb-8" i18n>Product</p>
+            <ul class="list-style-none d-flex flex-column gap-4 p-0 m-0 body-small">
+              <li><a matButton i18n [routerLink]="'/'">Features</a></li>
+              <li><a matButton i18n [routerLink]="'/'">Pricing</a></li>
+              <li><a matButton i18n [routerLink]="'/'">Integrations</a></li>
+            </ul>
+          </li>
+
+          <!-- Links: Resource -->
+          <li>
+            <p class="body-medium font-weight-medium mb-8" i18n>Resource</p>
+            <ul class="list-style-none d-flex flex-column gap-4 p-0 m-0 body-small">
+              <li><a matButton i18n [routerLink]="'/'">Documentations</a></li>
+              <li><a matButton i18n [routerLink]="'/'">Tutorials</a></li>
+            </ul>
+          </li>
+
+          <!-- Links: Company -->
+          <li>
+            <p class="body-medium font-weight-medium mb-8" i18n>Company</p>
+            <ul class="list-style-none d-flex flex-column gap-4 p-0 m-0 body-small">
+              <li><a matButton i18n [routerLink]="'/'">About</a></li>
+              <li><a matButton i18n [routerLink]="'/'">Careers</a></li>
+              <li><a matButton i18n [routerLink]="'/'">Contact</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <mat-divider class="w-100" />
+
+    <!-- copy right -->
+    <div class="d-flex w-100 gap-8 justify-space-between align-center wrap">
+      <div class="body-small d-flex gap-4 wrap">
+        <span i18n>Copyright</span>
+        <span>&copy;</span>
+        <span i18n>2024, Hospitia, All Rights Reserved.</span>
+      </div>
+
+      <!-- Legal links -->
+      <div class="body-small">
+        <ul class="list-style-none d-flex gap-16 p-0 m-0 wrap">
+          <!-- Link: Privacy Policy -->
+          <li><a matButton i18n [routerLink]="'/'">Privact Policy</a></li>
+
+          <!-- Link: Terms of Service -->
+          <li><a matButton i18n [routerLink]="'/'">Terms of Service</a></li>
+
+          <!-- Link: Cookies Settings -->
+          <li><a matButton i18n [routerLink]="'/'">Cookies Settings</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

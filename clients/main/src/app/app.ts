@@ -4,6 +4,7 @@ import { LoaderContainer } from './components/loaders/loader-container/loader-co
 import { Icon } from './services/icon';
 import { Navbar } from './components/common/navbar/navbar';
 import { Navbar as NavbarService } from './services/navbar';
+import { Footer as FooterService } from './services/footer';
 import { Footer } from './components/common/footer/footer';
 import { Theme } from './services/theme';
 
@@ -18,6 +19,7 @@ export class App {
   private readonly _iconService: Icon = inject(Icon);
   private readonly _themeService: Theme = inject(Theme);
   readonly navbarService: NavbarService = inject(NavbarService);
+  readonly footerService: FooterService = inject(FooterService);
 
   protected readonly title = signal('main');
 }
