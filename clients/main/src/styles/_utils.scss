@@ -27,6 +27,7 @@
   /* Utility classes for spacing */
   $spacings: (
     0: 0,
+    4: 4px,
     8: 8px,
     16: 16px,
     24: 24px,
@@ -410,6 +411,12 @@
     .z-#{$key} {
       z-index: $index;
     }
+  }
+  /* ***End*** */
+
+  /* Utility class for list style */
+  .list-style-none {
+    list-style-type: none;
   }
   /* ***End*** */
 }
