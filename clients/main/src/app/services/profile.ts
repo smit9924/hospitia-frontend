@@ -5,14 +5,12 @@ import { UserProfileModel } from '../types/models/users/user-profile-model';
 import { ApiErrorResponse } from '../types/interfaces/common';
 import { ErrorCodes } from '../types/enums/error-codes';
 import { apiRoutes } from '../data/api-routes';
-import { Auth } from './auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Profile {
   private http = inject(HttpClient);
-  private authService = inject(Auth);
   private userProfile: UserProfileModel | null = null;
 
   async fetchProfile() {
@@ -33,5 +31,9 @@ export class Profile {
 
   get profile(): UserProfileModel | null {
     return this.userProfile;
+  }
+
+  clearProfile() {
+    this.userProfile = null;
   }
 }
