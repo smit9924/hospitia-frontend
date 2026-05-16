@@ -24,6 +24,7 @@ import {
 } from '../../../types/enums/common';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
+import { Profile } from '../../../services/profile';
 
 @Component({
   selector: 'app-login',
@@ -47,6 +48,7 @@ export class Login {
   private authService = inject(Auth);
   private dialogService = inject(Dialog);
   private snackbarService = inject(Snackbar);
+  private profileService = inject(Profile);
   APP_ROUTES = APP_ROUTES;
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -68,10 +70,11 @@ export class Login {
 
     if (this.loginForm.valid && email != null && password != null && rememberMe != null) {
       this.authService.login(email, password, rememberMe).subscribe({
-        next: (data) => {
+        next: async (data) => {
           const dataObj = new LoginApiResponse(data);
           this.authService.setLoginSession(dataObj);
           this.showSuccessSnackbar();
+          await this.profileService.fetchProfile();
         },
         error: (error) => {
           const errorRes = error.error as ApiErrorResponse<unknown>;

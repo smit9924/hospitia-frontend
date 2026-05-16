@@ -1,7 +1,8 @@
 import { environment } from '../../environments/environment';
 
 const apiBaseUrls = {
-  auth: environment.authApiBaseUrl,
+  auth: environment.authServiceBaseUrl,
+  user: environment.authServiceBaseUrl,
 } as const;
 
 export const apiRoutes = {
@@ -11,4 +12,8 @@ export const apiRoutes = {
     refreshToken: `${apiBaseUrls.auth}/login/refresh-token`,
   },
   // ***End***
+
+  users: {
+    profile: `${apiBaseUrls.user}/users/profile`,
+  },
 } as const;
