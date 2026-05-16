@@ -1,4 +1,4 @@
-import { UserType } from '../../enums/common';
+import { UserType } from '../../enums/auth';
 
 export class UserProfileModel {
   email = '';
