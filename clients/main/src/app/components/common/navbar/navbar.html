@@ -101,12 +101,12 @@
         </button>
 
         <!-- Menu Item: Log out -->
-        <button mat-menu-item>
+        <button mat-menu-item
+          (click)="logout()">
           <mat-icon
             svgIcon="logout"
             aria-hidden="true"
             class="d-flex align-center justify-center"
-            (click)="logout()"
           />
           <span i18n>Log out</span>
         </button>
