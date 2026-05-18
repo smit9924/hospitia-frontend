@@ -1,7 +1,9 @@
 export const APP_ROUTES = {
+  // Auth
   login: '/login',
   signup: '/signup',
   forgotPassword: '/forgot-password',
+  // *** End Auth ***
 
   // Dashboards
   adminDashboard: '/dashboard/admin',
