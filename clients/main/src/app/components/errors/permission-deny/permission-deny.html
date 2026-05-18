@@ -1,0 +1,23 @@
+<main
+  class="permission-deny-page-container d-flex flex-column align-center justify-center w-100 gap-24 p-24"
+>
+  <div class="text-container d-flex justify-center align-center flex-column gap-8">
+    <h1 class="body-large text-secondary" i18n>403 Forbidden</h1>
+    <p class="heading-large" i18n>Oops! Access denied</p>
+    <p class="body-large text-secondary" i18n>
+      You do not have permission to access this page. Please contact your administrator or return to
+      the homepage.
+    </p>
+  </div>
+
+  <!-- BUTTON: Login -->
+  <button
+    mat-raised-button
+    matButton="filled"
+    type="button"
+    i18n
+    (click)="profileService.redirectToDefaultHome()"
+  >
+    Back to Homepage
+  </button>
+</main>
