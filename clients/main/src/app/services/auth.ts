@@ -7,14 +7,12 @@ import { Observable } from 'rxjs';
 import { LOCAL_STORAGE_KEYS } from '../data/localstorage-keys';
 import { LoginApiResponse } from '../types/models/auth/login-api-response';
 import { IncludeAuthToken } from '../interceptors/auth/auth-interceptor';
-import { Profile } from './profile';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
   private http = inject(HttpClient);
-  private profileService = inject(Profile);
   private localstorageService = inject(Localstorage);
 
   login(email: string, password: string, _rememberMe: boolean): Observable<LoginApiResponseDto> {
@@ -56,7 +54,6 @@ export class Auth {
     this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.authTokenExpiry);
     this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.refreshToken);
     this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.refreshTokenExpiry);
-    this.profileService.clearProfile();
   }
 
   get isLoggedIn(): boolean {
@@ -64,11 +61,27 @@ export class Auth {
       LOCAL_STORAGE_KEYS.authTokenExpiry,
     ) as string;
 
-    if (accessTokenExpStr == null || accessTokenExpStr == undefined) {
-      return false;
-    }
+    const refreshTokenExpStr = this.localstorageService.getItem(
+      LOCAL_STORAGE_KEYS.refreshTokenExpiry,
+    ) as string;
 
-    return Date.now() < new Date(accessTokenExpStr).getTime();
+    const isAccessTokenExpired: () => boolean = () => {
+      if (accessTokenExpStr == null || accessTokenExpStr == undefined) {
+        return false;
+      }
+
+      return Date.now() < new Date(accessTokenExpStr).getTime();
+    };
+
+    const isRefreshTokenExpired: () => boolean = () => {
+      if (refreshTokenExpStr === null || refreshTokenExpStr === undefined) {
+        return false;
+      }
+
+      return Date.now() < new Date(refreshTokenExpStr).getTime();
+    };
+
+    return isAccessTokenExpired() || isRefreshTokenExpired();
   }
 
   get isLoggedOut(): boolean {
