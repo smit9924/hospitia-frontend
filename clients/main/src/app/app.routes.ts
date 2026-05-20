@@ -7,6 +7,8 @@ import { OwnerDashboard } from './components/dashboards/owner-dashboard/owner-da
 import { CustomerDashboard } from './components/dashboards/customer-dashboard/customer-dashboard';
 import { ManagerDashboard } from './components/dashboards/manager-dashboard/manager-dashboard';
 import { AdminDashboard } from './components/dashboards/admin-dashboard/admin-dashboard';
+import { permissionGuard } from './guards/permission/permission-guard';
+import { UserType } from './types/enums/auth';
 import { NotFound } from './components/errors/not-found/not-found';
 import { PermissionDeny } from './components/errors/permission-deny/permission-deny';
 
@@ -33,20 +35,40 @@ export const routes: Routes = [
       {
         path: 'admin',
         component: AdminDashboard,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN],
+        },
       },
       {
         path: 'owner',
         component: OwnerDashboard,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.OWNER],
+        },
       },
       {
         path: 'manager',
         component: ManagerDashboard,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.MANAGER],
+        },
       },
       {
         path: 'customer',
         component: CustomerDashboard,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.CUSTOMER],
+        },
       },
     ],
+    data: {
+      showNavbar: true,
+      showFooter: true,
+    }
   },
   {
     path: 'error',
