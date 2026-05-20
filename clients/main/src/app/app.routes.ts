@@ -11,6 +11,7 @@ import { permissionGuard } from './guards/permission/permission-guard';
 import { UserType } from './types/enums/auth';
 import { NotFound } from './components/errors/not-found/not-found';
 import { PermissionDeny } from './components/errors/permission-deny/permission-deny';
+import { authRedirectionGuard } from './guards/auth-redirection/auth-redirection-guard';
 
 export const routes: Routes = [
   {
@@ -20,14 +21,17 @@ export const routes: Routes = [
   {
     path: 'login',
     component: Login,
+    canActivate: [authRedirectionGuard],
   },
   {
     path: 'signup',
     component: Signup,
+    canActivate: [authRedirectionGuard],
   },
   {
     path: 'forgot-password',
     component: ForgotPassword,
+    canActivate: [authRedirectionGuard],
   },
   {
     path: 'dashboard',
@@ -68,7 +72,7 @@ export const routes: Routes = [
     data: {
       showNavbar: true,
       showFooter: true,
-    }
+    },
   },
   {
     path: 'error',
