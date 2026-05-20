@@ -22,7 +22,8 @@
           "flat": true
         },
         "@schematics/angular:guard": {
-          "path": "src/app/guards"
+          "path": "src/app/guards",
+          "flat": false
         },
         "@schematics/angular:interceptor": {
           "path": "src/app/interceptors",
