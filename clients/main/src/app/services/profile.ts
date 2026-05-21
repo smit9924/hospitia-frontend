@@ -6,7 +6,7 @@ import { ApiErrorResponse } from '../types/interfaces/common';
 import { ErrorCodes } from '../types/enums/error-codes';
 import { apiRoutes } from '../data/api-routes';
 import { Router } from '@angular/router';
-import { APP_ROUTES } from '../data/app-routes';
+import { appRoutes } from '../data/app-routes';
 import { UserType } from '../types/enums/auth';
 import { catchError, firstValueFrom, map, Observable, tap, throwError } from 'rxjs';
 import { Auth } from './auth';
@@ -57,28 +57,28 @@ export class Profile {
     // If theuser profile is null, the user should be logged out.
     // Once logged out, no further action is required, and the login route will be returned by default.
     if (profileData === null) {
-      return APP_ROUTES.login;
+      return appRoutes.login;
     }
 
     switch (profileData.role) {
       case UserType.ADMIN: {
-        return APP_ROUTES.adminDashboard;
+        return appRoutes.adminDashboard;
       }
 
       case UserType.OWNER: {
-        return APP_ROUTES.ownerDashboard;
+        return appRoutes.ownerDashboard;
       }
 
       case UserType.MANAGER: {
-        return APP_ROUTES.managerDashboard;
+        return appRoutes.managerDashboard;
       }
 
       case UserType.CUSTOMER: {
-        return APP_ROUTES.customerDashboard;
+        return appRoutes.customerDashboard;
       }
 
       default: {
-        return APP_ROUTES.login;
+        return appRoutes.login;
       }
     }
   }

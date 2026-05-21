@@ -7,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { APP_ROUTES } from '../../../data/app-routes';
+import { appRoutes } from '../../../data/app-routes';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Auth } from '../../../services/auth';
@@ -49,7 +49,7 @@ export class Login {
   private dialogService = inject(Dialog);
   private snackbarService = inject(Snackbar);
   private profileService = inject(Profile);
-  APP_ROUTES = APP_ROUTES;
+  appRoutes = appRoutes;
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),

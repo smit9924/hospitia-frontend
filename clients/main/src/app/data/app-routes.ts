@@ -1,4 +1,4 @@
-export const APP_ROUTES = {
+export const appRoutes = {
   // Auth
   login: '/login',
   signup: '/signup',

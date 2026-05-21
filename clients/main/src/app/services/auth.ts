@@ -8,7 +8,7 @@ import { LOCAL_STORAGE_KEYS } from '../data/localstorage-keys';
 import { LoginApiResponse } from '../types/models/auth/login-api-response';
 import { IncludeAuthToken } from '../interceptors/auth/auth-interceptor';
 import { Router } from '@angular/router';
-import { APP_ROUTES } from '../data/app-routes';
+import { appRoutes } from '../data/app-routes';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +57,7 @@ export class Auth {
     this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.authTokenExpiry);
     this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.refreshToken);
     this.localstorageService.removeItem(LOCAL_STORAGE_KEYS.refreshTokenExpiry);
-    this.router.navigateByUrl(APP_ROUTES.login);
+    this.router.navigateByUrl(appRoutes.login);
   }
 
   get isLoggedIn(): boolean {
