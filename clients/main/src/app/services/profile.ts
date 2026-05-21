@@ -32,6 +32,7 @@ export class Profile {
         const errorRes = error.error as ApiErrorResponse<unknown>;
 
         if (errorRes?.errorCode === ErrorCodes.USER_NOT_FOUND) {
+          this.authService.logout();
         }
 
         return throwError(() => error);
