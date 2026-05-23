@@ -18,9 +18,9 @@ export class Auth {
   private localstorageService = inject(Localstorage);
   private router = inject(Router);
   private tokens: Record<string, WritableSignal<string | null>> = {
-    [LOCAL_STORAGE_KEYS.authToken]: signal(null),
+    [LOCAL_STORAGE_KEYS.accessToken]: signal(null),
     [LOCAL_STORAGE_KEYS.refreshToken]: signal(null),
-    [LOCAL_STORAGE_KEYS.authTokenExpiry]: signal(null),
+    [LOCAL_STORAGE_KEYS.accessTokenExpiry]: signal(null),
     [LOCAL_STORAGE_KEYS.refreshTokenExpiry]: signal(null),
   };
 
@@ -60,11 +60,11 @@ export class Auth {
   }
 
   setAccessTokenSession(accessToken: string, accessTokenExpiry: string): void {
-    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.authToken, accessToken);
-    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.authTokenExpiry, accessTokenExpiry);
+    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.accessToken, accessToken);
+    this.localstorageService.setItem(LOCAL_STORAGE_KEYS.accessTokenExpiry, accessTokenExpiry);
 
-    this.tokens[LOCAL_STORAGE_KEYS.authToken].set(accessToken);
-    this.tokens[LOCAL_STORAGE_KEYS.authTokenExpiry].set(accessTokenExpiry);
+    this.tokens[LOCAL_STORAGE_KEYS.accessToken].set(accessToken);
+    this.tokens[LOCAL_STORAGE_KEYS.accessTokenExpiry].set(accessTokenExpiry);
   }
 
   setRefreshTokenSession(refreshToken: string, refreshTokenExpiry: string): void {
@@ -98,9 +98,9 @@ export class Auth {
   }
 
   private isLoggedInFromSignals(): boolean {
-    const accessToken = this.tokens[LOCAL_STORAGE_KEYS.authToken]();
+    const accessToken = this.tokens[LOCAL_STORAGE_KEYS.accessToken]();
     const refreshToken = this.tokens[LOCAL_STORAGE_KEYS.refreshToken]();
-    const accessTokenExpiry = this.tokens[LOCAL_STORAGE_KEYS.authTokenExpiry]();
+    const accessTokenExpiry = this.tokens[LOCAL_STORAGE_KEYS.accessTokenExpiry]();
     const refreshTokenExpiry = this.tokens[LOCAL_STORAGE_KEYS.refreshTokenExpiry]();
 
     return (
@@ -110,10 +110,10 @@ export class Auth {
   }
 
   private isLoggedInFromLocalStorage(): boolean {
-    const accessToken = this.localstorageService.getItem<string>(LOCAL_STORAGE_KEYS.authToken);
+    const accessToken = this.localstorageService.getItem<string>(LOCAL_STORAGE_KEYS.accessToken);
     const refreshToken = this.localstorageService.getItem<string>(LOCAL_STORAGE_KEYS.refreshToken);
     const accessTokenExpiry = this.localstorageService.getItem<string>(
-      LOCAL_STORAGE_KEYS.authTokenExpiry,
+      LOCAL_STORAGE_KEYS.accessTokenExpiry,
     );
     const refreshTokenExpiry = this.localstorageService.getItem<string>(
       LOCAL_STORAGE_KEYS.refreshTokenExpiry,
@@ -138,9 +138,9 @@ export class Auth {
   }
 
   get accessToken(): string | null {
-    const accessTokenFromSignal = this.tokens[LOCAL_STORAGE_KEYS.authToken]()?.toString();
+    const accessTokenFromSignal = this.tokens[LOCAL_STORAGE_KEYS.accessToken]()?.toString();
     const accessTokenFromLocalStorage = this.localstorageService.getItem<string>(
-      LOCAL_STORAGE_KEYS.authToken,
+      LOCAL_STORAGE_KEYS.accessToken,
     );
 
     return accessTokenFromSignal ?? accessTokenFromLocalStorage;
