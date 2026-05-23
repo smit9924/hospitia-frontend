@@ -63,6 +63,13 @@ export class Login {
     this.showPassword = !this.showPassword;
   }
 
+  showComingSoonPopup(): void {
+    this.dialogService.openOkDialog(
+      $localize`Coming Soon`,
+      $localize`Social login will be soon available.`,
+    );
+  }
+
   login(): void {
     const email = this.loginForm?.value?.email;
     const password = this.loginForm?.value?.password;

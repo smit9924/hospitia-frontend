@@ -105,9 +105,11 @@
           <!-- BUTTON: Login with facebook -->
           <button
             matFab
+            type="button"
             aria-label="Login with Facebook"
             class="br-100 button-facebook"
             [matTooltip]="'Login with Facebook'"
+            (click)="showComingSoonPopup()"
           >
             <mat-icon svgIcon="facebookLogo" class="social-login-icon icon-facebook-logo" />
           </button>
@@ -115,9 +117,11 @@
           <!-- BUTTON: Login with X (twitter) -->
           <button
             matFab
+            type="button"
             aria-label="Login in with X (Twitter)"
             class="br-100 button-x-twitter"
             [matTooltip]="'Login with X (Twitter)'"
+            (click)="showComingSoonPopup()"
           >
             <mat-icon svgIcon="xTwitterLogo" class="social-login-icon icon-x-twitter-logo" />
           </button>
@@ -125,9 +129,11 @@
           <!-- BUTTON: Login with google -->
           <button
             matFab
+            type="button"
             aria-label="Login with Google"
             class="br-100 button-google"
             [matTooltip]="'Login with Google'"
+            (click)="showComingSoonPopup()"
           >
             <mat-icon svgIcon="googleLogo" class="social-login-icon icon-google-logo" />
           </button>
