@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable } from '@angular/core';
 import { UserProfileDto } from '../types/interfaces/users';
 import { UserProfileModel } from '../types/models/users/user-profile-model';
 import { ApiErrorResponse } from '../types/interfaces/common';
@@ -19,6 +19,14 @@ export class Profile {
   private userProfile: UserProfileModel | null = null;
   private router: Router = inject(Router);
   private authService: Auth = inject(Auth);
+
+  constructor() {
+    effect(() => {
+      if (this.authService.isLoggedOut) {
+        this.clearProfile();
+      }
+    });
+  }
 
   fetchProfile(): Observable<UserProfileModel> {
     return this.http.get<UserProfileDto>(apiRoutes.users.profile).pipe(
