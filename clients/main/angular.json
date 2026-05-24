@@ -28,6 +28,10 @@
         "@schematics/angular:interceptor": {
           "path": "src/app/interceptors",
           "flat": false
+        },
+        "@schematics/angular:directive": {
+          "path": "src/app/directives",
+          "flat": false
         }
       },
       "root": "",
