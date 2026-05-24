@@ -7,6 +7,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   private dialogService = inject(Dialog);
 
   handleError(error: unknown) {
+    console.error('unexpected error occured: ', error);
     // Network Error
     if (error instanceof HttpErrorResponse && error.status === 0) {
       this.dialogService.openOkDialog(
