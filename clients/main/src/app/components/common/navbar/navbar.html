@@ -80,6 +80,16 @@
       </button>
       <!-- Menu: Profile -->
       <mat-menu #menu="matMenu">
+        <!-- Menu Item: Display and Accessibility -->
+        <button mat-menu-item (click)="navigateToProfile()">
+          <mat-icon
+            svgIcon="accountCircle"
+            aria-hidden="true"
+            class="d-flex align-center justify-center"
+          />
+          <span i18n>Profile</span>
+        </button>
+
         <!-- Menu Item: Settings -->
         <button mat-menu-item>
           <mat-icon
@@ -87,17 +97,7 @@
             aria-hidden="true"
             class="d-flex align-center justify-center"
           />
-          <span i18n>Settings</span>
-        </button>
-
-        <!-- Menu Item: Display and Accessibility -->
-        <button mat-menu-item>
-          <mat-icon
-            svgIcon="darkMode"
-            aria-hidden="true"
-            class="d-flex align-center justify-center"
-          />
-          <span i18n>Display and Accessibility</span>
+          <span i18n>Account Settings</span>
         </button>
 
         <!-- Menu Item: Log out -->

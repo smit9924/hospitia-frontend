@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { appRoutes } from '../../../data/app-routes';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../services/auth';
 
 @Component({
@@ -23,6 +23,7 @@ import { Auth } from '../../../services/auth';
 })
 export class Navbar {
   private authService = inject(Auth);
+  private router = inject(Router);
 
   get dashboardLink(): string {
     return appRoutes.adminDashboard;
@@ -30,5 +31,9 @@ export class Navbar {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  navigateToProfile(): void {
+    this.router.navigateByUrl(appRoutes.profile);
   }
 }

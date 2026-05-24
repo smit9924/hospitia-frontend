@@ -16,4 +16,6 @@ export const appRoutes = {
   permissionDeny: '/error/403',
   notFound: '/error/404',
   // *** End Error Pages ***
+
+  profile: '/profile',
 };
