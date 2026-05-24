@@ -419,4 +419,30 @@
     list-style-type: none;
   }
   /* ***End*** */
+
+  /* Utility classes for text truncation */
+  .line-clamp-base {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    text-wrap: auto;
+  }
+
+  $noOfLine: (
+    0: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+  );
+
+  @each $key, $line in $noOfLine {
+    /* Margin */
+    .clamp-#{$key} {
+      @extend .line-clamp-base;
+      -webkit-line-clamp: $line;
+      line-clamp: $line; // Added to avoid working
+    }
+  }
+  /* ***End*** */
 }
