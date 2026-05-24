@@ -15,6 +15,6 @@
 
   <!-- Title -->
   <div class="d-flex w-100 justify-center align-center heading-extra-small ml-16 mr-16">
-    <span class="clamp-1" i18n>{{ title }}</span>
+    <span class="clamp-1" i18n [customMatTooltip]="titleText" [tooltipOnlyOnEllipsis]="true">{{ titleText }}</span>
   </div>
 </mat-toolbar>
