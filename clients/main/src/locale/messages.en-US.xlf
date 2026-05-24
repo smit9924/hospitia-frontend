@@ -90,42 +90,194 @@
         <source> Don&apos;t have an account? </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/auth/login/login.html</context>
-          <context context-type="linenumber">138,139</context>
+          <context context-type="linenumber">144,145</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7203320122205058413" datatype="html">
         <source> Sign up </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/auth/login/login.html</context>
-          <context context-type="linenumber">139,140</context>
+          <context context-type="linenumber">145,146</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5488887337214961987" datatype="html">
+        <source>Coming Soon</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login/login.ts</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8287881921495374578" datatype="html">
+        <source>Social login will be soon available.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/auth/login/login.ts</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6024273055384648719" datatype="html">
         <source>Invalid email or password. Please try again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/auth/login/login.ts</context>
-          <context context-type="linenumber">79</context>
+          <context context-type="linenumber">89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5981936975708312941" datatype="html">
         <source>Login Failed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/auth/login/login.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">97</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7612516666546070189" datatype="html">
         <source>Please ensure all fields are filled out correctly before submitting the form.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/auth/login/login.ts</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3508541489041936067" datatype="html">
         <source>Login successful!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/auth/login/login.ts</context>
-          <context context-type="linenumber">95</context>
+          <context context-type="linenumber">105</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2171558931409755946" datatype="html">
+        <source>&apos;Logo&apos;</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/navbar/navbar.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/navbar/navbar.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1728666685642208311" datatype="html">
+        <source><x id="START_PARAGRAPH" ctype="x-p" equiv-text="&lt;p class=&quot;m-0&quot;&gt;"/> Experience seamless stays with smart booking and personalized hospitality. <x id="CLOSE_PARAGRAPH" ctype="x-p" equiv-text="&lt;/p&gt;"/><x id="START_PARAGRAPH" ctype="x-p" equiv-text="&lt;p class=&quot;m-0&quot;&gt;"/> Designed to simplify guest management for modern hotels and guest houses. <x id="CLOSE_PARAGRAPH" ctype="x-p" equiv-text="&lt;/p&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">30,37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7616770651914901276" datatype="html">
+        <source>Product</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">44,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6599364831830861985" datatype="html">
+        <source>Features</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">46,47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5080775557941296581" datatype="html">
+        <source>Pricing</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">47,48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4944372417149760037" datatype="html">
+        <source>Integrations</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1664620352147673062" datatype="html">
+        <source>Resource</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">54,55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4106407460786491413" datatype="html">
+        <source>Documentations</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">56,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4699310706051946809" datatype="html">
+        <source>Tutorials</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1826215573205981970" datatype="html">
+        <source>Company</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1726363342938046830" datatype="html">
+        <source>About</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">65,66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5779770381601735038" datatype="html">
+        <source>Careers</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">66,67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7922989125096435449" datatype="html">
+        <source>Contact</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8768506950499277937" datatype="html">
+        <source>Copyright</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">79,80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7359647244173688214" datatype="html">
+        <source>2024, Hospitia, All Rights Reserved.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">81,82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3944320880343635339" datatype="html">
+        <source>Privact Policy</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">88,90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2029980907058777630" datatype="html">
+        <source>Terms of Service</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">91,93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3797579503120515148" datatype="html">
+        <source>Cookies Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/footer/footer.html</context>
+          <context context-type="linenumber">94,95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2102825898069375693" datatype="html">
@@ -151,17 +303,6 @@
           <context context-type="linenumber">49,50</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2171558931409755946" datatype="html">
-        <source>&apos;Logo&apos;</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/components/common/navbar/navbar.html</context>
-          <context context-type="linenumber">32</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/components/common/navbar/navbar.html</context>
-          <context context-type="linenumber">41</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="4520668910405560086" datatype="html">
         <source>Profile options</source>
         <context-group purpose="location">
@@ -173,15 +314,15 @@
           <context context-type="linenumber">61,62</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4930506384627295710" datatype="html">
-        <source>Settings</source>
+      <trans-unit id="4915431133669985304" datatype="html">
+        <source>Profile</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/navbar/navbar.html</context>
           <context context-type="linenumber">90,91</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1571298444069705554" datatype="html">
-        <source>Display and Accessibility</source>
+      <trans-unit id="6169807947926994256" datatype="html">
+        <source>Account Settings</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/navbar/navbar.html</context>
           <context context-type="linenumber">100,101</context>
@@ -191,49 +332,109 @@
         <source>Log out</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/navbar/navbar.html</context>
-          <context context-type="linenumber">111,112</context>
+          <context context-type="linenumber">110,111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="187187500641108332" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ titleText }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/secondary-navbar/secondary-navbar.html</context>
+          <context context-type="linenumber">18,20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="181464970911903082" datatype="html">
+        <source>404 Not Found</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/errors/not-found/not-found.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3445906030070502748" datatype="html">
+        <source>Oops! Page not found</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/errors/not-found/not-found.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7413777852386729731" datatype="html">
+        <source> The page you are looking for does not exist. Click button below to go to the homepage. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/errors/not-found/not-found.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7413213929996426218" datatype="html">
+        <source> Back to Homepage </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/errors/not-found/not-found.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/errors/permission-deny/permission-deny.html</context>
+          <context context-type="linenumber">21,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7684417977451167493" datatype="html">
+        <source>403 Forbidden</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/errors/permission-deny/permission-deny.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="204279562045459235" datatype="html">
+        <source>Oops! Access denied</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/errors/permission-deny/permission-deny.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5312824926768069555" datatype="html">
+        <source> You do not have permission to access this page. Please contact your administrator or return to the homepage. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/errors/permission-deny/permission-deny.html</context>
+          <context context-type="linenumber">8,9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="921251006013072552" datatype="html">
         <source>Network Error</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/error/global-error-handler.ts</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4290848010539053003" datatype="html">
         <source>A network error occurred. Please check your internet connection and try again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/error/global-error-handler.ts</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4818213877871100238" datatype="html">
         <source>Request Timeout</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/error/global-error-handler.ts</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2407613000690527207" datatype="html">
         <source>The request took too long to complete. Please check your internet connection and try again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/error/global-error-handler.ts</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2312786625386584075" datatype="html">
         <source>Unexpected Error</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/error/global-error-handler.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="466513583224273584" datatype="html">
         <source>Opps! An unexpected error occurred. Please refresh the page and try again. If the problem persists, contact support.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/error/global-error-handler.ts</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8720977247725652816" datatype="html">
