@@ -91,4 +91,8 @@ export const IconList = [
     name: 'user',
     src: 'assets/icons/user.svg',
   },
+  {
+    name: 'arrowBack',
+    src: 'assets/icons/arrow-back.svg',
+  },
 ];
