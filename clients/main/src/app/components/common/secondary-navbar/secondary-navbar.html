@@ -1,0 +1,20 @@
+<mat-toolbar color="primary" class="secondary-navbar">
+  <!-- BUTTON: back -->
+  @if (backButton) {
+    <button
+      matIconButton
+      type="button"
+      aria-label="back"
+      class="position-absolute left-0 back-button"
+      [matTooltip]="'back'"
+      (click)="back()"
+    >
+      <mat-icon svgIcon="arrowBack"></mat-icon>
+    </button>
+  }
+
+  <!-- Title -->
+  <div class="d-flex w-100 justify-center align-center heading-extra-small ml-16 mr-16">
+    <span class="clamp-1" i18n>{{ title }}</span>
+  </div>
+</mat-toolbar>
