@@ -16,14 +16,14 @@ export class Theme implements OnDestroy {
   private renderer = this.rendererFactory.createRenderer(null, null);
 
   constructor() {
-    this.mediaQuery?.addEventListener('change', this.mediaQueryListener);
+    this.mediaQuery?.addEventListener('change', this.mediaQueryListener.bind(this));
 
     // Initialize theme based on stored preference or system preference
     this.initializeTheme();
   }
 
   ngOnDestroy(): void {
-    this.mediaQuery?.removeEventListener('change', this.mediaQueryListener);
+    this.mediaQuery?.removeEventListener('change', this.mediaQueryListener.bind(this));
   }
 
   setTheme(themeClass: ThemePreference): void {
