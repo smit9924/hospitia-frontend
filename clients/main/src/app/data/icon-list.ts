@@ -95,4 +95,12 @@ export const IconList = [
     name: 'arrowBack',
     src: 'assets/icons/arrow-back.svg',
   },
+  {
+    name: 'photoCamera',
+    src: 'assets/icons/photo-camera.svg',
+  },
+  {
+    name: 'edit',
+    src: 'assets/icons/edit.svg',
+  },
 ];
