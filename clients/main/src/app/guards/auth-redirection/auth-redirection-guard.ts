@@ -7,7 +7,7 @@ export const authRedirectionGuard: CanActivateFn = async (_route, _state) => {
   const router = inject(Router);
   const authService = inject(Auth);
   const profileService = inject(Profile);
-  const userProfileData = await profileService.getProfile();
+  const userProfileData = profileService.userProfile();
 
   if (authService.isLoggedIn) {
     if (userProfileData?.role === null || userProfileData?.role === undefined) {

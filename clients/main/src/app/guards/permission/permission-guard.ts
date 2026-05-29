@@ -8,7 +8,7 @@ export const permissionGuard: CanActivateFn = async (route, _state) => {
   const permission: UserType[] | null | undefined = route.data?.['requiredPermission'];
   const profileService = inject(Profile);
   const router = inject(Router);
-  const userProfileData = await profileService.getProfile();
+  const userProfileData = profileService.userProfile();
 
   if (permission === null || permission === undefined) {
     // If permission is not defined on the route, allow access by default.

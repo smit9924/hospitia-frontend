@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { effect, inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { UserProfileDto } from '../types/interfaces/users';
 import { UserProfileModel } from '../types/models/users/user-profile-model';
 import { ApiErrorResponse } from '../types/interfaces/common';
@@ -16,11 +16,13 @@ import { Auth } from './auth';
 })
 export class Profile {
   private http = inject(HttpClient);
-  private userProfile: UserProfileModel | null = null;
+  private _userProfile = signal<UserProfileModel | null>(null);
+  userProfile = this._userProfile.asReadonly();
   private router: Router = inject(Router);
   private authService: Auth = inject(Auth);
 
   constructor() {
+    // Clear the profile data when the user logs out.
     effect(() => {
       if (this.authService.isLoggedOut) {
         this.clearProfile();
@@ -28,12 +30,18 @@ export class Profile {
     });
   }
 
-  fetchProfile(): Observable<UserProfileModel> {
+  async loadProfile(): Promise<void> {
+    if (this.authService.isLoggedIn) {
+      await firstValueFrom(this.fetchProfile());
+    }
+  }
+
+  private fetchProfile(): Observable<UserProfileModel> {
     return this.http.get<UserProfileDto>(apiRoutes.users.profile).pipe(
       map((data) => new UserProfileModel(data)),
 
       tap((profile) => {
-        this.userProfile = profile;
+        this._userProfile.set(profile);
       }),
 
       catchError((error: HttpErrorResponse) => {
@@ -48,19 +56,12 @@ export class Profile {
     );
   }
 
-  async getProfile(): Promise<UserProfileModel | null> {
-    if (this.userProfile === null && this.authService.isLoggedIn) {
-      await firstValueFrom(this.fetchProfile());
-    }
-    return this.userProfile;
-  }
-
   clearProfile() {
-    this.userProfile = null;
+    this._userProfile.set(null);
   }
 
   async getDefaultHomeRouteForUser(): Promise<string> {
-    const profileData = await this.getProfile();
+    const profileData = this.userProfile();
 
     // If theuser profile is null, the user should be logged out.
     // Once logged out, no further action is required, and the login route will be returned by default.
@@ -94,5 +95,35 @@ export class Profile {
   async redirectToDefaultHome(): Promise<void> {
     const defaultRoute = await this.getDefaultHomeRouteForUser();
     await this.router.navigateByUrl(defaultRoute);
+  }
+
+  get userRoleLabel(): string {
+    if (!this.userProfile) {
+      return '';
+    }
+
+    const role = this.userProfile()?.role;
+
+    switch (role) {
+      case UserType.ADMIN: {
+        return $localize`Admin`;
+      }
+
+      case UserType.OWNER: {
+        return $localize`Owner`;
+      }
+
+      case UserType.MANAGER: {
+        return $localize`Manager`;
+      }
+
+      case UserType.CUSTOMER: {
+        return $localize`Customer`;
+      }
+
+      default: {
+        return '';
+      }
+    }
   }
 }

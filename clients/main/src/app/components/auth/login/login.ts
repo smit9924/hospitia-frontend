@@ -81,6 +81,7 @@ export class Login {
           const dataObj = new LoginApiResponse(data);
           this.authService.setLoginSession(dataObj);
           this.showSuccessSnackbar();
+          await this.profileService.loadProfile();
           await this.profileService.redirectToDefaultHome();
         },
         error: (error) => {
