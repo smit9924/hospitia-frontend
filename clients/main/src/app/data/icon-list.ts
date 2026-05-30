@@ -103,4 +103,8 @@ export const IconList = [
     name: 'edit',
     src: 'assets/icons/edit.svg',
   },
+  {
+    name: 'save',
+    src: 'assets/icons/save.svg',
+  },
 ];
