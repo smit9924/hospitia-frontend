@@ -31,6 +31,7 @@
     8: 8px,
     16: 16px,
     24: 24px,
+    32: 32px,
     40: 40px,
   );
 
@@ -143,6 +144,10 @@
 
   .align-flex-end {
     align-items: flex-end;
+  }
+
+  .align-stretch {
+    align-items: stretch;
   }
 
   .grow-1 {
@@ -457,6 +462,24 @@
 
   .lowercase {
     text-transform: lowercase;
+  }
+  /* ***End*** */
+
+  /* Utility classes for word break */
+  .wb-normal {
+    word-break: normal;
+  }
+
+  .wb-break-word {
+    word-break: break-word;
+  }
+
+  .wb-break-all {
+    word-break: break-all;
+  }
+
+  .wb-keep-all {
+    word-break: keep-all;
   }
   /* ***End*** */
 }
