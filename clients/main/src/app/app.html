@@ -4,7 +4,9 @@
 <div class="d-flex flex-column w-100 min-h-100">
   <!-- Primary navbar -->
   @if (layoutService.showNavbar()) {
-    <app-navbar />
+    <div class="position-sticky top-0 z-2">
+      <app-navbar />
+    </div>
   }
 
   <div class="router-outlet-container d-flex flex-column grow-1 w-100 h-100">
