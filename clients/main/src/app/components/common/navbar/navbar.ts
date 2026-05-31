@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -21,9 +21,14 @@ import { Auth } from '../../../services/auth';
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })
-export class Navbar {
+export class Navbar implements AfterViewInit {
   private authService = inject(Auth);
   private router = inject(Router);
+  private elementRef = inject(ElementRef);
+
+  ngAfterViewInit(): void {
+    this.exposePrimaryNavbarHeight();
+  }
 
   get dashboardLink(): string {
     return appRoutes.adminDashboard;
@@ -35,5 +40,14 @@ export class Navbar {
 
   navigateToProfile(): void {
     this.router.navigateByUrl(appRoutes.profile);
+  }
+
+  private exposePrimaryNavbarHeight(): void {
+    const primaryNavElement = this.elementRef?.nativeElement;
+
+    if (primaryNavElement) {
+      const height = primaryNavElement.offsetHeight;
+      document.documentElement.style.setProperty('--primary-navbar-height', `${height}px`);
+    }
   }
 }
