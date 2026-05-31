@@ -1,0 +1,22 @@
+<mat-card appearance="outlined">
+  <mat-card-header class="mb-24">
+    <mat-card-title i18n>Icons</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <ul class="icon-grid list-style-none p-0 m-0 gap-24">
+      @for (icon of IconList; track icon.name) {
+        <li>
+          <mat-card appearance="outlined">
+            <mat-card-content class="d-flex flex-column align-center justify-flex-start gap-8">
+              <div>
+                <mat-icon [svgIcon]="icon.name"></mat-icon>
+              </div>
+              <span class="wb-break-word">{{ icon.name }}</span>
+            </mat-card-content>
+          </mat-card>
+        </li>
+      }
+    </ul>
+  </mat-card-content>
+</mat-card>
