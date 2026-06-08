@@ -15,5 +15,6 @@ export const apiRoutes = {
 
   users: {
     profile: `${apiBaseUrls.user}/users/profile`,
+    usernameAvailability: `${apiBaseUrls.user}/users/check-username-availability`,
   },
 } as const;

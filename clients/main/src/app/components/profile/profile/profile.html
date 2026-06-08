@@ -1,0 +1,197 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText" />
+
+  <main class="d-flex flex-column gap-24 p-24 w-100">
+    <mat-card>
+      <mat-card-content class="d-flex justify-flex-start align-center">
+        <div class="d-flex justify-center align-center gap-24 wrap">
+          <!-- Profile photo -->
+          <img
+            ngSrc="assets/images/profile-dummy.jpg"
+            width="100"
+            height="100"
+            class="rounded-full profile-photo"
+            alt="User profile"
+            priority
+            i18n-alt
+          />
+
+          <div class="d-flex flex-column justify-center h-100 gap-8">
+            <span class="body-large font-weight-medium capitalize">{{
+              profileService.userFullName()
+            }}</span>
+            <span class="body-small uppercase">{{ profileService.userRoleLabel() }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Card: Personal Information -->
+    <mat-card>
+      <mat-card-header class="d-flex justify-start flex-column mb-24">
+        <div class="d-flex justify-space-between gap-24 wrap align-center">
+          <mat-card-title>
+            <h2 id="login-heading" class="heading-extra-small" i18n>Personal Information</h2>
+          </mat-card-title>
+
+          <div>
+            @if (editMode()) {
+              <div class="d-flex gap-8 wrap">
+                <!-- BUTTON: cancel -->
+                <button
+                  aria-label="Edit profile"
+                  matButton="filled"
+                  type="button"
+                  i18n-aria-label
+                  (click)="cancelEdit()"
+                >
+                  <div class="d-flex gap-8 justify-center align-center">
+                    <mat-icon
+                      svgIcon="cross"
+                      class="cross-icon d-flex justify-center align-center"
+                    />
+                    <span i18n>Cancel</span>
+                  </div>
+                </button>
+
+                <!-- BUTTON: Save -->
+                <button
+                  aria-label="Edit profile"
+                  matButton="filled"
+                  type="button"
+                  i18n-aria-label
+                  [disabled]="userProfileForm.invalid"
+                  (click)="updateProfile()"
+                >
+                  <div class="d-flex gap-8 justify-center align-center">
+                    <mat-icon
+                      svgIcon="save"
+                      class="cross-icon d-flex justify-center align-center"
+                    />
+                    <span i18n>Save</span>
+                  </div>
+                </button>
+              </div>
+            } @else {
+              <!-- BUTTON: Edit -->
+              <button
+                aria-label="Edit profile"
+                matButton="filled"
+                type="button"
+                i18n-aria-label
+                (click)="toggleEditMode()"
+              >
+                <div class="d-flex gap-8 justify-center align-center">
+                  <mat-icon svgIcon="edit" class="cross-icon d-flex justify-center align-center" />
+                  <span i18n>Edit</span>
+                </div>
+              </button>
+            }
+          </div>
+        </div>
+        <mat-divider class="w-100 mt-24" />
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Banner -->
+        <div class="mb-24">
+          <app-banner #profileBanner>
+            <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+          </app-banner>
+        </div>
+
+        <!-- Form: Personal Information -->
+        <div class="d-flex flex-column gap-24">
+          <form
+            aria-labelledby="login-heading"
+            [formGroup]="userProfileForm"
+            (ngSubmit)="updateProfile()"
+          >
+            <div class="d-flex gap-24 wrap">
+              <!-- TEXT FIELD: First name -->
+              <mat-form-field class="w-100 mw-50">
+                <mat-label i18n>First name</mat-label>
+                <input
+                  matInput
+                  formControlName="firstName"
+                  type="text"
+                  placeholder="Enter your first name"
+                  i18n-placeholder
+                />
+                @if (userProfileForm.get('firstName')?.hasError('required')) {
+                  <mat-error i18n> First name is required </mat-error>
+                }
+              </mat-form-field>
+
+              <!-- TEXT FIELD: Last name -->
+              <mat-form-field class="w-100 mw-50">
+                <mat-label i18n>Last name</mat-label>
+                <input
+                  matInput
+                  formControlName="lastName"
+                  type="text"
+                  placeholder="Enter your last name"
+                  i18n-placeholder
+                />
+                @if (userProfileForm.get('lastName')?.hasError('required')) {
+                  <mat-error i18n> Last name is required </mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <!-- TEXT FIELD: username -->
+            <mat-form-field class="w-100">
+              <mat-label i18n>Username</mat-label>
+              <input
+                matInput
+                formControlName="username"
+                type="text"
+                placeholder="Enter your username"
+                i18n-placeholder
+              />
+              @if (userProfileForm.get('username')?.hasError('required')) {
+                <mat-error i18n> Username is required </mat-error>
+              } @else if (userProfileForm.get('username')?.hasError('usernameTaken')) {
+                <mat-error i18n> This username is taken. Please try a different one. </mat-error>
+              }
+            </mat-form-field>
+          </form>
+
+          <!-- TEXT FIELD: Email -->
+          <mat-form-field class="w-100">
+            <mat-label i18n>Email</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Enter your email"
+              i18n-placeholder
+              readonly
+              [value]="profileService.userProfile()?.email"
+            />
+            <mat-hint align="start"
+              ><span class="body-small font-weight-semi-bold"
+                >You can update your email address in Account Settings.</span
+              >
+            </mat-hint>
+          </mat-form-field>
+
+          <!-- TEXT FIELD: Role -->
+          <mat-form-field class="w-100">
+            <mat-label i18n>Role</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Enter your role"
+              i18n-placeholder
+              readonly
+              [value]="profileService.userRoleLabel()"
+            />
+            <mat-hint align="start"
+              ><span class="body-small font-weight-semi-bold">Role information is read-only.</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </main>
+</div>

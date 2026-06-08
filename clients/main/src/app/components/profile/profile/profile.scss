@@ -1,0 +1,11 @@
+.profile-photo {
+  border: 2px solid var(--color-border);
+}
+
+.mw-50 {
+  max-width: calc(50% - 12px); // Subtracting the gap between the fields (24px / 2)
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+  }
+}

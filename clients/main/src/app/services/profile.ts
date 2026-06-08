@@ -1,6 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { effect, inject, Injectable, signal } from '@angular/core';
-import { UserProfileDto } from '../types/interfaces/users';
+import { HttpClient, HttpContext, HttpErrorResponse } from '@angular/common/http';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import {
+  UsernameAvailabilityReq,
+  UserProfileDto,
+  UserProfileUpdate,
+} from '../types/interfaces/users';
 import { UserProfileModel } from '../types/models/users/user-profile-model';
 import { ApiErrorResponse } from '../types/interfaces/common';
 import { ErrorCodes } from '../types/enums/error-codes';
@@ -10,6 +14,7 @@ import { appRoutes } from '../data/app-routes';
 import { UserType } from '../types/enums/auth';
 import { catchError, firstValueFrom, map, Observable, tap, throwError } from 'rxjs';
 import { Auth } from './auth';
+import { SkipLoading } from '../interceptors/loader/loader-interceptor';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +61,15 @@ export class Profile {
     );
   }
 
-  clearProfile() {
+  updateProfile(userProfileUpate: UserProfileUpdate): Observable<UserProfileDto> {
+    return this.http.post<UserProfileDto>(apiRoutes.users.profile, userProfileUpate);
+  }
+
+  updateProfileData(profileData: UserProfileModel): void {
+    this._userProfile.set(profileData);
+  }
+
+  clearProfile(): void {
     this._userProfile.set(null);
   }
 
@@ -97,12 +110,14 @@ export class Profile {
     await this.router.navigateByUrl(defaultRoute);
   }
 
-  get userRoleLabel(): string {
-    if (!this.userProfile) {
-      return '';
+  userRoleLabel = computed(() => {
+    const profileData = this.userProfile();
+
+    if (!profileData) {
+      return '-';
     }
 
-    const role = this.userProfile()?.role;
+    const role = profileData.role;
 
     switch (role) {
       case UserType.ADMIN: {
@@ -122,8 +137,39 @@ export class Profile {
       }
 
       default: {
-        return '';
+        return '-';
       }
     }
+  });
+
+  userFullName = computed(() => {
+    const profileData = this.userProfile();
+
+    if (profileData === null) {
+      return '-';
+    }
+
+    const firstName = profileData.firstName ?? '';
+    const lastName = profileData.lastName ?? '';
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    if (fullName) {
+      return fullName;
+    }
+
+    // If full name is not available, fallback to username.
+    return '-';
+  });
+
+  checkUsernameAvailability(
+    usernameAvailabilityRequest: UsernameAvailabilityReq,
+  ): Observable<null> {
+    const context = new HttpContext();
+    context.set(SkipLoading, true);
+
+    return this.http.get<null>(apiRoutes.users.usernameAvailability, {
+      params: { ...usernameAvailabilityRequest },
+      context: context,
+    });
   }
 }

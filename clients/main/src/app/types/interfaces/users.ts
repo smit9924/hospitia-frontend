@@ -8,3 +8,13 @@ export interface UserProfileDto {
   first_name: string | null;
   last_name: string | null;
 }
+
+export interface UserProfileUpdate {
+  username: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface UsernameAvailabilityReq {
+  username: string;
+}
