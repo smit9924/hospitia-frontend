@@ -107,4 +107,12 @@ export const IconList = [
     name: 'save',
     src: 'assets/icons/save.svg',
   },
+  {
+    name: 'mail',
+    src: 'assets/icons/mail.svg',
+  },
+  {
+    name: 'idCard',
+    src: 'assets/icons/id-card.svg',
+  },
 ];
