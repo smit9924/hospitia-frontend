@@ -34,6 +34,11 @@ export class UsernameAvailability implements AsyncValidator {
   }
 }
 
+const usernameAvailabilityErrorMessages: Record<string, string> = {
+  usernameTaken: $localize`This username is taken. Please try a different one.`,
+  usernameInvalid: $localize`Please enter a valid username.`,
+};
+
 // Reusable Async Validator Function
 export function usernameAvailabilityValidator(
   profileService: Profile,
@@ -62,11 +67,13 @@ export function usernameAvailabilityValidator(
         // For all other errors, return null to prevent validation failures due to unexpected issues.
 
         const errorRes = error.error as ApiErrorResponse<unknown>;
-        if (
+        if (errorRes.errorCode === ErrorCodes.USER_WITH_USENAME_ALREADY_EXIST) {
+          return of({ usernameTaken: usernameAvailabilityErrorMessages['usernameTaken'] });
+        } else if (
           error.status === HttpStatusCode.UnprocessableEntity ||
-          errorRes.errorCode === ErrorCodes.USER_WITH_USENAME_ALREADY_EXIST
+          errorRes.errorCode === ErrorCodes.INVALID_USERNAME
         ) {
-          return of({ usernameTaken: true });
+          return of({ usernameInvalid: usernameAvailabilityErrorMessages['usernameInvalid'] });
         } else {
           return of(null);
         }

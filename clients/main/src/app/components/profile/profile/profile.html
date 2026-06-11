@@ -152,7 +152,9 @@
               @if (userProfileForm.get('username')?.hasError('required')) {
                 <mat-error i18n> Username is required </mat-error>
               } @else if (userProfileForm.get('username')?.hasError('usernameTaken')) {
-                <mat-error i18n> This username is taken. Please try a different one. </mat-error>
+                <mat-error>{{
+                  userProfileForm.get('username')?.errors?.['usernameTaken']
+                }}</mat-error>
               }
             </mat-form-field>
           </form>
