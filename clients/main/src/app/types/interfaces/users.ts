@@ -18,3 +18,11 @@ export interface UserProfileUpdate {
 export interface UsernameAvailabilityReq {
   username: string;
 }
+
+export interface UserSignup {
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  password: string;
+}

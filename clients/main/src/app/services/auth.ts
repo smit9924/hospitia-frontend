@@ -9,6 +9,7 @@ import { LoginApiResponse } from '../types/models/auth/login-api-response';
 import { IncludeAuthToken } from '../interceptors/auth/auth-interceptor';
 import { Router } from '@angular/router';
 import { appRoutes } from '../data/app-routes';
+import { UserSignup } from '../types/interfaces/users';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +43,13 @@ export class Auth {
       .set('password', password)
       .set('remember_me', _rememberMe);
     return this.http.post<LoginApiResponseDto>(apiRoutes.auth.login, body, {
+      context: includeAuthTokenContext,
+    });
+  }
+
+  signup(userSignup: UserSignup): Observable<LoginApiResponseDto> {
+    const includeAuthTokenContext = new HttpContext().set(IncludeAuthToken, false);
+    return this.http.post<LoginApiResponseDto>(apiRoutes.users.signup, userSignup, {
       context: includeAuthTokenContext,
     });
   }
