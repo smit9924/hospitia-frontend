@@ -25,12 +25,12 @@ export class PasswordStrengthCheck {
 }
 
 const passwordStrengthErrorMessages: Record<string, string> = {
-  minLength: $localize`Password must be at least 8 characters long.`,
-  maxLength: $localize`Password must be no more than 50 characters long.`,
-  uppercase: $localize`At least one uppercase letter is required.`,
-  lowercase: $localize`At least one lowercase letter is required.`,
-  number: $localize`At least one number is required.`,
-  specialChar: $localize`At least one special character is required.`,
+  minLength: $localize`at least 8 characters long`,
+  maxLength: $localize`be no more than 50 characters long`,
+  uppercase: $localize`include at least one uppercase letter`,
+  lowercase: $localize`include at least one lowercase letter`,
+  number: $localize`include at least one number`,
+  specialChar: $localize`include at least one special character`,
 };
 
 /**
