@@ -20,19 +20,24 @@ export const routes: Routes = [
     component: StyleGuide,
   },
   {
-    path: 'login',
-    component: Login,
-    canActivate: [authRedirectionGuard],
-  },
-  {
-    path: 'signup',
-    component: Signup,
-    canActivate: [authRedirectionGuard],
-  },
-  {
-    path: 'forgot-password',
-    component: ForgotPassword,
-    canActivate: [authRedirectionGuard],
+    path: 'auth',
+    children: [
+      {
+        path: 'login',
+        component: Login,
+        canActivate: [authRedirectionGuard],
+      },
+      {
+        path: 'signup',
+        component: Signup,
+        canActivate: [authRedirectionGuard],
+      },
+      {
+        path: 'forgot-password',
+        component: ForgotPassword,
+        canActivate: [authRedirectionGuard],
+      },
+    ],
   },
   {
     path: 'dashboard',

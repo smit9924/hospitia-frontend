@@ -1,8 +1,8 @@
 export const appRoutes = {
   // Auth
-  login: '/login',
-  signup: '/signup',
-  forgotPassword: '/forgot-password',
+  login: '/auth/login',
+  signup: '/auth/signup',
+  forgotPassword: '/auth/forgot-password',
   // *** End Auth ***
 
   // Dashboards
