@@ -17,5 +17,12 @@ export const appRoutes = {
   notFound: '/error/404',
   // *** End Error Pages ***
 
+  // Settings
+  settings: '/settings',
+  displaySettings: '/settings/display-and-accessibility',
+  changePassword: '/settings/change-password',
+  privacySettings: '/settings/privacy',
+  // *** End Settings ***
+
   profile: '/profile',
 };

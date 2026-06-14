@@ -1,1 +1,25 @@
-<router-outlet />
+<main class="min-h-100 w-100">
+  <div class="content settings-grid w-100 gap-24">
+    @for (setting of settings; track setting.id) {
+      <a
+        class="setting-card d-flex align-center gap-16 p-16 rounded-8 text-primary"
+        [routerLink]="setting.route"
+        [attr.aria-label]="setting.title"
+      >
+        <mat-icon class="setting-icon shrink-0" aria-hidden="true" [svgIcon]="setting.icon" />
+
+        <div class="setting-text grow-1 overflow-hidden">
+          <div class="heading-tiny mb-8 clamp-1">
+            {{ setting.title }}
+          </div>
+
+          <div class="body-medium text-secondary wb-break-word clamp-2">
+            {{ setting.description }}
+          </div>
+        </div>
+
+        <mat-icon svgIcon="arrowRight" class="setting-chevron shrink-0" aria-hidden="true" />
+      </a>
+    }
+  </div>
+</main>

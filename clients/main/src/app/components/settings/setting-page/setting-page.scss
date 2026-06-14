@@ -1,0 +1,39 @@
+.settings-grid {
+  display: grid;
+  max-width: 1400px;
+  margin-inline: auto;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+
+.setting-card {
+  min-height: 112px;
+  background-color: var(--mat-sys-surface-container);
+  border: 1px solid var(--mat-sys-outline-variant);
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+
+  &:hover {
+    transform: translateY(-8px);
+    background-color: var(--mat-sys-surface-container-high);
+    border-color: var(--mat-sys-primary);
+    box-shadow: 0 8px 24px var(--color-shadow-soft);
+  }
+}
+
+.setting-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--mat-sys-primary);
+}
+
+.setting-text {
+  min-width: 0;
+}
+
+.setting-chevron {
+  color: var(--mat-sys-on-surface-variant);
+}

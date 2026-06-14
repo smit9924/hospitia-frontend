@@ -104,10 +104,17 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
-    component: SettingPage,
     children: [
       {
-        path: 'display-and-appearance',
+        path: '',
+        component: SettingPage,
+        data: {
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'display-and-accessibility',
         component: DisplayAndAppearance,
         data: {
           showNavbar: true,
@@ -117,14 +124,6 @@ export const routes: Routes = [
       {
         path: 'change-password',
         component: ChangePassword,
-        data: {
-          showNavbar: true,
-          showFooter: true,
-        },
-      },
-      {
-        path: '',
-        component: DisplayAndAppearance,
         data: {
           showNavbar: true,
           showFooter: true,
