@@ -17,6 +17,7 @@ import { LandingPage } from './components/landing-page/landing-page';
 import { SettingPage } from './components/settings/setting-page/setting-page';
 import { ChangePassword } from './components/settings/change-password/change-password';
 import { DisplayAndAccessibility } from './components/settings/display-and-accessibility/display-and-accessibility';
+import { PrivacyAndSecurity } from './components/settings/privacy-and-security/privacy-and-security';
 
 export const routes: Routes = [
   {
@@ -124,6 +125,14 @@ export const routes: Routes = [
       {
         path: 'change-password',
         component: ChangePassword,
+        data: {
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'privacy',
+        component: PrivacyAndSecurity,
         data: {
           showNavbar: true,
           showFooter: true,
