@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { appRoutes } from '../../data/app-routes';
 
 interface RoomType {
@@ -45,7 +45,6 @@ interface Testimonial {
     MatInputModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    RouterLink,
   ],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.scss',
