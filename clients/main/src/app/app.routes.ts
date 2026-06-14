@@ -13,11 +13,20 @@ import { NotFound } from './components/errors/not-found/not-found';
 import { PermissionDeny } from './components/errors/permission-deny/permission-deny';
 import { authRedirectionGuard } from './guards/auth-redirection/auth-redirection-guard';
 import { Profile } from './components/profile/profile/profile';
+import { LandingPage } from './components/landing-page/landing-page';
 
 export const routes: Routes = [
   {
     path: 'style-guide',
     component: StyleGuide,
+  },
+  {
+    path: '',
+    component: LandingPage,
+    data: {
+      showNavbar: true,
+      showFooter: true,
+    },
   },
   {
     path: 'auth',

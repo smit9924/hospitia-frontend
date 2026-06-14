@@ -115,4 +115,60 @@ export const IconList = [
     name: 'idCard',
     src: 'assets/icons/id-card.svg',
   },
+  {
+    name: 'call',
+    src: 'assets/icons/call.svg',
+  },
+  {
+    name: "nestClockFarsightAnalog",
+    src: "assets/icons/nest-clock-farsight-analog.svg",
+  },
+  {
+    name: 'homeWork',
+    src: 'assets/icons/home-work.svg',
+  },
+  {
+    name: "favorite",
+    src: "assets/icons/favorite.svg",
+  },
+  {
+    name: "group",
+    src: "assets/icons/group.svg",
+  },
+  {
+    name: "wifi",
+    src: "assets/icons/wifi.svg",
+  },
+  {
+    name: "restaurant",
+    src: "assets/icons/restaurant.svg",
+  },
+  {
+    name: "exercise",
+    src: "assets/icons/exercise.svg",
+  },
+  {
+    name: "businessCenter",
+    src: "assets/icons/business-center.svg",
+  },
+  {
+    name: "parkingSign",
+    src: "assets/icons/parking-sign.svg",
+  },
+  {
+    name: "spa",
+    src: "assets/icons/spa.svg",
+  },
+  {
+    name: "checkCircle",
+    src: "assets/icons/check-circle.svg",
+  },
+  {
+    name: "star",
+    src: "assets/icons/star.svg",
+  },
+  {
+    name: "starFilled",
+    src: "assets/icons/star-filled.svg",
+  },
 ];

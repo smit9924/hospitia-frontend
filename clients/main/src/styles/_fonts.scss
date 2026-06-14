@@ -109,6 +109,12 @@
 
 /* Headings */
 
+.heading-ultra-large {
+  font-size: 3rem;
+  font-weight: 700;
+  @include typo-common;
+}
+
 .heading-extra-large {
   font-size: 2.5rem;
   font-weight: 700;
@@ -206,3 +212,8 @@
 }
 
 /* ***End*** */
+
+
+.line-height-spaced {
+  line-height: 1.8;
+}

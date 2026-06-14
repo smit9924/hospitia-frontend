@@ -33,6 +33,7 @@
     24: 24px,
     32: 32px,
     40: 40px,
+    48: 48px,
   );
 
   @each $key, $space in $spacings {
@@ -328,6 +329,25 @@
 
   .position-static {
     position: static;
+  }
+
+  /* ***End*** */
+
+  /* Utility classes for text alignment */
+  .text-left {
+    text-align: left;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  .text-unset {
+    text-align: unset;
   }
 
   /* ***End*** */

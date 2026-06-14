@@ -1,0 +1,290 @@
+<main class="landing-page w-100">
+  <!-- SECTION: Hero -->
+  <section class="hero-section p-32 d-flex justify-center align-center overflow-hidden position-relative content" id="hero">
+
+    <!-- Hero Overlay for visual enhancement -->
+    <div class="hero-overlay top-0 bottom-0 left-0 right-0 position-absolute"></div>
+    
+    <div class="hero-content d-flex justify-center align-center z-2 position-relative gap-48">
+      <div class="hero-text d-flex flex-column gap-24">
+        <h1 class="heading-ultra-large text-center" i18n>Welcome to Yatri Bhavan</h1>
+        <p class="heading-small font-weight-regular text-center" i18n>
+          Experience affordable hospitality with a purpose. Where every stay supports a meaningful cause.
+        </p>
+        <div class="d-flex gap-24 wrap justify-center">
+            <!-- BUTTON: Book Your Stay -->
+            <button
+            mat-raised-button
+            matButton="filled"
+            type="button"
+            i18n
+            (click)="goToBooking()"
+            >
+                Book Your Stay
+            </button>
+
+            <!-- BUTTON: Learn More -->
+            <button
+            mat-raised-button
+            matButton="outlined"
+            type="button"
+            i18n
+            (click)="scrollToSection('about')"
+            >
+                Learn More
+            </button>
+        </div>
+      </div>
+      <div class="rounded-8">
+        <img src="/assets/images/hotel-elevation.jpg" alt="Yatri Bhavan Hotel" class="hero-img rounded-8 max-w-100" />
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: About -->
+  <section class="about-section p-32" id="about">
+    <div class="section-container">
+      <h2 class="section-title heading-extra-large font-weight-bold text-center mb-16">About Yatri Bhavan</h2>
+      <p class="section-subtitle m-0 p-0 line-height-spaced">
+        Building community, one guest at a time
+      </p>
+      <div class="about-content d-flex justify-center align-center gap-48">
+        <div class="about-image h-100">
+          <img src="assets/images/about.jpg" alt="Yatri Bhavan - About Us" class="h-100 rounded-8 w-100 h-100 max-w-100 max-h-100"/>
+        </div>
+        <div class="about-text d-flex flex-column justify-center align-flex-start gap-24">
+            <!-- Our Mission -->
+            <div>
+                <h3 class="heading-small m-0 p-0 mb-8">Our Mission</h3>
+                <p class="m-0 p-0 line-height-spaced">
+                  Yatri Bhavan is an NGO-run hotel dedicated to providing affordable, quality accommodation while supporting
+                  local communities. "Yatri Bhavan" means "Traveler's Home" in Sanskrit, and that's exactly what we aim to be
+                  for every guest.
+                </p>
+            </div>
+
+          <!-- Our Values -->
+          <div>
+              <h3 class="heading-small m-0 p-0 mb-8">Our Values</h3>
+              <ul class="values-list list-style-none p-0 m-0 d-flex flex-column gap-16">
+                <li class="d-flex align-center gap-16">
+                  <mat-icon svgIcon="checkCircle" class="value-icons"></mat-icon>
+                  <span class="body-medium"><strong>Affordability:</strong> Quality stays at fair prices</span>
+                </li>
+                <li class="d-flex align-center gap-16">
+                  <mat-icon svgIcon="checkCircle" class="value-icons"></mat-icon>
+                  <span class="body-medium"><strong>Community Service:</strong> Supporting local development</span>
+                </li>
+                <li class="d-flex align-center gap-16">
+                  <mat-icon svgIcon="checkCircle" class="value-icons"></mat-icon>
+                  <span class="body-medium"><strong>Hospitality:</strong> Genuine warmth and care for guests</span>
+                </li>
+                <li class="d-flex align-center gap-16">
+                  <mat-icon svgIcon="checkCircle" class="value-icons"></mat-icon>
+                  <span class="body-medium"><strong>Sustainability:</strong> Eco-friendly practices</span>
+                </li>
+              </ul>
+          </div>
+          <p class="impact-text p-16 rounded-4 line-height-spaced">
+            <strong>Your stay makes an impact!</strong> A portion of every booking goes directly to supporting education
+            and healthcare initiatives in underserved communities.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Room Types Section -->
+  <section class="rooms-section p-32" id="rooms">
+    <div class="section-container m-0 p-0">
+      <h2 class="section-title heading-extra-large font-weight-bold text-center mb-16">Our Room Types</h2>
+      <p class="section-subtitle">
+        Choose the perfect room that fits your needs and budget
+      </p>
+      <div class="rooms-grid">
+          @for(room of roomTypes; track room) {
+              <mat-card class="room-card rounded-12 overflow-hidden">
+                <div class="room-image position-relative w-100 overflow-hidden">
+                  <img [src]="room.image" [alt]="room.name" class="h-100 w-100" />
+                  <div class="room-price-badge position-absolute rounded-8 pt-8 pb-8 pl-16 pr-16 heading-tiny">₹{{ room.price }}/night</div>
+                </div>
+
+                <mat-card-header class="d-flex gap-8 wrap p-16 d-flex justify-space-between align-center">
+                  <mat-card-title >
+                    <span class="heading-tiny">{{ room.name }}</span>
+                    </mat-card-title>
+                  <div class="room-capacity d-flex align-center gap-4 wrap">
+                    <mat-icon svgIcon="group"></mat-icon>
+                    <span class="body-medium">{{ room.capacity }} Guest(s)</span>
+                  </div>
+                </mat-card-header>
+
+                <mat-card-content class="p-16">
+                  <p class="room-description m-0 mb-16">{{ room.description }}</p>
+                  <div class="d-flex gap-8 wrap">
+                    @for(amenity of room.amenities; track amenity) {
+                        <span class="amenity-badge body-medium pl-16 pr-16 pt-8 pb-8 rounded-24">
+                          {{ amenity }}
+                        </span>
+                    }
+                  </div>
+                </mat-card-content>
+                <mat-card-actions class="pt-16 pb-16 pl-24 pr-24 d-flex gap-8">
+                  <button mat-raised-button color="accent" (click)="goToBooking()" class="book-btn rounded-8">
+                    Book Now
+                  </button>
+                  <button mat-icon-button matTooltip="Add to wishlist">
+                    <mat-icon svgIcon="favorite"></mat-icon>
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+          }
+      </div>
+    </div>
+  </section>
+
+  <!-- Amenities Section -->
+  <section class="amenities-section" id="amenities">
+    <div class="section-container">
+      <h2 class="section-title heading-extra-large font-weight-bold text-center mb-16">Our Facilities & Amenities</h2>
+      <p class="section-subtitle">
+        Everything you need for a comfortable stay
+      </p>
+      <div class="amenities-grid">
+        <div class="amenity-card" *ngFor="let amenity of amenities">
+          <div class="amenity-icon">
+            <mat-icon svgIcon="{{ amenity.icon }}"></mat-icon>
+          </div>
+          <h3>{{ amenity.name }}</h3>
+          <p>{{ amenity.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="section-container">
+      <h2 class="section-title heading-extra-large font-weight-bold text-center mb-16">What Our Guests Say</h2>
+      <p class="section-subtitle">
+        Real stories from satisfied travelers
+      </p>
+      <div class="testimonials-grid">
+        @for(testimonial of testimonials; let index=$index; track testimonial) {
+            <mat-card class="testimonial-card" >
+              <div class="testimonial-header">
+                <img [src]="testimonial.image" [alt]="testimonial.name" class="guest-image" />
+                <div class="guest-info">
+                  <h4>{{ testimonial.name }}</h4>
+                  <p class="guest-role">{{ testimonial.role }}</p>
+                </div>
+              </div>
+              <mat-card-content>
+                <div class="rating">                    
+                    @for(star of getRatingArray(5); let index = $index; track $index) {
+                        @if (index < testimonial.rating) {
+                            <mat-icon
+                                class="star-filled"
+                                svgIcon="starFilled">
+                            </mat-icon>
+                        } @else {
+                            <mat-icon
+                                class="star"
+                                svgIcon="star">
+                            </mat-icon>
+                        }
+                    }
+                </div>
+                <p class="testimonial-text">{{ testimonial.content }}</p>
+              </mat-card-content>
+            </mat-card>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <div class="section-container">
+      <h2 class="section-title heading-extra-large font-weight-bold text-center mb-16">Get In Touch</h2>
+      <p class="section-subtitle">
+        Have questions? We're here to help
+      </p>
+      <div class="contact-content">
+        <div class="d-flex flex-column gap-24">
+          <div class="info-item">
+            <mat-icon svgIcon="homeWork" class="contact-icon"></mat-icon>
+            <div>
+              <h4>Address</h4>
+              <p>123 Heritage Street, Heritage Quarter<br />New Delhi, India</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <mat-icon svgIcon="call" class="contact-icon"></mat-icon>
+            <div>
+              <h4>Phone</h4>
+              <p><a href="tel:+919876543210">+91-9876-543-210</a></p>
+            </div>
+          </div>
+          <div class="info-item">
+            <mat-icon svgIcon="mail" class="contact-icon"></mat-icon>
+            <div>
+              <h4>Email</h4>
+              <p><a href="mailto:info@yatribhavan.org">info@yatribhavan.org</a></p>
+            </div>
+          </div>
+          <div class="info-item">
+            <mat-icon svgIcon="nestClockFarsightAnalog" class="contact-icon"></mat-icon>
+            <div>
+              <h4>Hours</h4>
+              <p>24/7 Service<br />Check-in: 9:00 AM | Check-out: 8:00 AM</p>
+            </div>
+          </div>
+        </div>
+
+        <form [formGroup]="contactForm" (ngSubmit)="submitContactForm()" class="contact-form">
+          <h3>Send us a Message</h3>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="name" required />
+            <mat-error *ngIf="contactForm.get('name')?.hasError('required')">
+              Name is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input matInput formControlName="email" type="email" required />
+            <mat-error *ngIf="contactForm.get('email')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="contactForm.get('email')?.hasError('email')">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone" required />
+            <mat-error *ngIf="contactForm.get('phone')?.hasError('required')">
+              Phone number is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Message</mat-label>
+            <textarea matInput formControlName="message" rows="5" required></textarea>
+            <mat-error *ngIf="contactForm.get('message')?.hasError('required')">
+              Message is required
+            </mat-error>
+          </mat-form-field>
+
+          <button mat-raised-button color="accent" type="submit" class="send-btn">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
