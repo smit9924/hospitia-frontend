@@ -13,8 +13,6 @@
   // --color-lp-text-dark: #2c3e50;
   // --color-lp-border: #ecf0f1;
 
-
-
   /* backdrpop */
   --color-backdrop: #000000cc;
 
@@ -70,14 +68,14 @@
     --color-focus: rgba(255, 234, 0, 0.4);
 
     /* Landing Page Colors */
-    --color-lp-primary: #fddb3a;        /* bright yellow */
-    --color-lp-primary-dark: #f39c12;   /* warm golden yellow/orange */
-    --color-lp-accent: #e67e22;         /* complementary orange */
-    --color-lp-light-bg: #fffdf5;       /* light warm background */
-    --color-lp-dark-bg: #5d4037;        /* deep brown for contrast */
-    --color-lp-text-light: #a67c00;     /* muted yellow-brown text */
-    --color-lp-text-dark: #4e342e;      /* dark brown text */
-    --color-lp-border: #f1e0a6;         /* soft yellow border */
+    --color-lp-primary: #fddb3a; /* bright yellow */
+    --color-lp-primary-dark: #f39c12; /* warm golden yellow/orange */
+    --color-lp-accent: #e67e22; /* complementary orange */
+    --color-lp-light-bg: #fffdf5; /* light warm background */
+    --color-lp-dark-bg: #5d4037; /* deep brown for contrast */
+    --color-lp-text-light: #a67c00; /* muted yellow-brown text */
+    --color-lp-text-dark: #4e342e; /* dark brown text */
+    --color-lp-border: #f1e0a6; /* soft yellow border */
   }
 }
 
@@ -99,20 +97,18 @@
     --color-hover: rgba(255, 255, 255, 0.08);
     --color-focus: rgba(255, 234, 0, 0.6);
 
-    
     /* Dark Theme - Warm Yellow/Orange Palette */
 
-    --color-lp-primary: #ffca28;        /* softened golden yellow (less harsh on dark) */
-    --color-lp-primary-dark: #ff8f00;   /* deep amber/orange */
-    --color-lp-accent: #ff7043;         /* vibrant orange accent */
+    --color-lp-primary: #ffca28; /* softened golden yellow (less harsh on dark) */
+    --color-lp-primary-dark: #ff8f00; /* deep amber/orange */
+    --color-lp-accent: #ff7043; /* vibrant orange accent */
 
-    --color-lp-light-bg: #2b2118;       /* warm dark brown background (replaces light bg) */
-    --color-lp-dark-bg: #1c1410;        /* deeper dark base */
+    --color-lp-light-bg: #2b2118; /* warm dark brown background (replaces light bg) */
+    --color-lp-dark-bg: #1c1410; /* deeper dark base */
 
-    --color-lp-text-light: #ffd54f;     /* light golden text for highlights */
-    --color-lp-text-dark: #f5e6cc;      /* soft off-white with warm tint */
+    --color-lp-text-light: #ffd54f; /* light golden text for highlights */
+    --color-lp-text-dark: #f5e6cc; /* soft off-white with warm tint */
 
-    --color-lp-border: #4e3b2a;         /* subtle warm border */
-
+    --color-lp-border: #4e3b2a; /* subtle warm border */
   }
 }

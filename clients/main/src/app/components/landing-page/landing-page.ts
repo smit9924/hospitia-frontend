@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -138,7 +138,7 @@ export class LandingPage {
       name: 'Anil Patel',
       role: 'NGO Worker',
       content:
-        'Supporting an NGO while enjoying quality accommodation? That\'s a win-win. Yatri Bhavan truly makes a difference in the community.',
+        "Supporting an NGO while enjoying quality accommodation? That's a win-win. Yatri Bhavan truly makes a difference in the community.",
       rating: 3,
       image: 'assets/images/man-2.jpg',
     },
