@@ -14,6 +14,9 @@ import { PermissionDeny } from './components/errors/permission-deny/permission-d
 import { authRedirectionGuard } from './guards/auth-redirection/auth-redirection-guard';
 import { Profile } from './components/profile/profile/profile';
 import { LandingPage } from './components/landing-page/landing-page';
+import { SettingPage } from './components/settings/setting-page/setting-page';
+import { DisplayAndAppearance } from './components/settings/display-and-appearance/display-and-appearance';
+import { ChangePassword } from './components/settings/change-password/change-password';
 
 export const routes: Routes = [
   {
@@ -98,6 +101,36 @@ export const routes: Routes = [
       showNavbar: true,
       showFooter: true,
     },
+  },
+  {
+    path: 'settings',
+    component: SettingPage,
+    children: [
+      {
+        path: 'display-and-appearance',
+        component: DisplayAndAppearance,
+        data: {
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'change-password',
+        component: ChangePassword,
+        data: {
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: '',
+        component: DisplayAndAppearance,
+        data: {
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+    ],
   },
   {
     path: 'error',
