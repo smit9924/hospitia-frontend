@@ -15,8 +15,8 @@ import { authRedirectionGuard } from './guards/auth-redirection/auth-redirection
 import { Profile } from './components/profile/profile/profile';
 import { LandingPage } from './components/landing-page/landing-page';
 import { SettingPage } from './components/settings/setting-page/setting-page';
-import { DisplayAndAppearance } from './components/settings/display-and-appearance/display-and-appearance';
 import { ChangePassword } from './components/settings/change-password/change-password';
+import { DisplayAndAccessibility } from './components/settings/display-and-accessibility/display-and-accessibility';
 
 export const routes: Routes = [
   {
@@ -115,7 +115,7 @@ export const routes: Routes = [
       },
       {
         path: 'display-and-accessibility',
-        component: DisplayAndAppearance,
+        component: DisplayAndAccessibility,
         data: {
           showNavbar: true,
           showFooter: true,

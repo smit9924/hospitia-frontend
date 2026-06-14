@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DisplayAndAppearance } from './display-and-appearance';
+import { DisplayAndAccessibility } from './display-and-accessibility';
 
-describe('DisplayAndAppearance', () => {
-  let component: DisplayAndAppearance;
-  let fixture: ComponentFixture<DisplayAndAppearance>;
+describe('DisplayAndAccessibility', () => {
+  let component: DisplayAndAccessibility;
+  let fixture: ComponentFixture<DisplayAndAccessibility>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DisplayAndAppearance],
+      imports: [DisplayAndAccessibility],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DisplayAndAppearance);
+    fixture = TestBed.createComponent(DisplayAndAccessibility);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
