@@ -171,4 +171,16 @@ export const IconList = [
     name: 'starFilled',
     src: 'assets/icons/star-filled.svg',
   },
+  {
+    name: 'privacyTip',
+    src: 'assets/icons/privacy-tip.svg',
+  },
+  {
+    name: 'keySolid',
+    src: 'assets/icons/key-solid.svg',
+  },
+  {
+    name: 'arrowRight',
+    src: 'assets/icons/arrow-right.svg',
+  },
 ];
