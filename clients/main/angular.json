@@ -19,7 +19,7 @@
         },
         "@schematics/angular:service": {
           "path": "src/app/services",
-          "flat": true
+          "flat": false
         },
         "@schematics/angular:guard": {
           "path": "src/app/guards",
