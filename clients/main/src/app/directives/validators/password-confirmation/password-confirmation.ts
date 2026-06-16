@@ -1,4 +1,4 @@
-import { Directive, forwardRef } from '@angular/core';
+import { Directive, forwardRef, input } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -21,17 +21,27 @@ import { ErrorStateMatcher } from '@angular/material/core';
   ],
 })
 export class PasswordConfirmation {
-  private validatorFn = passwordConfirmationValidator();
+  // NOTE: This directive is not tested, validation function is tested instead.
+  passwordControlName = input<string>('password');
+  confirmPasswordControlName = input<string>('confirmPassword');
+
+  private validatorFn = passwordConfirmationValidator(
+    this.passwordControlName(),
+    this.confirmPasswordControlName(),
+  );
 
   validate(control: AbstractControl): ValidationErrors | null {
     return this.validatorFn(control);
   }
 }
 
-export function passwordConfirmationValidator(): ValidatorFn {
+export function passwordConfirmationValidator(
+  passwordControlName = 'password',
+  confirmPasswordControlName = 'confirmPassword',
+): ValidatorFn {
   return (form: AbstractControl): ValidationErrors | null => {
-    const password: string = form.get('password')?.value?.trim();
-    const confirmPassword: string = form.get('confirmPassword')?.value?.trim();
+    const password: string = form.get(passwordControlName)?.value?.trim();
+    const confirmPassword: string = form.get(confirmPasswordControlName)?.value?.trim();
 
     if (
       password &&
