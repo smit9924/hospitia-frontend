@@ -11,6 +11,7 @@ import { catchError, map, Observable, of, switchMap, timer } from 'rxjs';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ApiErrorResponse } from '../../../types/interfaces/common';
 import { ErrorCodes } from '../../../types/enums/error-codes';
+import { User } from '../../../services/user/user';
 
 @Directive({
   selector: '[appUsernameAvailability]',
@@ -25,7 +26,10 @@ import { ErrorCodes } from '../../../types/enums/error-codes';
 export class UsernameAvailability implements AsyncValidator {
   //NOTE: This directive is not tested, validation function is tested instead.
   private profileService = inject(Profile);
-  private validatorFn = usernameAvailabilityValidator(this.profileService).bind(this);
+  private userService = inject(User);
+  private validatorFn = usernameAvailabilityValidator(this.profileService, this.userService).bind(
+    this,
+  );
 
   validate(
     control: AbstractControl,
@@ -42,6 +46,7 @@ const usernameAvailabilityErrorMessages: Record<string, string> = {
 // Reusable Async Validator Function
 export function usernameAvailabilityValidator(
   profileService: Profile,
+  userService: User,
   debounceTimeMs = 400,
 ): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -57,7 +62,7 @@ export function usernameAvailabilityValidator(
     }
 
     return timer(debounceTimeMs).pipe(
-      switchMap(() => profileService.checkUsernameAvailability({ username: username })),
+      switchMap(() => userService.checkUsernameAvailability({ username: username })),
 
       // If API succeeds → username is available
       map(() => null),

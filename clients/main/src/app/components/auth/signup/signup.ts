@@ -30,6 +30,7 @@ import { ApiErrorResponse } from '../../../types/interfaces/common';
 import { ErrorCodes } from '../../../types/enums/error-codes';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { usernameValidator } from '../../../directives/validators/username/username';
+import { User } from '../../../services/user/user';
 
 @Component({
   selector: 'app-signup',
@@ -54,6 +55,7 @@ export class Signup {
   private dialogService = inject(Dialog);
   private snackbarService = inject(Snackbar);
   private profileService = inject(Profile);
+  private userService = inject(User);
   private authService = inject(Auth);
   @ViewChild('signupBanner') banner!: Banner;
   protected appRoutes = appRoutes;
@@ -84,7 +86,7 @@ export class Signup {
         Validators.maxLength(this.usernameMaxLength),
         usernameValidator(),
       ],
-      [usernameAvailabilityValidator(this.profileService).bind(this)],
+      [usernameAvailabilityValidator(this.profileService, this.userService).bind(this)],
     ),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, passwordStrengthValidator()]),

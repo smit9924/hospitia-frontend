@@ -1,10 +1,6 @@
-import { HttpClient, HttpContext, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import {
-  UsernameAvailabilityReq,
-  UserProfileDto,
-  UserProfileUpdate,
-} from '../types/interfaces/users';
+import { UserProfileDto, UserProfileUpdate } from '../types/interfaces/users';
 import { UserProfileModel } from '../types/models/users/user-profile-model';
 import { ApiErrorResponse } from '../types/interfaces/common';
 import { ErrorCodes } from '../types/enums/error-codes';
@@ -14,7 +10,6 @@ import { appRoutes } from '../data/app-routes';
 import { UserType } from '../types/enums/auth';
 import { catchError, firstValueFrom, map, Observable, tap, throwError } from 'rxjs';
 import { Auth } from './auth';
-import { SkipLoading } from '../interceptors/loader/loader-interceptor';
 
 @Injectable({
   providedIn: 'root',
@@ -160,16 +155,4 @@ export class Profile {
     // If full name is not available, fallback to username.
     return '-';
   });
-
-  checkUsernameAvailability(
-    usernameAvailabilityRequest: UsernameAvailabilityReq,
-  ): Observable<null> {
-    const context = new HttpContext();
-    context.set(SkipLoading, true);
-
-    return this.http.get<null>(apiRoutes.users.usernameAvailability, {
-      params: { ...usernameAvailabilityRequest },
-      context: context,
-    });
-  }
 }

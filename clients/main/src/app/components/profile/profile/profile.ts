@@ -24,6 +24,7 @@ import { ApiErrorResponse } from '../../../types/interfaces/common';
 import { ErrorCodes } from '../../../types/enums/error-codes';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { usernameAvailabilityValidator } from '../../../directives/validators/username-availability/username-availability';
+import { User } from '../../../services/user/user';
 
 @Component({
   selector: 'app-profile',
@@ -44,6 +45,7 @@ import { usernameAvailabilityValidator } from '../../../directives/validators/us
 })
 export class Profile {
   protected profileService = inject(ProfileService);
+  protected userService = inject(User);
   private dialogService = inject(Dialog);
   private snackbarService = inject(Snackbar);
   protected titleText = $localize`Profile`;
@@ -54,7 +56,7 @@ export class Profile {
     username: new FormControl(
       '',
       [Validators.required],
-      usernameAvailabilityValidator(this.profileService).bind(this),
+      usernameAvailabilityValidator(this.profileService, this.userService).bind(this),
     ),
   });
   bannerMessage = '';
