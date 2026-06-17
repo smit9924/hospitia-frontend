@@ -42,6 +42,10 @@ export class Navbar implements AfterViewInit {
     this.router.navigateByUrl(appRoutes.profile);
   }
 
+  navigateToSettings(): void {
+    this.router.navigateByUrl(appRoutes.settings);
+  }
+
   private exposePrimaryNavbarHeight(): void {
     const primaryNavElement = this.elementRef?.nativeElement;
 

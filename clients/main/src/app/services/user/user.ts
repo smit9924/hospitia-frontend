@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { UsernameAvailabilityReq } from '../../types/interfaces/users';
+import { ChangePasswordReq, UsernameAvailabilityReq } from '../../types/interfaces/users';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { SkipLoading } from '../../interceptors/loader/loader-interceptor';
@@ -28,5 +28,15 @@ export class User {
       params: { ...usernameAvailabilityRequest },
       context: context,
     });
+  }
+
+  /**
+   * Update user password.
+   *
+   * @param changePasswordReq
+   * @returns API response indicating success or failure of the password change operation.
+   */
+  changePassword(changePasswordReq: ChangePasswordReq): Observable<null> {
+    return this.http.put<null>(apiRoutes.users.changePassword, changePasswordReq);
   }
 }

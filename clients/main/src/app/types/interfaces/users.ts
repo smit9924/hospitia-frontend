@@ -26,3 +26,8 @@ export interface UserSignup {
   username: string;
   password: string;
 }
+
+export interface ChangePasswordReq {
+  currentPassword: string;
+  newPassword: string;
+}

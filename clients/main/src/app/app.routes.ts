@@ -109,7 +109,9 @@ export const routes: Routes = [
       {
         path: '',
         component: SettingPage,
+        canActivate: [permissionGuard],
         data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER, UserType.CUSTOMER],
           showNavbar: true,
           showFooter: true,
         },
@@ -117,7 +119,9 @@ export const routes: Routes = [
       {
         path: 'display-and-accessibility',
         component: DisplayAndAccessibility,
+        canActivate: [permissionGuard],
         data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER, UserType.CUSTOMER],
           showNavbar: true,
           showFooter: true,
         },
@@ -125,7 +129,9 @@ export const routes: Routes = [
       {
         path: 'change-password',
         component: ChangePassword,
+        canActivate: [permissionGuard],
         data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER, UserType.CUSTOMER],
           showNavbar: true,
           showFooter: true,
         },
@@ -133,7 +139,9 @@ export const routes: Routes = [
       {
         path: 'privacy',
         component: PrivacyAndSecurity,
+        canActivate: [permissionGuard],
         data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER, UserType.CUSTOMER],
           showNavbar: true,
           showFooter: true,
         },
