@@ -15,9 +15,7 @@ export class CustomMatTooltip extends MatTooltip {
     super();
   }
 
-  override ngAfterViewInit(): void {
-    super.ngAfterViewInit();
-
+  ngOnInit(): void {
     this.message = this.customMatTooltip();
     this.setTooltipVisibility();
     this.attachResizeObserver();
