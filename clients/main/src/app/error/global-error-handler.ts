@@ -19,7 +19,7 @@ export class GlobalErrorHandler implements ErrorHandler {
         $localize`Request Timeout`,
         $localize`The request took too long to complete. Please check your internet connection and try again.`,
       );
-    } else {
+    } else if (error instanceof HttpErrorResponse) {
       this.dialogService.openOkDialog(
         $localize`Unexpected Error`,
         $localize`Opps! An unexpected error occurred. Please refresh the page and try again. If the problem persists, contact support.`,
