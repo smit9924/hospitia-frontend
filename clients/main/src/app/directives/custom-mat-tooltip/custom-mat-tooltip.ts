@@ -1,11 +1,11 @@
-import { Directive, ElementRef, inject, input } from '@angular/core';
+import { Directive, ElementRef, inject, input, OnInit } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { fromEvent, Subscription, tap, throttleTime } from 'rxjs';
 
 @Directive({
   selector: '[customMatTooltip]',
 })
-export class CustomMatTooltip extends MatTooltip {
+export class CustomMatTooltip extends MatTooltip implements OnInit {
   customMatTooltip = input<string | number | null | undefined>(null);
   tooltipOnlyOnEllipsis = input<boolean>(false);
   private elementRef = inject(ElementRef);
