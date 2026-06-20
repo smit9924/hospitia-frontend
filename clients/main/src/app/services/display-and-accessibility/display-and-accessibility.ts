@@ -1,7 +1,7 @@
 import { DOCUMENT, inject, Injectable, OnDestroy, RendererFactory2, signal } from '@angular/core';
 import { ThemePreference, ThemeType } from '../../types/enums/common';
 import { Localstorage } from '../localstorage';
-import { LOCAL_STORAGE_KEYS } from '../../data/localstorage-keys';
+import { localStorageKeys } from '../../data/localstorage-keys';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,7 @@ export class DisplayAndAccessibility implements OnDestroy {
     });
 
     this.renderer.addClass(this.body, themeClass);
-    this.localStorageService.setItem(LOCAL_STORAGE_KEYS.preferredTheme, themeClass);
+    this.localStorageService.setItem(localStorageKeys.preferredTheme, themeClass);
     this.themePreference.set(themeClass);
 
     // Update active theme based on user preference
@@ -83,7 +83,7 @@ export class DisplayAndAccessibility implements OnDestroy {
    */
   private initializeTheme(): void {
     const storedTheme = this.localStorageService.getItem(
-      LOCAL_STORAGE_KEYS.preferredTheme,
+      localStorageKeys.preferredTheme,
     ) as ThemePreference | null;
 
     this.setTheme(storedTheme ?? this.defaultPreferences.theme);
@@ -102,7 +102,7 @@ export class DisplayAndAccessibility implements OnDestroy {
    */
   private initializeLargeTextPreference(): void {
     const storedLargeTextPreference = this.localStorageService.getItem(
-      LOCAL_STORAGE_KEYS.largeTextPreference,
+      localStorageKeys.largeTextPreference,
     );
 
     const largeTextPreferenceValue = storedLargeTextPreference
@@ -124,11 +124,11 @@ export class DisplayAndAccessibility implements OnDestroy {
     const largeTextClass = 'accessibility-large-text';
 
     if (isEnabled) {
-      this.localStorageService.setItem(LOCAL_STORAGE_KEYS.largeTextPreference, true);
+      this.localStorageService.setItem(localStorageKeys.largeTextPreference, true);
       this.renderer.addClass(this.document.documentElement, largeTextClass);
       this.largeTextPreference.set(true);
     } else {
-      this.localStorageService.removeItem(LOCAL_STORAGE_KEYS.largeTextPreference);
+      this.localStorageService.removeItem(localStorageKeys.largeTextPreference);
       this.renderer.removeClass(this.document.documentElement, largeTextClass);
       this.largeTextPreference.set(false);
     }
@@ -143,7 +143,7 @@ export class DisplayAndAccessibility implements OnDestroy {
    */
   private initializeHighContrastFocusPreference(): void {
     const storedHighContrastFocusPreference = this.localStorageService.getItem(
-      LOCAL_STORAGE_KEYS.highContrastFocusPreference,
+      localStorageKeys.highContrastFocusPreference,
     );
 
     const highContrastFocusPreferenceValue = storedHighContrastFocusPreference
@@ -165,11 +165,11 @@ export class DisplayAndAccessibility implements OnDestroy {
     const highContrastFocusClass = 'accessibility-high-contrast-focus';
 
     if (isEnabled) {
-      this.localStorageService.setItem(LOCAL_STORAGE_KEYS.highContrastFocusPreference, true);
+      this.localStorageService.setItem(localStorageKeys.highContrastFocusPreference, true);
       this.renderer.addClass(this.body, highContrastFocusClass);
       this.highContrastFocusPreference.set(true);
     } else {
-      this.localStorageService.removeItem(LOCAL_STORAGE_KEYS.highContrastFocusPreference);
+      this.localStorageService.removeItem(localStorageKeys.highContrastFocusPreference);
       this.renderer.removeClass(this.body, highContrastFocusClass);
       this.highContrastFocusPreference.set(false);
     }

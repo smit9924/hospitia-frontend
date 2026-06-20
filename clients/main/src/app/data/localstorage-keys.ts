@@ -1,4 +1,4 @@
-export const LOCAL_STORAGE_KEYS = {
+export const localStorageKeys = {
   accessToken: 'authToken',
   accessTokenExpiry: 'authTokenExpiry',
   refreshToken: 'refreshToken',
