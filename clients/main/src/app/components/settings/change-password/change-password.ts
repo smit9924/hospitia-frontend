@@ -26,6 +26,7 @@ import {
 import { passwordStrengthValidator } from '../../../directives/validators/password-strength-check/password-strength-check';
 import { ErrorCodes } from '../../../types/enums/error-codes';
 import { Dialog } from '../../../services/dialog';
+import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
 
 @Component({
   selector: 'app-change-password',
@@ -37,6 +38,7 @@ import { Dialog } from '../../../services/dialog';
     MatButtonModule,
     MatIconModule,
     Banner,
+    SecondaryNavbar,
   ],
   templateUrl: './change-password.html',
   styleUrl: './change-password.scss',
@@ -74,6 +76,7 @@ export class ChangePassword {
   hideNewPasswordLabel = $localize`Hide new password`;
   showConfirmNewPasswordLabel = $localize`Show confirm new password`;
   hideConfirmNewPasswordLabel = $localize`Hide confirm new password`;
+  titleText = $localize`Change Password`;
 
   @ViewChild('confirmPasswordBanner') banner!: Banner;
 

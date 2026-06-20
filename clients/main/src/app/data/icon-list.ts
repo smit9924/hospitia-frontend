@@ -184,7 +184,7 @@ export const IconList = [
     src: 'assets/icons/arrow-right.svg',
   },
   {
-    name: "settingsBackupRestore",
-    src: "assets/icons/settings-backup-restore.svg",
-  }
+    name: 'settingsBackupRestore',
+    src: 'assets/icons/settings-backup-restore.svg',
+  },
 ];
