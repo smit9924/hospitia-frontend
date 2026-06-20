@@ -1,12 +1,12 @@
 import { DOCUMENT, inject, Injectable, OnDestroy, RendererFactory2, signal } from '@angular/core';
-import { ThemePreference, ThemeType } from '../types/enums/common';
-import { Localstorage } from './localstorage';
-import { LOCAL_STORAGE_KEYS } from '../data/localstorage-keys';
+import { ThemePreference, ThemeType } from '../../types/enums/common';
+import { Localstorage } from '../localstorage';
+import { LOCAL_STORAGE_KEYS } from '../../data/localstorage-keys';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Theme implements OnDestroy {
+export class DisplayAndAccessibility implements OnDestroy {
   largeTextPreference = signal(false);
   highContrastFocusPreference = signal(false);
   themePreference = signal(ThemePreference.LIGHT);

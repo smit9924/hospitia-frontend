@@ -4,7 +4,7 @@ import { LoaderContainer } from './components/loaders/loader-container/loader-co
 import { Icon } from './services/icon';
 import { Navbar } from './components/common/navbar/navbar';
 import { Footer } from './components/common/footer/footer';
-import { Theme } from './services/theme';
+import { DisplayAndAccessibility } from './services/display-and-accessibility/display-and-accessibility';
 import { Layout } from './services/layout';
 
 @Component({
@@ -16,7 +16,8 @@ import { Layout } from './services/layout';
 export class App {
   // Initialize icon service to register icons globally on application start
   private readonly _iconService: Icon = inject(Icon);
-  private readonly _themeService: Theme = inject(Theme);
+  private readonly _displayAndAccessibilityService: DisplayAndAccessibility =
+    inject(DisplayAndAccessibility);
   readonly layoutService: Layout = inject(Layout);
 
   protected readonly title = signal('main');

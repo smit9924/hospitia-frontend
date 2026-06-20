@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ThemeToggle } from '../../common/theme-toggle/theme-toggle';
 import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
-import { Theme } from '../../../services/theme';
+import { DisplayAndAccessibility as DisplayAndAccessibilityService } from '../../../services/display-and-accessibility/display-and-accessibility';
 
 @Component({
   selector: 'app-display-and-accessibility',
@@ -31,7 +31,7 @@ import { Theme } from '../../../services/theme';
 })
 export class DisplayAndAccessibility {
   private snackbarService = inject(Snackbar);
-  private themeService = inject(Theme);
+  private themeService = inject(DisplayAndAccessibilityService);
   protected titleText = $localize`Display and Accessibility Settings`;
   protected largeTextToggleControl = new FormControl<boolean>(
     this.themeService.largeTextPreference(),

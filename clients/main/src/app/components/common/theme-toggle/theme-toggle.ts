@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, effect } from '@angular/cor
 import { ThemePreference } from '../../../types/enums/common';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Theme } from '../../../services/theme';
+import { DisplayAndAccessibility } from '../../../services/display-and-accessibility/display-and-accessibility';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeToggle {
-  private themeService = inject(Theme);
+  private themeService = inject(DisplayAndAccessibility);
   $localize = $localize;
   ThemePreference = ThemePreference;
   fontStyleControl = new FormControl<ThemePreference>(this.themeService.themePreference());
