@@ -2,3 +2,12 @@ router-outlet ~ * {
   display: flex;
   flex: 1 1 0;
 }
+
+.accessibility-large-text {
+  font-size: 125%;
+}
+
+.accessibility-high-contrast-focus *:focus-visible {
+  outline: 4px solid var(--mat-sys-primary);
+  outline-offset: 4px;
+}

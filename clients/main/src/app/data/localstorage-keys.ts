@@ -5,4 +5,6 @@ export const LOCAL_STORAGE_KEYS = {
   refreshTokenExpiry: 'refreshTokenExpiry',
 
   preferredTheme: 'preferredTheme',
+  largeTextPreference: 'largeTextPreference',
+  highContrastFocusPreference: 'highContrastFocusPreference',
 } as const;

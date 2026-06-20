@@ -7,6 +7,8 @@ import { LOCAL_STORAGE_KEYS } from '../data/localstorage-keys';
   providedIn: 'root',
 })
 export class Theme implements OnDestroy {
+  largeTextPreference = signal(false);
+  highContrastFocusPreference = signal(false);
   themePreference = signal(ThemePreference.LIGHT);
   activeTheme = signal(ThemeType.LIGHT);
   private document = inject(DOCUMENT);
@@ -14,25 +16,35 @@ export class Theme implements OnDestroy {
   private rendererFactory = inject(RendererFactory2);
   private mediaQuery = this.document.defaultView?.matchMedia('(prefers-color-scheme: dark)');
   private renderer = this.rendererFactory.createRenderer(null, null);
+  private body = this.document.body;
+  private defaultPreferences = {
+    theme: ThemePreference.AUTO,
+    largeText: false,
+    highContrastFocus: false,
+  };
 
   constructor() {
     this.mediaQuery?.addEventListener('change', this.mediaQueryListener.bind(this));
 
-    // Initialize theme based on stored preference or system preference
-    this.initializeTheme();
+    this.initialize();
   }
 
   ngOnDestroy(): void {
     this.mediaQuery?.removeEventListener('change', this.mediaQueryListener.bind(this));
   }
 
+  private initialize(): void {
+    this.initializeTheme();
+    this.initializeLargeTextPreference();
+    this.initializeHighContrastFocusPreference();
+  }
+
   setTheme(themeClass: ThemePreference): void {
-    const body = this.document.body;
     Object.values(ThemePreference).forEach((theme) => {
-      this.renderer.removeClass(body, theme);
+      this.renderer.removeClass(this.body, theme);
     });
 
-    this.renderer.addClass(body, themeClass);
+    this.renderer.addClass(this.body, themeClass);
     this.localStorageService.setItem(LOCAL_STORAGE_KEYS.preferredTheme, themeClass);
     this.themePreference.set(themeClass);
 
@@ -42,6 +54,12 @@ export class Theme implements OnDestroy {
     } else {
       this.activeTheme.set(themeClass === ThemePreference.DARK ? ThemeType.DARK : ThemeType.LIGHT);
     }
+  }
+
+  restoreDefaultTheme(): void {
+    this.setTheme(this.defaultPreferences.theme);
+    this.setLargeTextPreference(this.defaultPreferences.largeText);
+    this.setHighContrastFocusPreference(this.defaultPreferences.highContrastFocus);
   }
 
   private mediaQueryListener(event: MediaQueryListEvent): void {
@@ -57,19 +75,103 @@ export class Theme implements OnDestroy {
     }
   }
 
+  /**
+   * Initializes the application theme preference from local storage.
+   *
+   * Reads the stored theme preference and applies it to the application. If no
+   * preference is stored, the theme defaults to the device/system preference.
+   */
   private initializeTheme(): void {
     const storedTheme = this.localStorageService.getItem(
       LOCAL_STORAGE_KEYS.preferredTheme,
     ) as ThemePreference | null;
 
-    if (storedTheme) {
-      this.setTheme(storedTheme);
-    } else {
-      this.setTheme(ThemePreference.AUTO);
-    }
+    this.setTheme(storedTheme ?? this.defaultPreferences.theme);
   }
 
   private get _activeTheme(): ThemeType {
     return this.mediaQuery?.matches ? ThemeType.DARK : ThemeType.LIGHT;
+  }
+
+  /**
+   * Initializes the large text preference from local storage.
+   *
+   * Reads the stored large text preference and applies it to the root document
+   * element. If the stored value is not explicitly `true`, the preference is
+   * disabled.
+   */
+  private initializeLargeTextPreference(): void {
+    const storedLargeTextPreference = this.localStorageService.getItem(
+      LOCAL_STORAGE_KEYS.largeTextPreference,
+    );
+
+    const largeTextPreferenceValue = storedLargeTextPreference
+      ? !!storedLargeTextPreference
+      : this.defaultPreferences.largeText;
+    this.setLargeTextPreference(largeTextPreferenceValue);
+  }
+
+  /**
+   * Enables or disables the large text preference.
+   *
+   * Adds the large text class to the root document element when enabled and
+   * persists the preference in local storage. Removes the class and clears the
+   * stored preference when disabled.
+   *
+   * @param isEnabled Whether larger application text should be enabled.
+   */
+  setLargeTextPreference(isEnabled: boolean): void {
+    const largeTextClass = 'accessibility-large-text';
+
+    if (isEnabled) {
+      this.localStorageService.setItem(LOCAL_STORAGE_KEYS.largeTextPreference, true);
+      this.renderer.addClass(this.document.documentElement, largeTextClass);
+      this.largeTextPreference.set(true);
+    } else {
+      this.localStorageService.removeItem(LOCAL_STORAGE_KEYS.largeTextPreference);
+      this.renderer.removeClass(this.document.documentElement, largeTextClass);
+      this.largeTextPreference.set(false);
+    }
+  }
+
+  /**
+   * Initializes the high contrast focus preference from local storage.
+   *
+   * Reads the stored high contrast focus preference and applies it to the root
+   * document element. If the stored value is not explicitly `true`, the preference
+   * is disabled.
+   */
+  private initializeHighContrastFocusPreference(): void {
+    const storedHighContrastFocusPreference = this.localStorageService.getItem(
+      LOCAL_STORAGE_KEYS.highContrastFocusPreference,
+    );
+
+    const highContrastFocusPreferenceValue = storedHighContrastFocusPreference
+      ? !!storedHighContrastFocusPreference
+      : this.defaultPreferences.highContrastFocus;
+    this.setHighContrastFocusPreference(highContrastFocusPreferenceValue);
+  }
+
+  /**
+   * Enables or disables the high contrast focus preference.
+   *
+   * Adds the high contrast focus class to the root document element when enabled
+   * and persists the preference in local storage. Removes the class and clears
+   * the stored preference when disabled.
+   *
+   * @param isEnabled Whether high contrast focus indicators should be enabled.
+   */
+  setHighContrastFocusPreference(isEnabled: boolean): void {
+    const highContrastFocusClass = 'accessibility-high-contrast-focus';
+
+    if (isEnabled) {
+      this.localStorageService.setItem(LOCAL_STORAGE_KEYS.highContrastFocusPreference, true);
+      this.renderer.addClass(this.body, highContrastFocusClass);
+      this.highContrastFocusPreference.set(true);
+    } else {
+      this.localStorageService.removeItem(LOCAL_STORAGE_KEYS.highContrastFocusPreference);
+      this.renderer.removeClass(this.body, highContrastFocusClass);
+      this.highContrastFocusPreference.set(false);
+    }
   }
 }

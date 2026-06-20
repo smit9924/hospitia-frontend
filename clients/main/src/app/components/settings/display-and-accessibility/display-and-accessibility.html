@@ -1,1 +1,115 @@
-<p>display-and-accessibility works!</p>
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText" [backButton]="true" />
+
+  <main class="display-accessibility-page min-h-100 w-100 content">
+    <section class="section-container d-flex flex-column gap-24">
+      <div class="d-flex flex-column gap-8">
+        <h1 class="heading-large" i18n>Display & Accessibility</h1>
+        <p class="body-large text-secondary line-height-spaced" i18n>
+          Manage how the application looks and behaves for your comfort.
+        </p>
+      </div>
+
+      <div class="d-flex flex-column gap-24">
+        <mat-card class="setting-card rounded-12">
+          <mat-card-content class="p-24">
+            <div class="d-flex align-flex-start gap-16">
+              <div class="setting-icon d-flex justify-center align-center rounded-full shrink-0">
+                <mat-icon svgIcon="devices" aria-hidden="true"></mat-icon>
+              </div>
+
+              <div class="d-flex flex-column gap-16 grow-1">
+                <div class="d-flex flex-column gap-8">
+                  <h2 class="heading-small" i18n>Theme preference</h2>
+                  <p class="body-medium text-secondary line-height-spaced" i18n>
+                    Choose light, dark, or device theme based on your system preference.
+                  </p>
+                </div>
+
+                <app-theme-toggle></app-theme-toggle>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <div class="settings-grid gap-24">
+          <!-- CARD: Increase text size -->
+          <mat-card class="setting-card rounded-12">
+            <mat-card-content class="p-24 h-100">
+              <div class="d-flex flex-column gap-24 h-100">
+                <div class="d-flex align-flex-start gap-16 grow-1">
+                  <div
+                    class="setting-icon d-flex justify-center align-center rounded-full shrink-0"
+                  >
+                    <mat-icon svgIcon="visibility" aria-hidden="true"></mat-icon>
+                  </div>
+
+                  <div class="d-flex flex-column gap-8 grow-1">
+                    <h2 class="heading-small" i18n>Larger text</h2>
+                    <p class="body-medium text-secondary line-height-spaced" i18n>
+                      Increase the base text size across the application for better readability.
+                    </p>
+                  </div>
+                </div>
+
+                <mat-slide-toggle
+                  i18n
+                  [formControl]="largeTextToggleControl"
+                  [attr.aria-label]="'Enable larger text'"
+                  i18n-aria-label
+                >
+                  Enable larger text
+                </mat-slide-toggle>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- CARD: High contrast focus -->
+          <mat-card class="setting-card rounded-12">
+            <mat-card-content class="p-24 h-100">
+              <div class="d-flex flex-column gap-24 h-100">
+                <div class="d-flex align-flex-start gap-16 grow-1">
+                  <div
+                    class="setting-icon d-flex justify-center align-center rounded-full shrink-0"
+                  >
+                    <mat-icon svgIcon="success" aria-hidden="true"></mat-icon>
+                  </div>
+
+                  <div class="d-flex flex-column gap-8 grow-1">
+                    <h2 class="heading-small" i18n>High contrast focus</h2>
+                    <p class="body-medium text-secondary line-height-spaced" i18n>
+                      Make keyboard focus indicators stronger and easier to notice.
+                    </p>
+                  </div>
+                </div>
+
+                <mat-slide-toggle
+                  i18n
+                  [formControl]="highContrastFocusToggleControl"
+                  [attr.aria-label]="'Enable high contrast focus indicators'"
+                  i18n-aria-label
+                >
+                  Highlight keyboard focus
+                </mat-slide-toggle>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- BUTTON: Restore defaults -->
+        <div class="d-flex justify-flex-end">
+          <button mat-raised-button matButton="outlined" type="button" (click)="restoreDefaults()">
+            <div class="d-flex align-center gap-8">
+              <mat-icon
+                svgIcon="settingsBackupRestore"
+                aria-hidden="true"
+                class="d-flex align-center justify-center"
+              ></mat-icon>
+              <span i18n>Restore defaults</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
