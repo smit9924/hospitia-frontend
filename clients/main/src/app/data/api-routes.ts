@@ -10,6 +10,7 @@ export const apiRoutes = {
   auth: {
     login: `${apiBaseUrls.auth}/login`,
     refreshToken: `${apiBaseUrls.auth}/login/refresh-token`,
+    forgotPassword: `${apiBaseUrls.auth}/login/forgot-password`,
   },
   // ***End***
 

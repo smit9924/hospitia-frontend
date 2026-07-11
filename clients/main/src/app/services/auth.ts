@@ -62,6 +62,13 @@ export class Auth {
     );
   }
 
+  forgotPassword(email: string): Observable<null> {
+    return this.http.post<null>(
+      apiRoutes.auth.forgotPassword,
+      { email },
+    );
+  }
+
   setLoginSession(data: LoginApiResponse): void {
     this.setAccessTokenSession(data.accessToken, data.accessTokenExpiry);
     this.setRefreshTokenSession(data.refreshToken, data.refreshTokenExpiry);
