@@ -1,0 +1,8 @@
+{
+  "/ws-api/*": {
+    "target": "ws://main-api.localhost",
+    "secure": false,
+    "ws": true,
+    "logLevel": "debug"
+  }
+}
