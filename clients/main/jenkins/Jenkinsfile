@@ -27,6 +27,7 @@ pipeline {
         APPLICATION_DIRECTORY = 'clients/main'
         DOCKER_FILE = 'jenkins/Dockerfile'
         DOCKER_IMAGE = 'smit9924/frontend/main-client'
+        DOCKER_BUILDKIT = '1'
     }
 
     stages {
