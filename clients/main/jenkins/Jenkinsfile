@@ -140,5 +140,20 @@ pipeline {
                 '''
             }
         }
+
+        stage('Install Dependencies') {
+
+            steps {
+
+                dir(env.APPLICATION_DIRECTORY) {
+
+                    sh '''
+                        set -Eeuo pipefail
+
+                        npm ci
+                    '''
+                }
+            }
+        }
     }
 }
