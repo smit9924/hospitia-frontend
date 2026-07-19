@@ -155,5 +155,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Angular') {
+
+            steps {
+
+                dir(env.APPLICATION_DIRECTORY) {
+
+                    sh '''
+                        set -Eeuo pipefail
+
+                        npm run build
+                    '''
+                }
+            }
+        }
     }
 }
