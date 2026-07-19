@@ -187,6 +187,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Push Docker Image') {
+
+            steps {
+
+                script {
+
+                    docker.withRegistry('', 'dockerhub') {
+
+                        appImage.push()
+
+                        appImage.push('latest')
+                    }
                 }
             }
         }
