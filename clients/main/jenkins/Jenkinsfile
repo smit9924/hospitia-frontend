@@ -1,206 +1,188 @@
-// pipeline {
-//     agent {
-//         label 'docker-agent-node'
-//     }
-
-//     parameters {
-//         string(
-//             name: 'SOURCE_BRANCH',
-//             defaultValue: 'main',
-//             description: 'Git branch to check out and build.'
-//         )
-//     }
-
-//     options {
-//         skipDefaultCheckout(true)
-
-//         timestamps()
-
-//         disableConcurrentBuilds()
-
-//         timeout(
-//             time: 8,
-//             unit: 'MINUTES'
-//         )
-
-//         buildDiscarder(
-//             logRotator(
-//                 numToKeepStr: '24'
-//             )
-//         )
-//     }
-
-//     environment {
-//         GIT_REPOSITORY_URL = 'git@github.com:your-organization/your-repository.git'
-//         GIT_CREDENTIALS_ID = 'application-git-credentials'
-//     }
-
-//     stages {
-//         stage('Validate Checkout Parameters') {
-//             steps {
-//                 script {
-//                     String sourceBranch = params.SOURCE_BRANCH?.trim()
-
-//                     if (!sourceBranch) {
-//                         error('SOURCE_BRANCH must not be empty.')
-//                     }
-
-//                     if (!(sourceBranch ==~ /[A-Za-z0-9._\/-]+/)) {
-//                         error(
-//                             'SOURCE_BRANCH contains unsupported characters. ' +
-//                             'Only letters, numbers, periods, underscores, hyphens, and slashes are allowed.'
-//                         )
-//                     }
-
-//                     env.VALIDATED_SOURCE_BRANCH = sourceBranch
-//                 }
-//             }
-//         }
-
-//         stage('Checkout Source') {
-//             steps {
-//                 deleteDir()
-
-//                 checkout([
-//                     $class: 'GitSCM',
-
-//                     branches: [[
-//                         name: "*/${env.VALIDATED_SOURCE_BRANCH}"
-//                     ]],
-
-//                     userRemoteConfigs: [[
-//                         url: env.GIT_REPOSITORY_URL,
-//                         credentialsId: env.GIT_CREDENTIALS_ID
-//                     ]],
-
-//                     extensions: [
-//                         [
-//                             $class: 'CleanBeforeCheckout'
-//                         ],
-//                         [
-//                             $class: 'PruneStaleBranch'
-//                         ],
-//                         [
-//                             $class: 'CloneOption',
-//                             depth: 0,
-//                             honorRefspec: true,
-//                             noTags: false,
-//                             reference: '',
-//                             shallow: false,
-//                             timeout: 8
-//                         ]
-//                     ],
-
-//                     doGenerateSubmoduleConfigurations: false,
-//                     submoduleCfg: []
-//                 ])
-//             }
-//         }
-
-//         stage('Capture Source Metadata') {
-//             steps {
-//                 script {
-//                     env.GIT_COMMIT_FULL = sh(
-//                         script: 'git rev-parse HEAD',
-//                         returnStdout: true
-//                     ).trim()
-
-//                     env.GIT_COMMIT_SHORT = sh(
-//                         script: 'git rev-parse --short=12 HEAD',
-//                         returnStdout: true
-//                     ).trim()
-
-//                     env.GIT_CHECKED_OUT_BRANCH = sh(
-//                         script: 'git rev-parse --abbrev-ref HEAD',
-//                         returnStdout: true
-//                     ).trim()
-
-//                     env.GIT_REMOTE_URL = sh(
-//                         script: 'git config --get remote.origin.url',
-//                         returnStdout: true
-//                     ).trim()
-
-//                     env.GIT_COMMIT_DATE = sh(
-//                         script: 'git show -s --format=%cI HEAD',
-//                         returnStdout: true
-//                     ).trim()
-
-//                     currentBuild.displayName =
-//                         "#${env.BUILD_NUMBER} git-${env.GIT_COMMIT_SHORT}"
-
-//                     currentBuild.description =
-//                         "Branch: ${env.VALIDATED_SOURCE_BRANCH}"
-//                 }
-
-//                 sh '''
-//                     set -Eeuo pipefail
-
-//                     printf 'Repository: %s\\n' "${GIT_REMOTE_URL}"
-//                     printf 'Requested branch: %s\\n' "${VALIDATED_SOURCE_BRANCH}"
-//                     printf 'Commit: %s\\n' "${GIT_COMMIT_FULL}"
-//                     printf 'Commit date: %s\\n' "${GIT_COMMIT_DATE}"
-//                 '''
-//             }
-//         }
-
-//         stage('Validate Repository Structure') {
-//             steps {
-//                 sh '''
-//                     set -Eeuo pipefail
-
-//                     main_client_directory="frontend/clients/main"
-
-//                     required_files=(
-//                       "${main_client_directory}/angular.json"
-//                       "${main_client_directory}/package.json"
-//                       "${main_client_directory}/package-lock.json"
-//                     )
-
-//                     for required_file in "${required_files[@]}"; do
-//                       if [[ ! -f "${required_file}" ]]; then
-//                         printf 'Required file was not found: %s\\n' "${required_file}" >&2
-//                         exit 1
-//                       fi
-//                     done
-
-//                     if [[ ! -d "${main_client_directory}/src" ]]; then
-//                       printf 'Angular source directory was not found: %s/src\\n' \
-//                         "${main_client_directory}" >&2
-//                       exit 1
-//                     fi
-
-//                     printf 'Main Angular client structure is valid.\\n'
-//                 '''
-//             }
-//         }
-//     }
-
-//     post {
-//         success {
-//             echo 'Source checkout completed successfully.'
-//             echo "Checked out commit: ${env.GIT_COMMIT_FULL}"
-//         }
-
-//         failure {
-//             echo 'Source checkout or repository validation failed.'
-//         }
-//     }
-// }
-
 pipeline {
     agent {
         label 'docker-agent-node'
     }
 
+    parameters {
+        string(
+            name: 'SOURCE_BRANCH',
+            defaultValue: 'main',
+            description: 'Git branch to check out and build.'
+        )
+    }
+
+    options {
+        skipDefaultCheckout(true)
+
+        timestamps()
+
+        disableConcurrentBuilds()
+
+        timeout(
+            time: 8,
+            unit: 'MINUTES'
+        )
+
+        buildDiscarder(
+            logRotator(
+                numToKeepStr: '24'
+            )
+        )
+    }
+
+    environment {
+        GIT_REPOSITORY_URL = 'git@github.com:your-organization/your-repository.git'
+        GIT_CREDENTIALS_ID = 'application-git-credentials'
+    }
+
     stages {
-        stage('Hello') {
+        stage('Validate Checkout Parameters') {
             steps {
-                sh 'node --version'
-                sh 'npm --version'
-                sh 'git --version'
-                sh 'docker --version'
-                sh 'ng version'
+                script {
+                    String sourceBranch = params.SOURCE_BRANCH?.trim()
+
+                    if (!sourceBranch) {
+                        error('SOURCE_BRANCH must not be empty.')
+                    }
+
+                    if (!(sourceBranch ==~ /[A-Za-z0-9._\/-]+/)) {
+                        error(
+                            'SOURCE_BRANCH contains unsupported characters. ' +
+                            'Only letters, numbers, periods, underscores, hyphens, and slashes are allowed.'
+                        )
+                    }
+
+                    env.VALIDATED_SOURCE_BRANCH = sourceBranch
+                }
             }
+        }
+
+        stage('Checkout Source') {
+            steps {
+                deleteDir()
+
+                checkout([
+                    $class: 'GitSCM',
+
+                    branches: [[
+                        name: "*/${env.VALIDATED_SOURCE_BRANCH}"
+                    ]],
+
+                    userRemoteConfigs: [[
+                        url: env.GIT_REPOSITORY_URL,
+                        credentialsId: env.GIT_CREDENTIALS_ID
+                    ]],
+
+                    extensions: [
+                        [
+                            $class: 'CleanBeforeCheckout'
+                        ],
+                        [
+                            $class: 'PruneStaleBranch'
+                        ],
+                        [
+                            $class: 'CloneOption',
+                            depth: 0,
+                            honorRefspec: true,
+                            noTags: false,
+                            reference: '',
+                            shallow: false,
+                            timeout: 8
+                        ]
+                    ],
+
+                    doGenerateSubmoduleConfigurations: false,
+                    submoduleCfg: []
+                ])
+            }
+        }
+
+        stage('Capture Source Metadata') {
+            steps {
+                script {
+                    env.GIT_COMMIT_FULL = sh(
+                        script: 'git rev-parse HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    env.GIT_COMMIT_SHORT = sh(
+                        script: 'git rev-parse --short=12 HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    env.GIT_CHECKED_OUT_BRANCH = sh(
+                        script: 'git rev-parse --abbrev-ref HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    env.GIT_REMOTE_URL = sh(
+                        script: 'git config --get remote.origin.url',
+                        returnStdout: true
+                    ).trim()
+
+                    env.GIT_COMMIT_DATE = sh(
+                        script: 'git show -s --format=%cI HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    currentBuild.displayName =
+                        "#${env.BUILD_NUMBER} git-${env.GIT_COMMIT_SHORT}"
+
+                    currentBuild.description =
+                        "Branch: ${env.VALIDATED_SOURCE_BRANCH}"
+                }
+
+                sh '''
+                    set -Eeuo pipefail
+
+                    printf 'Repository: %s\\n' "${GIT_REMOTE_URL}"
+                    printf 'Requested branch: %s\\n' "${VALIDATED_SOURCE_BRANCH}"
+                    printf 'Commit: %s\\n' "${GIT_COMMIT_FULL}"
+                    printf 'Commit date: %s\\n' "${GIT_COMMIT_DATE}"
+                '''
+            }
+        }
+
+        stage('Validate Repository Structure') {
+            steps {
+                sh '''
+                    set -Eeuo pipefail
+
+                    main_client_directory="frontend/clients/main"
+
+                    required_files=(
+                      "${main_client_directory}/angular.json"
+                      "${main_client_directory}/package.json"
+                      "${main_client_directory}/package-lock.json"
+                    )
+
+                    for required_file in "${required_files[@]}"; do
+                      if [[ ! -f "${required_file}" ]]; then
+                        printf 'Required file was not found: %s\\n' "${required_file}" >&2
+                        exit 1
+                      fi
+                    done
+
+                    if [[ ! -d "${main_client_directory}/src" ]]; then
+                      printf 'Angular source directory was not found: %s/src\\n' \
+                        "${main_client_directory}" >&2
+                      exit 1
+                    fi
+
+                    printf 'Main Angular client structure is valid.\\n'
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Source checkout completed successfully.'
+            echo "Checked out commit: ${env.GIT_COMMIT_FULL}"
+        }
+
+        failure {
+            echo 'Source checkout or repository validation failed.'
         }
     }
 }
