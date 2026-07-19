@@ -134,7 +134,7 @@ pipeline {
                 sh '''
                     set -Eeuo pipefail
 
-                    chmod +x jenkins/scripts/validate-repo.sh
+                    chmod +x ./scripts/validate-repo.sh
 
                     ./scripts/validate-repo.sh
                 '''
