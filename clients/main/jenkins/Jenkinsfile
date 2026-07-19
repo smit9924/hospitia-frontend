@@ -53,10 +53,92 @@ pipeline {
             }
         }
 
-        // Checkout
+       stage('Checkout Source') {
 
-        // Build
+            steps {
 
-        // Push
+                deleteDir()
+
+                checkout([
+                    $class: 'GitSCM',
+
+                    branches: [[
+                        name: "*/${env.SOURCE_BRANCH}"
+                    ]],
+
+                    userRemoteConfigs: [[
+                        url: scm.userRemoteConfigs[0].url,
+                        credentialsId: scm.userRemoteConfigs[0].credentialsId
+                    ]],
+
+                    extensions: [
+                        [
+                            $class: 'CleanBeforeCheckout'
+                        ],
+                        [
+                            $class: 'PruneStaleBranch'
+                        ]
+                    ]
+                ])
+            }
+        }
+
+        stage('Capture Build Metadata') {
+
+            steps {
+
+                script {
+
+                    env.GIT_COMMIT_FULL = sh(
+                        script: 'git rev-parse HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    env.GIT_COMMIT_SHORT = sh(
+                        script: 'git rev-parse --short=12 HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    env.GIT_BRANCH = sh(
+                        script: 'git rev-parse --abbrev-ref HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    env.GIT_COMMIT_DATE = sh(
+                        script: 'git show -s --format=%cI HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    env.DOCKER_IMAGE_TAG = env.GIT_COMMIT_SHORT
+
+                    currentBuild.displayName =
+                        "#${env.BUILD_NUMBER} ${env.GIT_BRANCH}"
+
+                    currentBuild.description =
+                        "Commit: ${env.GIT_COMMIT_SHORT}"
+                }
+
+                sh '''
+                    printf 'Repository : %s\n' "$(git config --get remote.origin.url)"
+                    printf 'Branch     : %s\n' "${GIT_BRANCH}"
+                    printf 'Commit     : %s\n' "${GIT_COMMIT_FULL}"
+                    printf 'Image Tag  : %s\n' "${DOCKER_IMAGE_TAG}"
+                '''
+            }
+        }
+
+        stage('Validate Repository') {
+
+            steps {
+
+                sh '''
+                    set -Eeuo pipefail
+
+                    chmod +x jenkins/scripts/validate-repo.sh
+
+                    ./jenkins/scripts/validate-repo.sh
+                '''
+            }
+        }
     }
 }
