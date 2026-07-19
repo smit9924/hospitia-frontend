@@ -134,6 +134,10 @@ pipeline {
                 sh '''
                     set -Eeuo pipefail
 
+                    pwd
+
+                    ls -alh
+
                     chmod +x ./scripts/validate-repo.sh
 
                     ./scripts/validate-repo.sh
