@@ -11,7 +11,7 @@ pipeline {
         disableConcurrentBuilds()
 
         timeout(
-            time: 2,
+            time: 15,
             unit: 'MINUTES'
         )
 
@@ -201,6 +201,25 @@ pipeline {
                         appImage.push('latest')
                     }
                 }
+            }
+        }
+
+        stage('Build Summary') {
+
+            steps {
+
+                sh '''
+                    printf '\n'
+                    printf '=========================================\n'
+                    printf 'Build Summary\n'
+                    printf '=========================================\n'
+                    printf 'Application : %s\n' "${APPLICATION_NAME}"
+                    printf 'Branch      : %s\n' "${GIT_BRANCH}"
+                    printf 'Commit      : %s\n' "${GIT_COMMIT_SHORT}"
+                    printf 'Image       : %s\n' "${DOCKER_IMAGE}"
+                    printf 'Image Tag   : %s\n' "${DOCKER_IMAGE_TAG}"
+                    printf '=========================================\n'
+                '''
             }
         }
     }
