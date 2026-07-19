@@ -134,13 +134,9 @@ pipeline {
                 sh '''
                     set -Eeuo pipefail
 
-                    pwd
+                    chmod +x ${APPLICATION_DIRECTORY}/jenkins/scripts/validate-repo.sh
 
-                    ls -alh
-
-                    chmod +x ./scripts/validate-repo.sh
-
-                    ./scripts/validate-repo.sh
+                    ${APPLICATION_DIRECTORY}/jenkins/scripts/validate-repo.sh
                 '''
             }
         }

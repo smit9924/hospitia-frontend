@@ -2,17 +2,19 @@
 
 set -Eeuo pipefail
 
+main-client-dir="clients/main"
+
 ###############################################################################
 # Validate required files
 ###############################################################################
 
 required_files=(
-    package.json
-    package-lock.json
-    angular.json
-    jenkins/Dockerfile
-    jenkins/nginx.conf
-    jenkins/.dockerignore
+    ${main-client-dir}/package.json
+    ${main-client-dir}/package-lock.json
+    ${main-client-dir}/angular.json
+    ${main-client-dir}/jenkins/Dockerfile
+    ${main-client-dir}/jenkins/nginx.conf
+    ${main-client-dir}/jenkins/.dockerignore
 )
 
 for file in "${required_files[@]}"; do
@@ -27,7 +29,7 @@ done
 ###############################################################################
 
 required_directories=(
-    src
+    ${main-client-dir}/src
 )
 
 for directory in "${required_directories[@]}"; do
