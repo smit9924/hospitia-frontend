@@ -170,5 +170,25 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Docker Image') {
+
+            steps {
+
+                dir(env.APPLICATION_DIRECTORY) {
+
+                    sh '''
+                        set -Eeuo pipefail
+
+                        docker build \
+                            --pull \
+                            --file "${DOCKER_DIRECTORY}/Dockerfile" \
+                            --tag "${DOCKER_IMAGE}:${DOCKER_IMAGE_TAG}" \
+                            --tag "${DOCKER_IMAGE}:latest" \
+                            .
+                    '''
+                }
+            }
+        }
     }
 }
