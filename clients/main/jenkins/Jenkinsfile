@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'docker-linux'
-    }
+    agent any
 
     parameters {
         string(
