@@ -26,7 +26,7 @@ pipeline {
         APPLICATION_NAME = 'main-client'
         APPLICATION_DIRECTORY = 'clients/main'
         DOCKER_FILE = 'jenkins/Dockerfile'
-        DOCKER_IMAGE = 'smit9924/hospitia-frontend-main-client/main-client'
+        DOCKER_IMAGE = 'smit9924/hospitia-frontend-main-client'
         DOCKER_BUILDKIT = '1'
     }
 
