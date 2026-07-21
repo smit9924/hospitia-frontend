@@ -205,6 +205,35 @@ pipeline {
             }
         }
 
+        stage('Deploy') {
+
+            steps {
+
+                sshagent(credentials: ['deploy-ssh']) {
+
+                    sh '''
+                        set -Eeuo pipefail
+
+                        ssh -o StrictHostKeyChecking=no ${DEPLOYMENT_SERVER_PUBLIC_IP} <<EOF
+
+                        docker pull ${DOCKER_IMAGE}:latest
+
+                        docker stop ${DOCKER_IMAGE}:latest || true
+
+                        docker run -d \
+                            --name ${APPLICATION_NAME} \
+                            --restart unless-stopped \
+                            -p 80:8080 \
+                            ${DOCKER_IMAGE}:latest
+
+                        docker image prune -f
+
+                        EOF
+                    '''
+                }
+            }
+        }
+
         stage('Build Summary') {
 
             steps {
