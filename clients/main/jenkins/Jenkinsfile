@@ -209,16 +209,32 @@ pipeline {
 
             steps {
 
-                sshagent(credentials: ['deploy-ssh']) {
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'deploy-ssh',
+                        keyFileVariable: 'SSH_KEY',
+                        usernameVariable: 'SSH_USER',
+                        passphraseVariable: 'SSH_PASSPHRASE'
+                    ),
+                    string(
+                        credentialsId: 'deployment-server-ip',
+                        variable: 'DEPLOYMENT_SERVER_PUBLIC_IP'
+                    )
+                ]) {
 
                     sh '''
                         set -Eeuo pipefail
 
-                        ssh -o StrictHostKeyChecking=no ${DEPLOYMENT_SERVER_PUBLIC_IP} <<EOF
+                        ssh \
+                            -i "${SSH_KEY}" \
+                            -o StrictHostKeyChecking=no \
+                            "${SSH_USER}@${SSH_PASSPHRASE}" <<EOF
 
                         docker pull ${DOCKER_IMAGE}:latest
 
-                        docker stop ${DOCKER_IMAGE}:latest || true
+                        docker stop ${APPLICATION_NAME} || true
+
+                        docker rm ${APPLICATION_NAME} || true
 
                         docker run -d \
                             --name ${APPLICATION_NAME} \
