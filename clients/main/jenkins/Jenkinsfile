@@ -214,7 +214,6 @@ pipeline {
                         credentialsId: 'deploy-ssh',
                         keyFileVariable: 'SSH_KEY',
                         usernameVariable: 'SSH_USER',
-                        passphraseVariable: 'SSH_PASSPHRASE'
                     ),
                     string(
                         credentialsId: 'deployment-server-ip',
@@ -228,7 +227,7 @@ pipeline {
                         ssh \
                             -i "${SSH_KEY}" \
                             -o StrictHostKeyChecking=no \
-                            "${SSH_USER}@${SSH_PASSPHRASE}" <<EOF
+                            "${SSH_USER}@${DEPLOYMENT_SERVER_PUBLIC_IP}" <<EOF
 
                         docker pull ${DOCKER_IMAGE}:latest
 
