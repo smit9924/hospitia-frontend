@@ -224,6 +224,14 @@ pipeline {
                     sh '''
                         set -Eeuo pipefail
 
+                        echo 'Deploying to server...'
+                        echo ${SSH_KEY}
+                        echo ${SSH_USER}
+                        echo ${DEPLOYMENT_SERVER_PUBLIC_IP}
+                        echo ${DOCKER_IMAGE}
+                        echo ${APPLICATION_NAME}
+                        echo 'Summary ended'
+
                         ssh \
                             -i "${SSH_KEY}" \
                             -o StrictHostKeyChecking=no \
