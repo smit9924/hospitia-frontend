@@ -32,178 +32,178 @@ pipeline {
 
     stages {
 
-        stage('Initialize') {
+    //     stage('Initialize') {
 
-            steps {
+    //         steps {
 
-                script {
+    //             script {
 
-                    if (!params.SOURCE_BRANCH?.trim()) {
-                        error('SOURCE_BRANCH must not be empty.')
-                    }
+    //                 if (!params.SOURCE_BRANCH?.trim()) {
+    //                     error('SOURCE_BRANCH must not be empty.')
+    //                 }
 
-                    env.SOURCE_BRANCH =
-                        params.SOURCE_BRANCH.trim()
+    //                 env.SOURCE_BRANCH =
+    //                     params.SOURCE_BRANCH.trim()
 
-                    currentBuild.displayName =
-                        "#${env.BUILD_NUMBER} ${env.SOURCE_BRANCH}"
+    //                 currentBuild.displayName =
+    //                     "#${env.BUILD_NUMBER} ${env.SOURCE_BRANCH}"
 
-                    currentBuild.description =
-                        "Application: ${env.APPLICATION_NAME}"
-                }
-            }
-        }
+    //                 currentBuild.description =
+    //                     "Application: ${env.APPLICATION_NAME}"
+    //             }
+    //         }
+    //     }
 
-       stage('Checkout Source') {
+    //    stage('Checkout Source') {
 
-            steps {
+    //         steps {
 
-                deleteDir()
+    //             deleteDir()
 
-                checkout([
-                    $class: 'GitSCM',
+    //             checkout([
+    //                 $class: 'GitSCM',
 
-                    branches: [[
-                        name: "*/${env.SOURCE_BRANCH}"
-                    ]],
+    //                 branches: [[
+    //                     name: "*/${env.SOURCE_BRANCH}"
+    //                 ]],
 
-                    userRemoteConfigs: [[
-                        url: scm.userRemoteConfigs[0].url,
-                        credentialsId: scm.userRemoteConfigs[0].credentialsId
-                    ]],
+    //                 userRemoteConfigs: [[
+    //                     url: scm.userRemoteConfigs[0].url,
+    //                     credentialsId: scm.userRemoteConfigs[0].credentialsId
+    //                 ]],
 
-                    extensions: [
-                        [
-                            $class: 'CleanBeforeCheckout'
-                        ],
-                        [
-                            $class: 'PruneStaleBranch'
-                        ]
-                    ]
-                ])
-            }
-        }
+    //                 extensions: [
+    //                     [
+    //                         $class: 'CleanBeforeCheckout'
+    //                     ],
+    //                     [
+    //                         $class: 'PruneStaleBranch'
+    //                     ]
+    //                 ]
+    //             ])
+    //         }
+    //     }
 
-        stage('Capture Build Metadata') {
+    //     stage('Capture Build Metadata') {
 
-            steps {
+    //         steps {
 
-                script {
+    //             script {
 
-                    env.GIT_COMMIT_FULL = sh(
-                        script: 'git rev-parse HEAD',
-                        returnStdout: true
-                    ).trim()
+    //                 env.GIT_COMMIT_FULL = sh(
+    //                     script: 'git rev-parse HEAD',
+    //                     returnStdout: true
+    //                 ).trim()
 
-                    env.GIT_COMMIT_SHORT = sh(
-                        script: 'git rev-parse --short=12 HEAD',
-                        returnStdout: true
-                    ).trim()
+    //                 env.GIT_COMMIT_SHORT = sh(
+    //                     script: 'git rev-parse --short=12 HEAD',
+    //                     returnStdout: true
+    //                 ).trim()
 
-                    env.GIT_BRANCH = sh(
-                        script: 'git rev-parse --abbrev-ref HEAD',
-                        returnStdout: true
-                    ).trim()
+    //                 env.GIT_BRANCH = sh(
+    //                     script: 'git rev-parse --abbrev-ref HEAD',
+    //                     returnStdout: true
+    //                 ).trim()
 
-                    env.GIT_COMMIT_DATE = sh(
-                        script: 'git show -s --format=%cI HEAD',
-                        returnStdout: true
-                    ).trim()
+    //                 env.GIT_COMMIT_DATE = sh(
+    //                     script: 'git show -s --format=%cI HEAD',
+    //                     returnStdout: true
+    //                 ).trim()
 
-                    env.DOCKER_IMAGE_TAG = env.GIT_COMMIT_SHORT
+    //                 env.DOCKER_IMAGE_TAG = env.GIT_COMMIT_SHORT
 
-                    currentBuild.displayName =
-                        "#${env.BUILD_NUMBER} ${env.GIT_BRANCH}"
+    //                 currentBuild.displayName =
+    //                     "#${env.BUILD_NUMBER} ${env.GIT_BRANCH}"
 
-                    currentBuild.description =
-                        "Commit: ${env.GIT_COMMIT_SHORT}"
-                }
+    //                 currentBuild.description =
+    //                     "Commit: ${env.GIT_COMMIT_SHORT}"
+    //             }
 
-                sh '''
-                    printf 'Repository : %s\n' "$(git config --get remote.origin.url)"
-                    printf 'Branch     : %s\n' "${GIT_BRANCH}"
-                    printf 'Commit     : %s\n' "${GIT_COMMIT_FULL}"
-                    printf 'Image Tag  : %s\n' "${DOCKER_IMAGE_TAG}"
-                '''
-            }
-        }
+    //             sh '''
+    //                 printf 'Repository : %s\n' "$(git config --get remote.origin.url)"
+    //                 printf 'Branch     : %s\n' "${GIT_BRANCH}"
+    //                 printf 'Commit     : %s\n' "${GIT_COMMIT_FULL}"
+    //                 printf 'Image Tag  : %s\n' "${DOCKER_IMAGE_TAG}"
+    //             '''
+    //         }
+    //     }
 
-        stage('Validate Repository') {
+    //     stage('Validate Repository') {
 
-            steps {
+    //         steps {
 
-                sh '''
-                    set -Eeuo pipefail
+    //             sh '''
+    //                 set -Eeuo pipefail
 
-                    chmod +x ${APPLICATION_DIRECTORY}/jenkins/scripts/validate-repo.sh
+    //                 chmod +x ${APPLICATION_DIRECTORY}/jenkins/scripts/validate-repo.sh
 
-                    ${APPLICATION_DIRECTORY}/jenkins/scripts/validate-repo.sh
-                '''
-            }
-        }
+    //                 ${APPLICATION_DIRECTORY}/jenkins/scripts/validate-repo.sh
+    //             '''
+    //         }
+    //     }
 
-        stage('Install Dependencies') {
+    //     stage('Install Dependencies') {
 
-            steps {
+    //         steps {
 
-                dir(env.APPLICATION_DIRECTORY) {
+    //             dir(env.APPLICATION_DIRECTORY) {
 
-                    sh '''
-                        set -Eeuo pipefail
+    //                 sh '''
+    //                     set -Eeuo pipefail
 
-                        npm ci
-                    '''
-                }
-            }
-        }
+    //                     npm ci
+    //                 '''
+    //             }
+    //         }
+    //     }
 
-        stage('Build Angular') {
+    //     stage('Build Angular') {
 
-            steps {
+    //         steps {
 
-                dir(env.APPLICATION_DIRECTORY) {
+    //             dir(env.APPLICATION_DIRECTORY) {
 
-                    sh '''
-                        set -Eeuo pipefail
+    //                 sh '''
+    //                     set -Eeuo pipefail
 
-                        npm run build
-                    '''
-                }
-            }
-        }
+    //                     npm run build
+    //                 '''
+    //             }
+    //         }
+    //     }
 
-        stage('Build Docker Image') {
+    //     stage('Build Docker Image') {
 
-            steps {
+    //         steps {
 
-                dir(env.APPLICATION_DIRECTORY) {
+    //             dir(env.APPLICATION_DIRECTORY) {
 
-                    script {
+    //                 script {
 
-                        appImage = docker.build(
-                            "${DOCKER_IMAGE}:${DOCKER_IMAGE_TAG}",
-                            "--pull -f ${DOCKER_FILE} ."
-                        )
-                    }
-                }
-            }
-        }
+    //                     appImage = docker.build(
+    //                         "${DOCKER_IMAGE}:${DOCKER_IMAGE_TAG}",
+    //                         "--pull -f ${DOCKER_FILE} ."
+    //                     )
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        stage('Push Docker Image') {
+    //     stage('Push Docker Image') {
 
-            steps {
+    //         steps {
 
-                script {
+    //             script {
 
-                    docker.withRegistry('', 'dockerhub') {
+    //                 docker.withRegistry('', 'dockerhub') {
 
-                        appImage.push()
+    //                     appImage.push()
 
-                        appImage.push('latest')
-                    }
-                }
-            }
-        }
+    //                     appImage.push('latest')
+    //                 }
+    //             }
+    //         }
+    //     }
 
         stage('Deploy') {
 
