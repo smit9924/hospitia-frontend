@@ -206,53 +206,60 @@ pipeline {
     //     }
 
         stage('Deploy') {
-
             steps {
+                script {
+                    docker.withRegistry('', 'dockerhub') {
 
-                withCredentials([
-                    sshUserPrivateKey(
-                        credentialsId: 'deploy-ssh',
-                        keyFileVariable: 'SSH_KEY',
-                        usernameVariable: 'SSH_USER',
-                    ),
-                    string(
-                        credentialsId: 'deployment-server-ip',
-                        variable: 'DEPLOYMENT_SERVER_PUBLIC_IP'
-                    )
-                ]) {
+                        withCredentials([
+                            sshUserPrivateKey(
+                                credentialsId: 'deploy-ssh',
+                                keyFileVariable: 'SSH_KEY',
+                                usernameVariable: 'SSH_USER'
+                            ),
+                            string(
+                                credentialsId: 'deployment-server-ip',
+                                variable: 'DEPLOYMENT_SERVER_PUBLIC_IP'
+                            ),
+                            usernamePassword(
+                                credentialsId: 'dockerhub',
+                                usernameVariable: 'DOCKERHUB_USERNAME',
+                                passwordVariable: 'DOCKERHUB_TOKEN'
+                            )
+                        ]) {
 
-                    sh '''
-                        set -Eeuo pipefail
+                            sh """
+                                set -Eeuo pipefail
 
-                        echo 'Deploying to server...'
-                        echo ${SSH_KEY}
-                        echo ${SSH_USER}
-                        echo ${DEPLOYMENT_SERVER_PUBLIC_IP}
-                        echo ${DOCKER_IMAGE}
-                        echo ${APPLICATION_NAME}
-                        echo 'Summary ended'
+                                ssh \
+                                    -i "${SSH_KEY}" \
+                                    -o StrictHostKeyChecking=no \
+                                    "${SSH_USER}@${DEPLOYMENT_SERVER_PUBLIC_IP}" <<EOF
 
-                        ssh \
-                            -i "${SSH_KEY}" \
-                            -o StrictHostKeyChecking=no \
-                            "${SSH_USER}@${DEPLOYMENT_SERVER_PUBLIC_IP}" <<EOF
+                                set -Eeuo pipefail
 
-                        docker pull ${DOCKER_IMAGE}:latest
+                                echo "${DOCKERHUB_TOKEN}" | docker login \
+                                    --username "${DOCKERHUB_USERNAME}" \
+                                    --password-stdin
 
-                        docker stop ${APPLICATION_NAME} || true
+                                docker pull ${DOCKER_IMAGE}:latest
 
-                        docker rm ${APPLICATION_NAME} || true
+                                docker stop ${APPLICATION_NAME} || true
+                                docker rm ${APPLICATION_NAME} || true
 
-                        docker run -d \
-                            --name ${APPLICATION_NAME} \
-                            --restart unless-stopped \
-                            -p 80:8080 \
-                            ${DOCKER_IMAGE}:latest
+                                docker run -d \
+                                    --name ${APPLICATION_NAME} \
+                                    --restart unless-stopped \
+                                    -p 80:8080 \
+                                    ${DOCKER_IMAGE}:latest
 
-                        docker image prune -f
+                                docker image prune -f
 
-                        EOF
-                    '''
+                                docker logout
+
+                                EOF
+                            """
+                        }
+                    }
                 }
             }
         }
