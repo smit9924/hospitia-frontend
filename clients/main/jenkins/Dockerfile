@@ -22,6 +22,9 @@ COPY . .
 # Build the Angular application
 RUN npm run build
 
+RUN echo "Build completed successfully."
+RUN ls -a
+
 # =========================================
 # Stage 2: Prepare Nginx to Serve Static Files
 # =========================================
