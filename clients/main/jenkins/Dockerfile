@@ -23,7 +23,11 @@ COPY . .
 RUN npm run build
 
 RUN echo "Build completed successfully."
-RUN ls -a
+RUN echo "Contents of /app/dist:"
+RUN echo "ls: /app/dist"
+RUN ls /app/dist
+RUN echo "ls: /app/dist/*/browser"
+RUN ls /app/dist/*/browser
 
 # =========================================
 # Stage 2: Prepare Nginx to Serve Static Files
