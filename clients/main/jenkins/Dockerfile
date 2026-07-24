@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/root/.npm npm ci
 COPY . .
 
 # Build the Angular application
-RUN npm run build
+RUN npm run build-production
 
 RUN echo "ls: /app/dist/*/browser"
 RUN ls -l /app/dist/*/browser
