@@ -17,9 +17,18 @@
 
       <!-- Menu: Links -->
       <mat-menu #navLinksMenu="matMenu">
-        <div mat-menu-item>
-          <a matButton i18n [routerLink]="dashboardLink">Dashboard</a>
-        </div>
+        @if (authService.isLoggedIn) {
+          <div mat-menu-item>
+            <a matButton i18n [routerLink]="dashboardLink()">Dashboard</a>
+          </div>
+        } @else {
+          <div mat-menu-item>
+            <a matButton i18n [routerLink]="loginLink">Log in</a>
+          </div>
+          <div mat-menu-item>
+            <a matButton i18n [routerLink]="signupLink">Sign up</a>
+          </div>
+        }
       </mat-menu>
 
       <!-- Brand Logo -->
@@ -43,73 +52,90 @@
       />
     </div>
 
-    <div class="link-container">
-      <ul class="list-style-none d-flex gap-16 p-0 m-0">
-        <li class="body-large">
-          <a matButton i18n [routerLink]="dashboardLink">Dashboard</a>
-        </li>
-      </ul>
-    </div>
+    @if (authService.isLoggedIn) {
+      <div class="link-container">
+        <ul class="list-style-none d-flex gap-16 p-0 m-0">
+          <li class="body-large">
+            <a matButton i18n [routerLink]="dashboardLink()">Dashboard</a>
+          </li>
+        </ul>
+      </div>
+    } @else {
+      <div class="auth-actions d-flex gap-8 align-center">
+        <a mat-raised-button matButton="filled" i18n [routerLink]="loginLink">Log in</a>
+        <a
+          mat-raised-button
+          matButton="outlined"
+          class="bg-white"
+          i18n
+          [routerLink]="signupLink"
+        >
+          Sign up
+        </a>
+      </div>
+    }
 
-    <div>
-      <!-- Button: Profile -->
-      <button
-        mat-icon-button
-        class="d-flex justify-center align-center profile-button rounded-full overflow-hidden"
-        aria-label="Profile options"
-        i18n-aria-label
-        matTooltip="Profile options"
-        i18n-matTooltip="Profile options tooltip"
-        [matMenuTriggerFor]="menu"
-      >
-        <!-- Image: User profile -->
-        <!-- <img
-          ngSrc="assets/images/john-profile-pic.jpg"
-          width="40"
-          height="40"
-          alt="User profile"
-          priority
-          i18n-alt
-        /> -->
+    @if (authService.isLoggedIn) {
+      <div>
+        <!-- Button: Profile -->
+        <button
+          mat-icon-button
+          class="d-flex justify-center align-center profile-button rounded-full overflow-hidden"
+          aria-label="Profile options"
+          i18n-aria-label
+          matTooltip="Profile options"
+          i18n-matTooltip="Profile options tooltip"
+          [matMenuTriggerFor]="menu"
+        >
+          <!-- Image: User profile -->
+          <!-- <img
+            ngSrc="assets/images/john-profile-pic.jpg"
+            width="40"
+            height="40"
+            alt="User profile"
+            priority
+            i18n-alt
+          /> -->
 
-        <mat-icon
-          svgIcon="accountCircle"
-          aria-hidden="true"
-          class="d-flex align-center justify-center user-icon"
-        />
-      </button>
-      <!-- Menu: Profile -->
-      <mat-menu #menu="matMenu">
-        <!-- Menu Item: Display and Accessibility -->
-        <button mat-menu-item (click)="navigateToProfile()">
           <mat-icon
             svgIcon="accountCircle"
             aria-hidden="true"
-            class="d-flex align-center justify-center"
+            class="d-flex align-center justify-center user-icon"
           />
-          <span i18n>Profile</span>
         </button>
+        <!-- Menu: Profile -->
+        <mat-menu #menu="matMenu">
+          <!-- Menu Item: Display and Accessibility -->
+          <button mat-menu-item (click)="navigateToProfile()">
+            <mat-icon
+              svgIcon="accountCircle"
+              aria-hidden="true"
+              class="d-flex align-center justify-center"
+            />
+            <span i18n>Profile</span>
+          </button>
 
-        <!-- Menu Item: Settings -->
-        <button mat-menu-item (click)="navigateToSettings()">
-          <mat-icon
-            svgIcon="settings"
-            aria-hidden="true"
-            class="d-flex align-center justify-center"
-          />
-          <span i18n>Account Settings</span>
-        </button>
+          <!-- Menu Item: Settings -->
+          <button mat-menu-item (click)="navigateToSettings()">
+            <mat-icon
+              svgIcon="settings"
+              aria-hidden="true"
+              class="d-flex align-center justify-center"
+            />
+            <span i18n>Account Settings</span>
+          </button>
 
-        <!-- Menu Item: Log out -->
-        <button mat-menu-item (click)="logout()">
-          <mat-icon
-            svgIcon="logout"
-            aria-hidden="true"
-            class="d-flex align-center justify-center"
-          />
-          <span i18n>Log out</span>
-        </button>
-      </mat-menu>
-    </div>
+          <!-- Menu Item: Log out -->
+          <button mat-menu-item (click)="logout()">
+            <mat-icon
+              svgIcon="logout"
+              aria-hidden="true"
+              class="d-flex align-center justify-center"
+            />
+            <span i18n>Log out</span>
+          </button>
+        </mat-menu>
+      </div>
+    }
   </div>
 </nav>

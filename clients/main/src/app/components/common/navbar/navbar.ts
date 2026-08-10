@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, inject } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { appRoutes } from '../../../data/app-routes';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../services/auth';
+import { Profile } from '../../../services/profile';
 
 @Component({
   selector: 'app-navbar',
@@ -22,16 +23,26 @@ import { Auth } from '../../../services/auth';
   styleUrl: './navbar.scss',
 })
 export class Navbar implements AfterViewInit {
-  private authService = inject(Auth);
+  protected readonly authService = inject(Auth);
+  protected readonly profileService = inject(Profile);
   private router = inject(Router);
   private elementRef = inject(ElementRef);
 
-  ngAfterViewInit(): void {
-    this.exposePrimaryNavbarHeight();
+  readonly loginLink = appRoutes.login;
+  readonly signupLink = appRoutes.signup;
+  readonly dashboardLink = signal(appRoutes.login);
+
+  constructor() {
+    effect(() => {
+      this.profileService.userProfile();
+      void this.profileService.getDefaultHomeRouteForUser().then((route) => {
+        this.dashboardLink.set(route);
+      });
+    });
   }
 
-  get dashboardLink(): string {
-    return appRoutes.adminDashboard;
+  ngAfterViewInit(): void {
+    this.exposePrimaryNavbarHeight();
   }
 
   logout(): void {

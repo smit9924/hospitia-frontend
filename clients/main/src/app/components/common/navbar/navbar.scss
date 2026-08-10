@@ -33,6 +33,12 @@
     }
   }
 
+  .auth-actions {
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+
   .logo-full {
     display: block;
   }
