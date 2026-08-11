@@ -69,6 +69,15 @@ export class Auth {
     );
   }
 
+  resetPassword(token: string, newPassword: string): Observable<{ message: string }> {
+    const includeAuthTokenContext = new HttpContext().set(IncludeAuthToken, false);
+    return this.http.post<{ message: string }>(
+      apiRoutes.auth.resetPassword,
+      { token, newPassword },
+      { context: includeAuthTokenContext },
+    );
+  }
+
   setLoginSession(data: LoginApiResponse): void {
     this.setAccessTokenSession(data.accessToken, data.accessTokenExpiry);
     this.setRefreshTokenSession(data.refreshToken, data.refreshTokenExpiry);

@@ -3,6 +3,7 @@ import { StyleGuide } from './components/style-guide/style-guide/style-guide';
 import { Login } from './components/auth/login/login';
 import { Signup } from './components/auth/signup/signup';
 import { ForgotPassword } from './components/auth/forgot-password/forgot-password';
+import { ResetPassword } from './components/auth/reset-password/reset-password';
 import { OwnerDashboard } from './components/dashboards/owner-dashboard/owner-dashboard';
 import { CustomerDashboard } from './components/dashboards/customer-dashboard/customer-dashboard';
 import { ManagerDashboard } from './components/dashboards/manager-dashboard/manager-dashboard';
@@ -48,6 +49,11 @@ export const routes: Routes = [
       {
         path: 'forgot-password',
         component: ForgotPassword,
+        canActivate: [authRedirectionGuard],
+      },
+      {
+        path: 'reset-password',
+        component: ResetPassword,
         canActivate: [authRedirectionGuard],
       },
     ],
