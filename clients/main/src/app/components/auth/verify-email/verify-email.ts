@@ -74,15 +74,14 @@ export class VerifyEmail implements OnInit {
           await this.profileService.loadProfile();
           await this.profileService.redirectToDefaultHome();
         },
-        error: (error: HttpErrorResponse) => {
+        error: async (error: HttpErrorResponse) => {
           const errorRes = error.error as ApiErrorResponse<unknown>;
 
           if (errorRes?.errorCode === ErrorCodes.INVALID_OTP) {
             this.showBanner($localize`Invalid or expired OTP. Please try again.`);
           } else if (errorRes?.errorCode === ErrorCodes.EMAIL_ALREADY_VERIFIED) {
-            void this.profileService.loadProfile().then(() => {
-              void this.profileService.redirectToDefaultHome();
-            });
+            await void this.profileService.loadProfile();
+            await void this.profileService.redirectToDefaultHome();
           } else {
             throw error;
           }
