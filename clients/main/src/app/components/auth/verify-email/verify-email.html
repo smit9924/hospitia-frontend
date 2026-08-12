@@ -1,0 +1,89 @@
+<main class="verify-email-page min-h-100 w-100 content d-flex justify-center align-center">
+  <mat-card class="verify-email-card w-100 rounded-12">
+    <mat-card-header class="d-flex justify-center mb-24">
+      <mat-card-title>
+        <h1 id="verify-email-heading" class="heading-large text-center" i18n>Verify Email</h1>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="mb-24">
+        <app-banner #verifyEmailBanner>
+          <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+        </app-banner>
+      </div>
+
+      <div class="d-flex flex-column gap-24">
+        <p class="body-large text-secondary text-center line-height-spaced" i18n>
+          Enter the one-time password sent to your email address to verify your account.
+        </p>
+
+        <form
+          aria-labelledby="verify-email-heading"
+          [formGroup]="verifyEmailForm"
+          (ngSubmit)="verifyOtp()"
+        >
+          <div class="d-flex flex-column gap-24">
+            <mat-form-field class="w-100">
+              <mat-label i18n>OTP</mat-label>
+              <mat-icon svgIcon="mail" matPrefix class="verify-email-icon" aria-hidden="true">
+              </mat-icon>
+              <input
+                matInput
+                formControlName="otp"
+                type="text"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                maxlength="6"
+                placeholder="Enter 6-digit OTP"
+                i18n-placeholder
+              />
+              @if (verifyEmailForm.get('otp')?.hasError('required')) {
+                <mat-error i18n>OTP is required</mat-error>
+              } @else if (verifyEmailForm.get('otp')?.hasError('pattern')) {
+                <mat-error i18n>Please enter a valid 6-digit OTP</mat-error>
+              }
+            </mat-form-field>
+
+            <button
+              mat-raised-button
+              matButton="filled"
+              class="w-100"
+              type="submit"
+              [disabled]="verifyEmailForm.invalid"
+              i18n
+            >
+              Verify Email
+            </button>
+          </div>
+        </form>
+
+        <div class="resend-panel d-flex flex-column align-center gap-16 p-16 rounded-8 w-100">
+          @if (resendSecondsLeft() > 0) {
+            <p class="body-medium text-secondary text-center" i18n>
+              Did not receive the OTP? You can resend it in
+              {{ resendSecondsLeft() | number: '1.0-0' }} seconds.
+            </p>
+
+            <button mat-raised-button matButton="outlined" type="button" disabled i18n>
+              Resend OTP
+            </button>
+          } @else {
+            <p class="body-medium text-secondary text-center" i18n>Did not receive the OTP?</p>
+
+            <button
+              mat-raised-button
+              matButton="outlined"
+              type="button"
+              (click)="resendOtp()"
+              i18n
+            >
+              Resend OTP
+            </button>
+          }
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</main>
+  

@@ -39,4 +39,18 @@ export class User {
   changePassword(changePasswordReq: ChangePasswordReq): Observable<null> {
     return this.http.put<null>(apiRoutes.users.changePassword, changePasswordReq);
   }
+
+  /**
+   * Request an OTP for verifying the authenticated user's email address.
+   */
+  requestEmailVerificationOtp(): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(apiRoutes.users.requestEmailVerificationOtp, {});
+  }
+
+  /**
+   * Verify the authenticated user's email address using an OTP.
+   */
+  verifyEmailOtp(otp: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(apiRoutes.users.verifyEmailOtp, { otp });
+  }
 }

@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, RedirectCommand, Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { Profile } from '../../services/profile';
+import { appRoutes } from '../../data/app-routes';
 
 export const authRedirectionGuard: CanActivateFn = async (_route, _state) => {
   const router = inject(Router);
@@ -14,6 +15,8 @@ export const authRedirectionGuard: CanActivateFn = async (_route, _state) => {
       // If user profile data or role is not available,
       // then consider the user as unauthorized and grand access to auth routes.
       return true;
+    } else if (!userProfileData.isEmailVerified) {
+      return new RedirectCommand(router.parseUrl(appRoutes.verifyEmail));
     } else {
       const defaultHomeRoute = await profileService.getDefaultHomeRouteForUser();
       return new RedirectCommand(router.parseUrl(defaultHomeRoute));

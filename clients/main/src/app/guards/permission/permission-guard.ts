@@ -6,6 +6,7 @@ import { appRoutes } from '../../data/app-routes';
 
 export const permissionGuard: CanActivateFn = async (route, _state) => {
   const permission: UserType[] | null | undefined = route.data?.['requiredPermission'];
+  const requireEmailVerified: boolean = route.data?.['requireEmailVerified'] !== false;
   const profileService = inject(Profile);
   const router = inject(Router);
   const userProfileData = profileService.userProfile();
@@ -21,6 +22,8 @@ export const permissionGuard: CanActivateFn = async (route, _state) => {
   ) {
     // If user profile data or role is not available, then consider the user as unauthorized and deny access.
     return new RedirectCommand(router.parseUrl(appRoutes.login));
+  } else if (requireEmailVerified && !userProfileData.isEmailVerified) {
+    return new RedirectCommand(router.parseUrl(appRoutes.verifyEmail));
   } else if (permission.includes(userProfileData.role)) {
     // Check if the user's role matches any of the required permissions for the route.
     return true;

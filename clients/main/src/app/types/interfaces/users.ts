@@ -7,6 +7,7 @@ export interface UserProfileDto {
   guid: string;
   first_name: string | null;
   last_name: string | null;
+  isEmailVerified: boolean;
 }
 
 export interface UserProfileUpdate {

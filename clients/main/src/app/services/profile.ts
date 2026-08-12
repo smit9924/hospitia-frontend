@@ -71,10 +71,14 @@ export class Profile {
   async getDefaultHomeRouteForUser(): Promise<string> {
     const profileData = this.userProfile();
 
-    // If theuser profile is null, the user should be logged out.
+    // If the user profile is null, the user should be logged out.
     // Once logged out, no further action is required, and the login route will be returned by default.
     if (profileData === null) {
       return appRoutes.login;
+    }
+
+    if (!profileData.isEmailVerified) {
+      return appRoutes.verifyEmail;
     }
 
     switch (profileData.role) {

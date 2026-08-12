@@ -4,4 +4,5 @@ export const environment = {
   version: 'DEVELOPMENT',
   authServiceBaseUrl: 'http://auth.localhost/api/v1',
   forgotPasswordResendTimeoutSeconds: 0,
+  emailVerificationResendTimeoutSeconds: 15,
 };

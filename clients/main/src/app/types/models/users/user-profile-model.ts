@@ -7,6 +7,7 @@ export class UserProfileModel {
   guid = '';
   firstName: string | null = null;
   lastName: string | null = null;
+  isEmailVerified = false;
 
   constructor(data: Partial<UserProfileModel>) {
     Object.assign(this, data);

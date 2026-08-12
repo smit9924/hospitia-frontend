@@ -20,5 +20,7 @@ export const apiRoutes = {
     profile: `${apiBaseUrls.user}/users/profile`,
     usernameAvailability: `${apiBaseUrls.user}/users/check-username-availability`,
     changePassword: `${apiBaseUrls.user}/users/change-password`,
+    requestEmailVerificationOtp: `${apiBaseUrls.user}/users/request-email-verification-otp`,
+    verifyEmailOtp: `${apiBaseUrls.user}/users/verify-email-otp`,
   },
 } as const;
