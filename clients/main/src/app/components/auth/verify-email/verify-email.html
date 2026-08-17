@@ -50,8 +50,8 @@
               matButton="filled"
               class="w-100"
               type="submit"
-              [disabled]="verifyEmailForm.invalid"
               i18n
+              [disabled]="verifyEmailForm.invalid"
             >
               Verify Email
             </button>
@@ -71,13 +71,7 @@
           } @else {
             <p class="body-medium text-secondary text-center" i18n>Did not receive the OTP?</p>
 
-            <button
-              mat-raised-button
-              matButton="outlined"
-              type="button"
-              (click)="resendOtp()"
-              i18n
-            >
+            <button mat-raised-button matButton="outlined" type="button" i18n (click)="resendOtp()">
               Resend OTP
             </button>
           }
@@ -86,4 +80,3 @@
     </mat-card-content>
   </mat-card>
 </main>
-  

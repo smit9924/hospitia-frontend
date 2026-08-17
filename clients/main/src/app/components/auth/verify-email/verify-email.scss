@@ -1,24 +1,24 @@
 .verify-email-page {
-    background-color: var(--mat-sys-surface-container-low);
+  background-color: var(--mat-sys-surface-container-low);
 }
 
 .verify-email-card {
-    max-width: 480px;
-    background-color: var(--mat-sys-surface-container);
-    border: 1px solid var(--mat-sys-outline-variant);
+  max-width: 480px;
+  background-color: var(--mat-sys-surface-container);
+  border: 1px solid var(--mat-sys-outline-variant);
 }
 
 .verify-email-icon {
-    color: var(--mat-sys-primary);
+  color: var(--mat-sys-primary);
 }
 
 .resend-panel {
-    background-color: var(--mat-sys-surface-container-high);
-    border: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface-container-high);
+  border: 1px solid var(--mat-sys-outline-variant);
 }
 
 @media (max-width: 576px) {
-    .verify-email-card {
-        max-width: 100%;
-    }
+  .verify-email-card {
+    max-width: 100%;
+  }
 }
