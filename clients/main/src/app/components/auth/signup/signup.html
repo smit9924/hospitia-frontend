@@ -9,6 +9,14 @@
       </div>
 
       @if (enableOwnerSignup) {
+        <h1 id="signup-heading" class="heading-large mb-24 d-flex justify-center">
+          @if (selectedUserType() === UserType.CUSTOMER) {
+            <div i18n>Sign Up as Customer</div>
+          } @else {
+            <div i18n>Sign Up as Owner</div>
+          }
+        </h1>
+
         <mat-tab-group
           class="signup-tabs"
           dynamicHeight
@@ -31,206 +39,340 @@
           </mat-tab>
         </mat-tab-group>
       } @else {
+        <h1 id="signup-heading" class="heading-large mb-24 d-flex justify-center" i18n>Sign Up</h1>
         <ng-container *ngTemplateOutlet="customerSignupPanel" />
       }
+
+      <ng-container *ngTemplateOutlet="socialSignup" />
     </mat-card-content>
   </mat-card>
 </main>
 
-<!-- TEMPLATE: Customer signup panel -->
 <ng-template #customerSignupPanel>
   <div class="signup-panel pt-24">
-    @if (enableOwnerSignup) {
-      <h1 id="customer-signup-heading" class="heading-large mb-24 d-flex justify-center" i18n>
-        Sign Up as Customer
-      </h1>
-    } @else {
-      <h1 id="signup-heading" class="heading-large mb-24 d-flex justify-center" i18n>Sign Up</h1>
-    }
-
     <form
-      [attr.aria-labelledby]="enableOwnerSignup ? 'customer-signup-heading' : 'signup-heading'"
-      (ngSubmit)="signup()"
+      aria-labelledby="signup-heading"
+      [formGroup]="customerSignupForm"
+      (ngSubmit)="signupCustomer()"
     >
-      <ng-container *ngTemplateOutlet="commonSignupFields" />
-      <ng-container *ngTemplateOutlet="signupPanelFooter" />
+      <div class="d-flex flex-column gap-24">
+        <mat-form-field class="w-100">
+          <mat-label i18n>First Name</mat-label>
+          <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            matInput
+            formControlName="firstName"
+            type="text"
+            placeholder="Enter your first name"
+            autocomplete="given-name"
+            i18n-placeholder
+          />
+          @if (customerSignupForm.get('firstName')?.hasError('required')) {
+            <mat-error i18n>First name is required</mat-error>
+          } @else if (customerSignupForm.get('firstName')?.hasError('minlength')) {
+            <mat-error i18n>First name must be at least 2 characters</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="w-100">
+          <mat-label i18n>Last Name</mat-label>
+          <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            matInput
+            formControlName="lastName"
+            type="text"
+            placeholder="Enter your last name"
+            autocomplete="family-name"
+            i18n-placeholder
+          />
+          @if (customerSignupForm.get('lastName')?.hasError('required')) {
+            <mat-error i18n>Last name is required</mat-error>
+          } @else if (customerSignupForm.get('lastName')?.hasError('minlength')) {
+            <mat-error i18n>Last name must be at least 2 characters</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field subscriptSizing="dynamic" class="w-100">
+          <mat-label i18n>Username</mat-label>
+          <mat-icon svgIcon="idCard" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            matInput
+            formControlName="username"
+            type="text"
+            placeholder="Choose a username"
+            autocomplete="username"
+            i18n-placeholder
+          />
+          <mat-hint align="end"
+            >{{ customerSignupForm.get('username')?.value?.length ?? 0 | number }} /
+            {{ usernameMaxLength | number }}</mat-hint
+          >
+          @if (customerSignupForm.get('username')?.hasError('required')) {
+            <mat-error i18n>Username is required</mat-error>
+          } @else if (customerSignupForm.get('username')?.hasError('minlength')) {
+            <mat-error i18n>Username must be at least 3 characters</mat-error>
+          } @else if (customerSignupForm.get('username')?.hasError('maxlength')) {
+            <mat-error i18n>Username must be at most 50 characters</mat-error>
+          } @else if (customerSignupForm.get('username')?.hasError('usernameInvalid')) {
+            <mat-error class="d-flex">
+              <div class="d-flex flex-column h-100 w-100">
+                <div>{{ usernameMustBeLabel }}:</div>
+                <ul class="p-0 m-0 pl-16">
+                  @for (
+                    msg of customerSignupForm.get('username')?.errors?.['usernameInvalid'];
+                    track msg
+                  ) {
+                    <li>{{ msg }}</li>
+                  }
+                </ul>
+              </div>
+            </mat-error>
+          } @else if (customerSignupForm.get('username')?.hasError('usernameTaken')) {
+            <mat-error>{{
+              customerSignupForm.get('username')?.errors?.['usernameTaken']
+            }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="w-100">
+          <mat-label i18n>Email</mat-label>
+          <mat-icon svgIcon="mail" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            i18n-placeholder
+          />
+          @if (customerSignupForm.get('email')?.hasError('required')) {
+            <mat-error i18n>Email is required </mat-error>
+          } @else if (customerSignupForm.get('email')?.hasError('email')) {
+            <mat-error i18n>Please enter a valid email address </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field subscriptSizing="dynamic" class="w-100">
+          <mat-label i18n>Password</mat-label>
+          <mat-icon svgIcon="lock" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            type="{{ showCustomerPassword ? 'text' : 'password' }}"
+            matInput
+            formControlName="password"
+            placeholder="Enter a strong password"
+            autocomplete="new-password"
+            i18n-placeholder
+          />
+          <button
+            matIconButton
+            matSuffix
+            type="button"
+            [attr.aria-label]="showCustomerPassword ? 'Hide password' : 'Show password'"
+            [attr.aria-pressed]="showCustomerPassword"
+            (click)="toggleCustomerPasswordVisibility()"
+          >
+            @if (showCustomerPassword) {
+              <mat-icon svgIcon="visibility"></mat-icon>
+            } @else {
+              <mat-icon svgIcon="visibilityOff"></mat-icon>
+            }
+          </button>
+          @if (customerSignupForm.get('password')?.hasError('required')) {
+            <mat-error i18n>Password is required</mat-error>
+          } @else if (customerSignupForm.get('password')?.hasError('passwordStrength')) {
+            <mat-error class="d-flex">
+              <div class="d-flex flex-column h-100 w-100">
+                <div>{{ passwordMustBeLabel }}:</div>
+                <ul class="p-0 m-0 pl-16">
+                  @for (
+                    msg of customerSignupForm.get('password')?.errors?.['passwordStrength'];
+                    track msg
+                  ) {
+                    <li>{{ msg }}</li>
+                  }
+                </ul>
+              </div>
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <button
+        mat-raised-button
+        matButton="filled"
+        class="w-100 mt-24"
+        type="submit"
+        i18n
+        [disabled]="customerSignupForm.invalid"
+      >
+        Sign Up
+      </button>
     </form>
   </div>
 </ng-template>
 
-<!-- TEMPLATE: Owner signup panel -->
 <ng-template #ownerSignupPanel>
   <div class="signup-panel pt-24">
-    <h1 id="owner-signup-heading" class="heading-large mb-24 d-flex justify-center" i18n>
-      Sign Up as Owner
-    </h1>
+    <form
+      aria-labelledby="signup-heading"
+      [formGroup]="ownerSignupForm"
+      (ngSubmit)="signupOwner()"
+    >
+      <div class="d-flex flex-column gap-24">
+        <mat-form-field class="w-100">
+          <mat-label i18n>First Name</mat-label>
+          <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            matInput
+            formControlName="firstName"
+            type="text"
+            placeholder="Enter your first name"
+            autocomplete="given-name"
+            i18n-placeholder
+          />
+          @if (ownerSignupForm.get('firstName')?.hasError('required')) {
+            <mat-error i18n>First name is required</mat-error>
+          } @else if (ownerSignupForm.get('firstName')?.hasError('minlength')) {
+            <mat-error i18n>First name must be at least 2 characters</mat-error>
+          }
+        </mat-form-field>
 
-    <form aria-labelledby="owner-signup-heading" (ngSubmit)="signup()">
-      <ng-container *ngTemplateOutlet="commonSignupFields" />
-      <ng-container *ngTemplateOutlet="signupPanelFooter" />
+        <mat-form-field class="w-100">
+          <mat-label i18n>Last Name</mat-label>
+          <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            matInput
+            formControlName="lastName"
+            type="text"
+            placeholder="Enter your last name"
+            autocomplete="family-name"
+            i18n-placeholder
+          />
+          @if (ownerSignupForm.get('lastName')?.hasError('required')) {
+            <mat-error i18n>Last name is required</mat-error>
+          } @else if (ownerSignupForm.get('lastName')?.hasError('minlength')) {
+            <mat-error i18n>Last name must be at least 2 characters</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field subscriptSizing="dynamic" class="w-100">
+          <mat-label i18n>Username</mat-label>
+          <mat-icon svgIcon="idCard" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            matInput
+            formControlName="username"
+            type="text"
+            placeholder="Choose a username"
+            autocomplete="username"
+            i18n-placeholder
+          />
+          <mat-hint align="end"
+            >{{ ownerSignupForm.get('username')?.value?.length ?? 0 | number }} /
+            {{ usernameMaxLength | number }}</mat-hint
+          >
+          @if (ownerSignupForm.get('username')?.hasError('required')) {
+            <mat-error i18n>Username is required</mat-error>
+          } @else if (ownerSignupForm.get('username')?.hasError('minlength')) {
+            <mat-error i18n>Username must be at least 3 characters</mat-error>
+          } @else if (ownerSignupForm.get('username')?.hasError('maxlength')) {
+            <mat-error i18n>Username must be at most 50 characters</mat-error>
+          } @else if (ownerSignupForm.get('username')?.hasError('usernameInvalid')) {
+            <mat-error class="d-flex">
+              <div class="d-flex flex-column h-100 w-100">
+                <div>{{ usernameMustBeLabel }}:</div>
+                <ul class="p-0 m-0 pl-16">
+                  @for (
+                    msg of ownerSignupForm.get('username')?.errors?.['usernameInvalid'];
+                    track msg
+                  ) {
+                    <li>{{ msg }}</li>
+                  }
+                </ul>
+              </div>
+            </mat-error>
+          } @else if (ownerSignupForm.get('username')?.hasError('usernameTaken')) {
+            <mat-error>{{ ownerSignupForm.get('username')?.errors?.['usernameTaken'] }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="w-100">
+          <mat-label i18n>Email</mat-label>
+          <mat-icon svgIcon="mail" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            i18n-placeholder
+          />
+          @if (ownerSignupForm.get('email')?.hasError('required')) {
+            <mat-error i18n>Email is required </mat-error>
+          } @else if (ownerSignupForm.get('email')?.hasError('email')) {
+            <mat-error i18n>Please enter a valid email address </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field subscriptSizing="dynamic" class="w-100">
+          <mat-label i18n>Password</mat-label>
+          <mat-icon svgIcon="lock" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+          <input
+            type="{{ showOwnerPassword ? 'text' : 'password' }}"
+            matInput
+            formControlName="password"
+            placeholder="Enter a strong password"
+            autocomplete="new-password"
+            i18n-placeholder
+          />
+          <button
+            matIconButton
+            matSuffix
+            type="button"
+            [attr.aria-label]="showOwnerPassword ? 'Hide password' : 'Show password'"
+            [attr.aria-pressed]="showOwnerPassword"
+            (click)="toggleOwnerPasswordVisibility()"
+          >
+            @if (showOwnerPassword) {
+              <mat-icon svgIcon="visibility"></mat-icon>
+            } @else {
+              <mat-icon svgIcon="visibilityOff"></mat-icon>
+            }
+          </button>
+          @if (ownerSignupForm.get('password')?.hasError('required')) {
+            <mat-error i18n>Password is required</mat-error>
+          } @else if (ownerSignupForm.get('password')?.hasError('passwordStrength')) {
+            <mat-error class="d-flex">
+              <div class="d-flex flex-column h-100 w-100">
+                <div>{{ passwordMustBeLabel }}:</div>
+                <ul class="p-0 m-0 pl-16">
+                  @for (
+                    msg of ownerSignupForm.get('password')?.errors?.['passwordStrength'];
+                    track msg
+                  ) {
+                    <li>{{ msg }}</li>
+                  }
+                </ul>
+              </div>
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <button
+        mat-raised-button
+        matButton="filled"
+        class="w-100 mt-24"
+        type="submit"
+        i18n
+        [disabled]="ownerSignupForm.invalid"
+      >
+        Sign Up
+      </button>
     </form>
   </div>
 </ng-template>
 
-<!-- TEMPLATE: Common signup fields -->
-<ng-template #commonSignupFields>
-  <div class="d-flex flex-column gap-24" [formGroup]="signupForm">
-    <!-- TEXT FIELD: First Name -->
-    <mat-form-field class="w-100">
-      <mat-label i18n>First Name</mat-label>
-      <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-      <input
-        matInput
-        formControlName="firstName"
-        type="text"
-        placeholder="Enter your first name"
-        autocomplete="given-name"
-        i18n-placeholder
-      />
-      @if (signupForm.get('firstName')?.hasError('required')) {
-        <mat-error i18n>First name is required</mat-error>
-      } @else if (signupForm.get('firstName')?.hasError('minlength')) {
-        <mat-error i18n>First name must be at least 2 characters</mat-error>
-      }
-    </mat-form-field>
-
-    <!-- TEXT FIELD: Last Name -->
-    <mat-form-field class="w-100">
-      <mat-label i18n>Last Name</mat-label>
-      <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-      <input
-        matInput
-        formControlName="lastName"
-        type="text"
-        placeholder="Enter your last name"
-        autocomplete="family-name"
-        i18n-placeholder
-      />
-      @if (signupForm.get('lastName')?.hasError('required')) {
-        <mat-error i18n>Last name is required</mat-error>
-      } @else if (signupForm.get('lastName')?.hasError('minlength')) {
-        <mat-error i18n>Last name must be at least 2 characters</mat-error>
-      }
-    </mat-form-field>
-
-    <!-- TEXT FIELD: Username -->
-    <mat-form-field subscriptSizing="dynamic" class="w-100">
-      <mat-label i18n>Username</mat-label>
-      <mat-icon svgIcon="idCard" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-      <input
-        matInput
-        formControlName="username"
-        type="text"
-        placeholder="Choose a username"
-        autocomplete="username"
-        i18n-placeholder
-      />
-      <mat-hint align="end"
-        >{{ signupForm.get('username')?.value?.length ?? 0 | number }} /
-        {{ usernameMaxLength | number }}</mat-hint
-      >
-
-      @if (signupForm.get('username')?.hasError('required')) {
-        <mat-error i18n>Username is required</mat-error>
-      } @else if (signupForm.get('username')?.hasError('minlength')) {
-        <mat-error i18n>Username must be at least 3 characters</mat-error>
-      } @else if (signupForm.get('username')?.hasError('maxlength')) {
-        <mat-error i18n>Username must be at most 50 characters</mat-error>
-      } @else if (signupForm.get('username')?.hasError('usernameInvalid')) {
-        <mat-error class="d-flex">
-          <div class="d-flex flex-column h-100 w-100">
-            <div>{{ usernameMustBeLabel }}:</div>
-            <ul class="p-0 m-0 pl-16">
-              @for (msg of signupForm.get('username')?.errors?.['usernameInvalid']; track msg) {
-                <li>{{ msg }}</li>
-              }
-            </ul>
-          </div>
-        </mat-error>
-      } @else if (signupForm.get('username')?.hasError('usernameTaken')) {
-        <mat-error>{{ signupForm.get('username')?.errors?.['usernameTaken'] }}</mat-error>
-      }
-    </mat-form-field>
-
-    <!-- TEXT FIELD: Email -->
-    <mat-form-field class="w-100">
-      <mat-label i18n>Email</mat-label>
-      <mat-icon svgIcon="mail" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-      <input
-        matInput
-        formControlName="email"
-        type="email"
-        placeholder="Enter your email"
-        autocomplete="email"
-        i18n-placeholder
-      />
-      @if (signupForm.get('email')?.hasError('required')) {
-        <mat-error i18n>Email is required </mat-error>
-      } @else if (signupForm.get('email')?.hasError('email')) {
-        <mat-error i18n>Please enter a valid email address </mat-error>
-      }
-    </mat-form-field>
-
-    <!-- TEXT FIELD: Password -->
-    <mat-form-field subscriptSizing="dynamic" class="w-100">
-      <mat-label i18n>Password</mat-label>
-      <mat-icon svgIcon="lock" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-      <input
-        type="{{ showPassword ? 'text' : 'password' }}"
-        matInput
-        formControlName="password"
-        placeholder="Enter a strong password"
-        autocomplete="new-password"
-        i18n-placeholder
-      />
-      <button
-        matIconButton
-        matSuffix
-        type="button"
-        aria-label="show password"
-        [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-        [attr.aria-pressed]="showPassword"
-        (click)="togglePasswordVisibility()"
-      >
-        @if (showPassword) {
-          <mat-icon svgIcon="visibility"></mat-icon>
-        } @else {
-          <mat-icon svgIcon="visibilityOff"></mat-icon>
-        }
-      </button>
-
-      @if (signupForm.get('password')?.hasError('required')) {
-        <mat-error i18n>Password is required</mat-error>
-      } @else if (signupForm.get('password')?.hasError('passwordStrength')) {
-        <mat-error class="d-flex">
-          <div class="d-flex flex-column h-100 w-100">
-            <div>{{ passwordMustBeLabel }}:</div>
-            <ul class="p-0 m-0 pl-16">
-              @for (msg of signupForm.get('password')?.errors?.['passwordStrength']; track msg) {
-                <li>{{ msg }}</li>
-              }
-            </ul>
-          </div>
-        </mat-error>
-      }
-    </mat-form-field>
-  </div>
-</ng-template>
-
-<!-- TEMPLATE: Signup panel footer -->
-<ng-template #signupPanelFooter>
-  <!-- BUTTON: Sign up -->
-  <button
-    mat-raised-button
-    matButton="filled"
-    class="w-100 mt-24"
-    type="submit"
-    i18n
-    [disabled]="signupForm.invalid"
-  >
-    Sign Up
-  </button>
-
+<ng-template #socialSignup>
   <div class="d-flex w-100 gap-16 align-center my-24">
     <mat-divider class="grow-1" />
     <span class="body-small" i18n>OR CONTINUE WITH</span>

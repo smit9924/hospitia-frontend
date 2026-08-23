@@ -21,7 +21,6 @@ import {
   GenericSnackbarType,
 } from '../../../types/enums/common';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
-import { ConfirmPasswordMatcher } from '../../../directives/validators/password-confirmation/password-confirmation';
 import { usernameAvailabilityValidator } from '../../../directives/validators/username-availability/username-availability';
 import { Profile } from '../../../services/profile';
 import { passwordStrengthValidator } from '../../../directives/validators/password-strength-check/password-strength-check';
@@ -34,6 +33,15 @@ import { usernameValidator } from '../../../directives/validators/username/usern
 import { User } from '../../../services/user/user';
 import { environment } from '../../../../environments/environment';
 import { UserType } from '../../../types/enums/auth';
+import { UserSignup } from '../../../types/interfaces/users';
+
+type SignupForm = FormGroup<{
+  firstName: FormControl<string>;
+  lastName: FormControl<string>;
+  username: FormControl<string>;
+  email: FormControl<string>;
+  password: FormControl<string>;
+}>;
 
 @Component({
   selector: 'app-signup',
@@ -57,123 +65,199 @@ import { UserType } from '../../../types/enums/auth';
   styleUrl: './signup.scss',
 })
 export class Signup {
-  private dialogService = inject(Dialog);
-  private snackbarService = inject(Snackbar);
-  private profileService = inject(Profile);
-  private userService = inject(User);
-  private authService = inject(Auth);
+  private readonly dialogService = inject(Dialog);
+  private readonly snackbarService = inject(Snackbar);
+  private readonly profileService = inject(Profile);
+  private readonly userService = inject(User);
+  private readonly authService = inject(Auth);
+
   @ViewChild('signupBanner') banner!: Banner;
+
   protected readonly appRoutes = appRoutes;
   protected readonly enableOwnerSignup = environment.enableOwnerSignup;
   protected readonly UserType = UserType;
   protected readonly selectedUserType = signal(UserType.CUSTOMER);
-  protected confirmPasswordMatcher = new ConfirmPasswordMatcher();
-  protected firstNameMaxLength = 50;
-  protected lastNameMaxLength = 50;
-  protected usernameMaxLength = 50;
-  protected showPassword = false;
+  protected readonly firstNameMaxLength = 50;
+  protected readonly lastNameMaxLength = 50;
+  protected readonly usernameMaxLength = 50;
+  protected readonly usernameMustBeLabel = $localize`Username`;
+  protected readonly passwordMustBeLabel = $localize`Password must be`;
+  protected showCustomerPassword = false;
+  protected showOwnerPassword = false;
   protected bannerMessage = '';
-  protected usernameMustBeLabel = $localize`Username`;
-  protected passwordMustBeLabel = $localize`Password must be`;
-  signupForm = new FormGroup({
-    firstName: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(this.firstNameMaxLength),
-    ]),
-    lastName: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(this.lastNameMaxLength),
-    ]),
-    username: new FormControl(
-      '',
-      [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(this.usernameMaxLength),
-        usernameValidator(),
-      ],
-      [usernameAvailabilityValidator(this.profileService, this.userService).bind(this)],
-    ),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, passwordStrengthValidator()]),
-  });
+
+  readonly customerSignupForm = this.createSignupForm();
+  readonly ownerSignupForm = this.createSignupForm();
 
   onTabChange(index: number): void {
     this.selectedUserType.set(index === 0 ? UserType.CUSTOMER : UserType.OWNER);
   }
 
-  togglePasswordVisibility(): void {
-    this.showPassword = !this.showPassword;
+  toggleCustomerPasswordVisibility(): void {
+    this.showCustomerPassword = !this.showCustomerPassword;
   }
 
-  signup(): void {
-    const firstName = this.signupForm?.value?.firstName;
-    const lastName = this.signupForm?.value?.lastName;
-    const email = this.signupForm?.value?.email;
-    const username = this.signupForm?.value?.username;
-    const password = this.signupForm?.value?.password;
-    const userType = this.enableOwnerSignup ? this.selectedUserType() : UserType.CUSTOMER;
+  toggleOwnerPasswordVisibility(): void {
+    this.showOwnerPassword = !this.showOwnerPassword;
+  }
 
-    if (
-      this.signupForm.valid &&
-      firstName != null &&
-      lastName != null &&
-      email != null &&
-      username != null &&
-      password != null
-    ) {
-      this.authService
-        .signup(
-          {
-            firstName,
-            lastName,
-            email,
-            username,
-            password,
-          },
-          userType,
-        )
-        .subscribe({
-          next: async (data) => {
-            const dataObj = new LoginApiResponse(data);
-            this.authService.setLoginSession(dataObj);
-            await this.profileService.loadProfile();
-            await this.profileService.redirectToDefaultHome();
-            this.showSuccessSnackbar();
-          },
-          error: (error: HttpErrorResponse) => {
-            const errorRes = error.error as ApiErrorResponse<unknown>;
-            if (error.status === HttpStatusCode.UnprocessableEntity) {
-              this.showBanner(
-                $localize`Please ensure all fields are filled out correctly before submitting the form.`,
-              );
-            } else {
-              if (errorRes.errorCode === ErrorCodes.USER_WITH_USENAME_ALREADY_EXIST) {
-                this.showBanner(
-                  $localize`Username is already taken. Please choose a different username.`,
-                );
-              } else if (errorRes.errorCode === ErrorCodes.USER_WITH_EMAIL_ALREADY_EXIST) {
-                this.showBanner(
-                  $localize`Email is already registered. Please use a different email.`,
-                );
-              } else if (errorRes.errorCode === ErrorCodes.WEAK_PASSWORD) {
-                this.showBanner(
-                  $localize`Password is too weak. Please choose a stronger password.`,
-                );
-              } else {
-                throw error;
-              }
-            }
-          },
-        });
-    } else {
+  signupCustomer(): void {
+    if (!this.customerSignupForm.valid) {
       this.dialogService.openOkDialog(
         $localize`Signup Failed`,
         $localize`Please ensure all fields are filled out correctly before submitting the form.`,
       );
+      return;
     }
+
+    const payload: UserSignup = this.customerSignupForm.getRawValue();
+
+    this.authService.signupCustomer(payload).subscribe({
+      next: async (data) => {
+        const dataObj = new LoginApiResponse(data);
+        this.authService.setLoginSession(dataObj);
+        await this.profileService.loadProfile();
+        await this.profileService.redirectToDefaultHome();
+        this.showSuccessSnackbar();
+      },
+      error: (error: HttpErrorResponse) => {
+        const errorRes = error.error as ApiErrorResponse<unknown>;
+
+        if (error.status === HttpStatusCode.UnprocessableEntity) {
+          this.showBanner(
+            $localize`Please ensure all fields are filled out correctly before submitting the form.`,
+          );
+          return;
+        }
+
+        if (errorRes.errorCode === ErrorCodes.USER_WITH_USENAME_ALREADY_EXIST) {
+          this.showBanner(
+            $localize`Username is already taken. Please choose a different username.`,
+          );
+          return;
+        }
+
+        if (errorRes.errorCode === ErrorCodes.USER_WITH_EMAIL_ALREADY_EXIST) {
+          this.showBanner(
+            $localize`Email is already registered. Please use a different email.`,
+          );
+          return;
+        }
+
+        if (errorRes.errorCode === ErrorCodes.WEAK_PASSWORD) {
+          this.showBanner(
+            $localize`Password is too weak. Please choose a stronger password.`,
+          );
+          return;
+        }
+
+        throw error;
+      },
+    });
+  }
+
+  signupOwner(): void {
+    if (!this.ownerSignupForm.valid) {
+      this.dialogService.openOkDialog(
+        $localize`Signup Failed`,
+        $localize`Please ensure all fields are filled out correctly before submitting the form.`,
+      );
+      return;
+    }
+
+    const payload: UserSignup = this.ownerSignupForm.getRawValue();
+
+    this.authService.signupOwner(payload).subscribe({
+      next: async (data) => {
+        const dataObj = new LoginApiResponse(data);
+        this.authService.setLoginSession(dataObj);
+        await this.profileService.loadProfile();
+        await this.profileService.redirectToDefaultHome();
+        this.showSuccessSnackbar();
+      },
+      error: (error: HttpErrorResponse) => {
+        const errorRes = error.error as ApiErrorResponse<unknown>;
+
+        if (error.status === HttpStatusCode.UnprocessableEntity) {
+          this.showBanner(
+            $localize`Please ensure all fields are filled out correctly before submitting the form.`,
+          );
+          return;
+        }
+
+        if (errorRes.errorCode === ErrorCodes.USER_WITH_USENAME_ALREADY_EXIST) {
+          this.showBanner(
+            $localize`Username is already taken. Please choose a different username.`,
+          );
+          return;
+        }
+
+        if (errorRes.errorCode === ErrorCodes.USER_WITH_EMAIL_ALREADY_EXIST) {
+          this.showBanner(
+            $localize`Email is already registered. Please use a different email.`,
+          );
+          return;
+        }
+
+        if (errorRes.errorCode === ErrorCodes.WEAK_PASSWORD) {
+          this.showBanner(
+            $localize`Password is too weak. Please choose a stronger password.`,
+          );
+          return;
+        }
+
+        throw error;
+      },
+    });
+  }
+
+  showComingSoonPopup(): void {
+    this.dialogService.openOkDialog(
+      $localize`Coming Soon`,
+      $localize`Social signup will be soon available.`,
+    );
+  }
+
+  private createSignupForm(): SignupForm {
+    return new FormGroup({
+      firstName: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(this.firstNameMaxLength),
+        ],
+      }),
+      lastName: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(this.lastNameMaxLength),
+        ],
+      }),
+      username: new FormControl(
+        '',
+        {
+          nonNullable: true,
+          validators: [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(this.usernameMaxLength),
+            usernameValidator(),
+          ],
+        },
+        [usernameAvailabilityValidator(this.profileService, this.userService).bind(this)],
+      ) as FormControl<string>,
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      }),
+      password: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, passwordStrengthValidator()],
+      }),
+    });
   }
 
   private showSuccessSnackbar(): void {
@@ -186,13 +270,6 @@ export class Signup {
       duration: GenericSnackbarDuration.MEDIUM,
     });
     this.snackbarService.open(snackbarConfig);
-  }
-
-  showComingSoonPopup(): void {
-    this.dialogService.openOkDialog(
-      $localize`Coming Soon`,
-      $localize`Social signup will be soon available.`,
-    );
   }
 
   private showBanner(message: string, type: BANNER_TYPES = BANNER_TYPES.ERROR): void {
