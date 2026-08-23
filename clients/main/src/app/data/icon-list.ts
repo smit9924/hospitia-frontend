@@ -187,4 +187,16 @@ export const IconList = [
     name: 'settingsBackupRestore',
     src: 'assets/icons/settings-backup-restore.svg',
   },
+  {
+    name: 'search',
+    src: 'assets/icons/search.svg',
+  },
+  {
+    name: 'delete',
+    src: 'assets/icons/delete.svg',
+  },
+  {
+    name: 'moreVert',
+    src: 'assets/icons/more-vert.svg',
+  },
 ];
