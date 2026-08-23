@@ -197,6 +197,6 @@ export const IconList = [
   },
   {
     name: 'moreVert',
-    src: 'assets/icons/more-vert.svg',
+    src: 'assets/icons/moreVert.svg',
   },
 ];
