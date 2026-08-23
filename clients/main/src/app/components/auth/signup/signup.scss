@@ -1,6 +1,14 @@
 .signup-container {
   background-color: var(--mat-sys-secondary-container);
 
+  .signup-tabs {
+    width: 100%;
+  }
+
+  .signup-panel {
+    width: 100%;
+  }
+
   .signup-icon {
     color: var(--mat-sys-primary);
   }

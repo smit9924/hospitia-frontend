@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -6,13 +6,14 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { appRoutes } from '../../../data/app-routes';
 import { Dialog } from '../../../services/dialog';
 import { Snackbar } from '../../../services/snackbar';
 import { Banner } from '../../common/banner/banner';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 import {
   BANNER_TYPES,
@@ -31,6 +32,8 @@ import { ErrorCodes } from '../../../types/enums/error-codes';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { usernameValidator } from '../../../directives/validators/username/username';
 import { User } from '../../../services/user/user';
+import { environment } from '../../../../environments/environment';
+import { UserType } from '../../../types/enums/auth';
 
 @Component({
   selector: 'app-signup',
@@ -43,10 +46,12 @@ import { User } from '../../../services/user/user';
     ReactiveFormsModule,
     MatIconModule,
     MatDividerModule,
+    MatTabsModule,
     RouterLink,
     MatTooltipModule,
     Banner,
     DecimalPipe,
+    NgTemplateOutlet,
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.scss',
@@ -58,7 +63,10 @@ export class Signup {
   private userService = inject(User);
   private authService = inject(Auth);
   @ViewChild('signupBanner') banner!: Banner;
-  protected appRoutes = appRoutes;
+  protected readonly appRoutes = appRoutes;
+  protected readonly enableOwnerSignup = environment.enableOwnerSignup;
+  protected readonly UserType = UserType;
+  protected readonly selectedUserType = signal(UserType.CUSTOMER);
   protected confirmPasswordMatcher = new ConfirmPasswordMatcher();
   protected firstNameMaxLength = 50;
   protected lastNameMaxLength = 50;
@@ -92,6 +100,10 @@ export class Signup {
     password: new FormControl('', [Validators.required, passwordStrengthValidator()]),
   });
 
+  onTabChange(index: number): void {
+    this.selectedUserType.set(index === 0 ? UserType.CUSTOMER : UserType.OWNER);
+  }
+
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
@@ -102,6 +114,7 @@ export class Signup {
     const email = this.signupForm?.value?.email;
     const username = this.signupForm?.value?.username;
     const password = this.signupForm?.value?.password;
+    const userType = this.enableOwnerSignup ? this.selectedUserType() : UserType.CUSTOMER;
 
     if (
       this.signupForm.valid &&
@@ -112,13 +125,16 @@ export class Signup {
       password != null
     ) {
       this.authService
-        .signup({
-          firstName,
-          lastName,
-          email,
-          username,
-          password,
-        })
+        .signup(
+          {
+            firstName,
+            lastName,
+            email,
+            username,
+            password,
+          },
+          userType,
+        )
         .subscribe({
           next: async (data) => {
             const dataObj = new LoginApiResponse(data);

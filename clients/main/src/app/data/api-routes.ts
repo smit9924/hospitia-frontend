@@ -17,6 +17,7 @@ export const apiRoutes = {
 
   users: {
     signup: `${apiBaseUrls.user}/users/signup`,
+    signupCustomer: `${apiBaseUrls.user}/users/signup-customer`,
     profile: `${apiBaseUrls.user}/users/profile`,
     usernameAvailability: `${apiBaseUrls.user}/users/check-username-availability`,
     changePassword: `${apiBaseUrls.user}/users/change-password`,

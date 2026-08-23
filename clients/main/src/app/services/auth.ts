@@ -10,6 +10,7 @@ import { IncludeAuthToken } from '../interceptors/auth/auth-interceptor';
 import { Router } from '@angular/router';
 import { appRoutes } from '../data/app-routes';
 import { UserSignup } from '../types/interfaces/users';
+import { UserType } from '../types/enums/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -47,9 +48,11 @@ export class Auth {
     });
   }
 
-  signup(userSignup: UserSignup): Observable<LoginApiResponseDto> {
+  signup(userSignup: UserSignup, userType: UserType): Observable<LoginApiResponseDto> {
     const includeAuthTokenContext = new HttpContext().set(IncludeAuthToken, false);
-    return this.http.post<LoginApiResponseDto>(apiRoutes.users.signup, userSignup, {
+    const signupUrl =
+      userType === UserType.OWNER ? apiRoutes.users.signup : apiRoutes.users.signupCustomer;
+    return this.http.post<LoginApiResponseDto>(signupUrl, userSignup, {
       context: includeAuthTokenContext,
     });
   }

@@ -1,10 +1,5 @@
 <main class="signup-container min-h-100 min-w-100 content d-flex justify-center align-center">
   <mat-card class="signup-card">
-    <mat-card-header class="d-flex justify-center mb-24">
-      <mat-card-title>
-        <h1 id="signup-heading" class="heading-large" i18n>Sign Up</h1>
-      </mat-card-title>
-    </mat-card-header>
     <mat-card-content>
       <!-- Banner -->
       <div class="mb-24">
@@ -13,219 +8,277 @@
         </app-banner>
       </div>
 
-      <!-- Form: Signup -->
-      <form aria-labelledby="signup-heading" [formGroup]="signupForm" (ngSubmit)="signup()">
-        <div class="d-flex flex-column gap-24">
-          <!-- TEXT FIELD: First Name -->
-          <mat-form-field class="w-100">
-            <mat-label i18n>First Name</mat-label>
-            <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-            <input
-              matInput
-              formControlName="firstName"
-              type="text"
-              placeholder="Enter your first name"
-              autocomplete="given-name"
-              i18n-placeholder
-            />
-            @if (signupForm.get('firstName')?.hasError('required')) {
-              <mat-error i18n>First name is required</mat-error>
-            } @else if (signupForm.get('firstName')?.hasError('minlength')) {
-              <mat-error i18n>First name must be at least 2 characters</mat-error>
-            }
-          </mat-form-field>
-
-          <!-- TEXT FIELD: Last Name -->
-          <mat-form-field class="w-100">
-            <mat-label i18n>Last Name</mat-label>
-            <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-            <input
-              matInput
-              formControlName="lastName"
-              type="text"
-              placeholder="Enter your last name"
-              autocomplete="family-name"
-              i18n-placeholder
-            />
-            @if (signupForm.get('lastName')?.hasError('required')) {
-              <mat-error i18n>Last name is required</mat-error>
-            } @else if (signupForm.get('lastName')?.hasError('minlength')) {
-              <mat-error i18n>Last name must be at least 2 characters</mat-error>
-            }
-          </mat-form-field>
-
-          <!-- TEXT FIELD: Username -->
-          <mat-form-field subscriptSizing="dynamic" class="w-100">
-            <mat-label i18n>Username</mat-label>
-            <mat-icon svgIcon="idCard" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-            <input
-              matInput
-              formControlName="username"
-              type="text"
-              placeholder="Choose a username"
-              autocomplete="username"
-              i18n-placeholder
-            />
-            <mat-hint align="end"
-              >{{ signupForm.get('username')?.value?.length ?? 0 | number }} /
-              {{ usernameMaxLength | number }}</mat-hint
-            >
-
-            @if (signupForm.get('username')?.hasError('required')) {
-              <mat-error i18n>Username is required</mat-error>
-            } @else if (signupForm.get('username')?.hasError('minlength')) {
-              <mat-error i18n>Username must be at least 3 characters</mat-error>
-            } @else if (signupForm.get('username')?.hasError('maxlength')) {
-              <mat-error i18n>Username must be at most 50 characters</mat-error>
-            } @else if (signupForm.get('username')?.hasError('usernameInvalid')) {
-              <mat-error class="d-flex">
-                <div class="d-flex flex-column h-100 w-100">
-                  <div>{{ usernameMustBeLabel }}:</div>
-                  <ul class="p-0 m-0 pl-16">
-                    @for (
-                      msg of signupForm.get('username')?.errors?.['usernameInvalid'];
-                      track msg
-                    ) {
-                      <li>{{ msg }}</li>
-                    }
-                  </ul>
-                </div>
-              </mat-error>
-            } @else if (signupForm.get('username')?.hasError('usernameTaken')) {
-              <mat-error>{{ signupForm.get('username')?.errors?.['usernameTaken'] }}</mat-error>
-            }
-          </mat-form-field>
-
-          <!-- TEXT FIELD: Email -->
-          <mat-form-field class="w-100">
-            <mat-label i18n>Email</mat-label>
-            <mat-icon svgIcon="mail" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-            <input
-              matInput
-              formControlName="email"
-              type="email"
-              placeholder="Enter your email"
-              autocomplete="email"
-              i18n-placeholder
-            />
-            @if (signupForm.get('email')?.hasError('required')) {
-              <mat-error i18n>Email is required </mat-error>
-            } @else if (signupForm.get('email')?.hasError('email')) {
-              <mat-error i18n>Please enter a valid email address </mat-error>
-            }
-          </mat-form-field>
-
-          <!-- TEXT FIELD: Password -->
-          <mat-form-field subscriptSizing="dynamic" class="w-100">
-            <mat-label i18n>Password</mat-label>
-            <mat-icon svgIcon="lock" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
-            <input
-              type="{{ showPassword ? 'text' : 'password' }}"
-              matInput
-              formControlName="password"
-              placeholder="Enter a strong password"
-              autocomplete="new-password"
-              i18n-placeholder
-            />
-            <button
-              matIconButton
-              matSuffix
-              type="button"
-              aria-label="show password"
-              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-              [attr.aria-pressed]="showPassword"
-              (click)="togglePasswordVisibility()"
-            >
-              @if (showPassword) {
-                <mat-icon svgIcon="visibility"></mat-icon>
-              } @else {
-                <mat-icon svgIcon="visibilityOff"></mat-icon>
-              }
-            </button>
-
-            @if (signupForm.get('password')?.hasError('required')) {
-              <mat-error i18n>Password is required</mat-error>
-            } @else if (signupForm.get('password')?.hasError('passwordStrength')) {
-              <mat-error class="d-flex">
-                <div class="d-flex flex-column h-100 w-100">
-                  <div>{{ passwordMustBeLabel }}:</div>
-                  <ul class="p-0 m-0 pl-16">
-                    @for (
-                      msg of signupForm.get('password')?.errors?.['passwordStrength'];
-                      track msg
-                    ) {
-                      <li>{{ msg }}</li>
-                    }
-                  </ul>
-                </div>
-              </mat-error>
-            }
-          </mat-form-field>
-        </div>
-
-        <!-- BUTTON: Sign up -->
-        <button
-          mat-raised-button
-          matButton="filled"
-          class="w-100 mt-24"
-          type="submit"
-          i18n
-          [disabled]="signupForm.invalid"
+      @if (enableOwnerSignup) {
+        <mat-tab-group
+          class="signup-tabs"
+          dynamicHeight
+          aria-label="Select signup type"
+          i18n-aria-label
+          (selectedIndexChange)="onTabChange($event)"
         >
-          Sign Up
-        </button>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span i18n>Customer</span>
+            </ng-template>
+            <ng-container *ngTemplateOutlet="customerSignupPanel" />
+          </mat-tab>
 
-        <div class="d-flex w-100 gap-16 align-center my-24">
-          <mat-divider class="grow-1" />
-          <span class="body-small" i18n>OR CONTINUE WITH</span>
-          <mat-divider class="grow-1" />
-        </div>
-
-        <!-- Social signups -->
-        <div class="social-signup-buttons d-flex justify-center gap-16 mb-24 wrap">
-          <!-- BUTTON: Sign up with facebook -->
-          <button
-            matFab
-            type="button"
-            aria-label="Sign up with Facebook"
-            class="rounded-full button-facebook"
-            [matTooltip]="'Sign up with Facebook'"
-            (click)="showComingSoonPopup()"
-          >
-            <mat-icon svgIcon="facebookLogo" class="social-signup-icon icon-facebook-logo" />
-          </button>
-
-          <!-- BUTTON: Sign up with X (twitter) -->
-          <button
-            matFab
-            type="button"
-            aria-label="Sign up with X (Twitter)"
-            class="rounded-full button-x-twitter"
-            [matTooltip]="'Sign up with X (Twitter)'"
-            (click)="showComingSoonPopup()"
-          >
-            <mat-icon svgIcon="xTwitterLogo" class="social-signup-icon icon-x-twitter-logo" />
-          </button>
-
-          <!-- BUTTON: Sign up with google -->
-          <button
-            matFab
-            type="button"
-            aria-label="Sign up with Google"
-            class="rounded-full button-google"
-            [matTooltip]="'Sign up with Google'"
-            (click)="showComingSoonPopup()"
-          >
-            <mat-icon svgIcon="googleLogo" class="social-signup-icon icon-google-logo" />
-          </button>
-        </div>
-
-        <!-- LINK: Sign in -->
-        <div class="d-flex w-100 justify-center align-center mt-8 gap-8 wrap">
-          <span i18n>Already have an account?</span>
-          <a matButton i18n [routerLink]="appRoutes.login">Log in</a>
-        </div>
-      </form>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span i18n>Owner</span>
+            </ng-template>
+            <ng-container *ngTemplateOutlet="ownerSignupPanel" />
+          </mat-tab>
+        </mat-tab-group>
+      } @else {
+        <ng-container *ngTemplateOutlet="customerSignupPanel" />
+      }
     </mat-card-content>
   </mat-card>
 </main>
+
+<!-- TEMPLATE: Customer signup panel -->
+<ng-template #customerSignupPanel>
+  <div class="signup-panel pt-24">
+    @if (enableOwnerSignup) {
+      <h1 id="customer-signup-heading" class="heading-large mb-24 d-flex justify-center" i18n>
+        Sign Up as Customer
+      </h1>
+    } @else {
+      <h1 id="signup-heading" class="heading-large mb-24 d-flex justify-center" i18n>Sign Up</h1>
+    }
+
+    <form
+      [attr.aria-labelledby]="enableOwnerSignup ? 'customer-signup-heading' : 'signup-heading'"
+      (ngSubmit)="signup()"
+    >
+      <ng-container *ngTemplateOutlet="commonSignupFields" />
+      <ng-container *ngTemplateOutlet="signupPanelFooter" />
+    </form>
+  </div>
+</ng-template>
+
+<!-- TEMPLATE: Owner signup panel -->
+<ng-template #ownerSignupPanel>
+  <div class="signup-panel pt-24">
+    <h1 id="owner-signup-heading" class="heading-large mb-24 d-flex justify-center" i18n>
+      Sign Up as Owner
+    </h1>
+
+    <form aria-labelledby="owner-signup-heading" (ngSubmit)="signup()">
+      <ng-container *ngTemplateOutlet="commonSignupFields" />
+      <ng-container *ngTemplateOutlet="signupPanelFooter" />
+    </form>
+  </div>
+</ng-template>
+
+<!-- TEMPLATE: Common signup fields -->
+<ng-template #commonSignupFields>
+  <div class="d-flex flex-column gap-24" [formGroup]="signupForm">
+    <!-- TEXT FIELD: First Name -->
+    <mat-form-field class="w-100">
+      <mat-label i18n>First Name</mat-label>
+      <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+      <input
+        matInput
+        formControlName="firstName"
+        type="text"
+        placeholder="Enter your first name"
+        autocomplete="given-name"
+        i18n-placeholder
+      />
+      @if (signupForm.get('firstName')?.hasError('required')) {
+        <mat-error i18n>First name is required</mat-error>
+      } @else if (signupForm.get('firstName')?.hasError('minlength')) {
+        <mat-error i18n>First name must be at least 2 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- TEXT FIELD: Last Name -->
+    <mat-form-field class="w-100">
+      <mat-label i18n>Last Name</mat-label>
+      <mat-icon svgIcon="person" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+      <input
+        matInput
+        formControlName="lastName"
+        type="text"
+        placeholder="Enter your last name"
+        autocomplete="family-name"
+        i18n-placeholder
+      />
+      @if (signupForm.get('lastName')?.hasError('required')) {
+        <mat-error i18n>Last name is required</mat-error>
+      } @else if (signupForm.get('lastName')?.hasError('minlength')) {
+        <mat-error i18n>Last name must be at least 2 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- TEXT FIELD: Username -->
+    <mat-form-field subscriptSizing="dynamic" class="w-100">
+      <mat-label i18n>Username</mat-label>
+      <mat-icon svgIcon="idCard" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+      <input
+        matInput
+        formControlName="username"
+        type="text"
+        placeholder="Choose a username"
+        autocomplete="username"
+        i18n-placeholder
+      />
+      <mat-hint align="end"
+        >{{ signupForm.get('username')?.value?.length ?? 0 | number }} /
+        {{ usernameMaxLength | number }}</mat-hint
+      >
+
+      @if (signupForm.get('username')?.hasError('required')) {
+        <mat-error i18n>Username is required</mat-error>
+      } @else if (signupForm.get('username')?.hasError('minlength')) {
+        <mat-error i18n>Username must be at least 3 characters</mat-error>
+      } @else if (signupForm.get('username')?.hasError('maxlength')) {
+        <mat-error i18n>Username must be at most 50 characters</mat-error>
+      } @else if (signupForm.get('username')?.hasError('usernameInvalid')) {
+        <mat-error class="d-flex">
+          <div class="d-flex flex-column h-100 w-100">
+            <div>{{ usernameMustBeLabel }}:</div>
+            <ul class="p-0 m-0 pl-16">
+              @for (msg of signupForm.get('username')?.errors?.['usernameInvalid']; track msg) {
+                <li>{{ msg }}</li>
+              }
+            </ul>
+          </div>
+        </mat-error>
+      } @else if (signupForm.get('username')?.hasError('usernameTaken')) {
+        <mat-error>{{ signupForm.get('username')?.errors?.['usernameTaken'] }}</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- TEXT FIELD: Email -->
+    <mat-form-field class="w-100">
+      <mat-label i18n>Email</mat-label>
+      <mat-icon svgIcon="mail" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+      <input
+        matInput
+        formControlName="email"
+        type="email"
+        placeholder="Enter your email"
+        autocomplete="email"
+        i18n-placeholder
+      />
+      @if (signupForm.get('email')?.hasError('required')) {
+        <mat-error i18n>Email is required </mat-error>
+      } @else if (signupForm.get('email')?.hasError('email')) {
+        <mat-error i18n>Please enter a valid email address </mat-error>
+      }
+    </mat-form-field>
+
+    <!-- TEXT FIELD: Password -->
+    <mat-form-field subscriptSizing="dynamic" class="w-100">
+      <mat-label i18n>Password</mat-label>
+      <mat-icon svgIcon="lock" aria-hidden="false" class="signup-icon" matPrefix></mat-icon>
+      <input
+        type="{{ showPassword ? 'text' : 'password' }}"
+        matInput
+        formControlName="password"
+        placeholder="Enter a strong password"
+        autocomplete="new-password"
+        i18n-placeholder
+      />
+      <button
+        matIconButton
+        matSuffix
+        type="button"
+        aria-label="show password"
+        [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+        [attr.aria-pressed]="showPassword"
+        (click)="togglePasswordVisibility()"
+      >
+        @if (showPassword) {
+          <mat-icon svgIcon="visibility"></mat-icon>
+        } @else {
+          <mat-icon svgIcon="visibilityOff"></mat-icon>
+        }
+      </button>
+
+      @if (signupForm.get('password')?.hasError('required')) {
+        <mat-error i18n>Password is required</mat-error>
+      } @else if (signupForm.get('password')?.hasError('passwordStrength')) {
+        <mat-error class="d-flex">
+          <div class="d-flex flex-column h-100 w-100">
+            <div>{{ passwordMustBeLabel }}:</div>
+            <ul class="p-0 m-0 pl-16">
+              @for (msg of signupForm.get('password')?.errors?.['passwordStrength']; track msg) {
+                <li>{{ msg }}</li>
+              }
+            </ul>
+          </div>
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+</ng-template>
+
+<!-- TEMPLATE: Signup panel footer -->
+<ng-template #signupPanelFooter>
+  <!-- BUTTON: Sign up -->
+  <button
+    mat-raised-button
+    matButton="filled"
+    class="w-100 mt-24"
+    type="submit"
+    i18n
+    [disabled]="signupForm.invalid"
+  >
+    Sign Up
+  </button>
+
+  <div class="d-flex w-100 gap-16 align-center my-24">
+    <mat-divider class="grow-1" />
+    <span class="body-small" i18n>OR CONTINUE WITH</span>
+    <mat-divider class="grow-1" />
+  </div>
+
+  <!-- Social signups -->
+  <div class="social-signup-buttons d-flex justify-center gap-16 mb-24 wrap">
+    <!-- BUTTON: Sign up with facebook -->
+    <button
+      matFab
+      type="button"
+      aria-label="Sign up with Facebook"
+      class="rounded-full button-facebook"
+      [matTooltip]="'Sign up with Facebook'"
+      (click)="showComingSoonPopup()"
+    >
+      <mat-icon svgIcon="facebookLogo" class="social-signup-icon icon-facebook-logo" />
+    </button>
+
+    <!-- BUTTON: Sign up with X (twitter) -->
+    <button
+      matFab
+      type="button"
+      aria-label="Sign up with X (Twitter)"
+      class="rounded-full button-x-twitter"
+      [matTooltip]="'Sign up with X (Twitter)'"
+      (click)="showComingSoonPopup()"
+    >
+      <mat-icon svgIcon="xTwitterLogo" class="social-signup-icon icon-x-twitter-logo" />
+    </button>
+
+    <!-- BUTTON: Sign up with google -->
+    <button
+      matFab
+      type="button"
+      aria-label="Sign up with Google"
+      class="rounded-full button-google"
+      [matTooltip]="'Sign up with Google'"
+      (click)="showComingSoonPopup()"
+    >
+      <mat-icon svgIcon="googleLogo" class="social-signup-icon icon-google-logo" />
+    </button>
+  </div>
+
+  <!-- LINK: Sign in -->
+  <div class="d-flex w-100 justify-center align-center mt-8 gap-8 wrap">
+    <span i18n>Already have an account?</span>
+    <a matButton i18n [routerLink]="appRoutes.login">Log in</a>
+  </div>
+</ng-template>

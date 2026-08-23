@@ -5,4 +5,5 @@ export const environment = {
   authServiceBaseUrl: 'http://auth.yatribhavan.umiyadhams.com/api/v1',
   forgotPasswordResendTimeoutSeconds: 30,
   emailVerificationResendTimeoutSeconds: 30,
+  enableOwnerSignup: true,
 };
