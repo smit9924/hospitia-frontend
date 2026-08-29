@@ -1,3 +1,186 @@
 <div class="w-100">
   <app-secondary-navbar [titleText]="titleText" />
+
+  <main class="d-flex flex-column gap-16 p-24 w-100">
+    <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
+      <div class="d-flex wrap align-center justify-space-between gap-8">
+        @if (showSearchbar()) {
+          <app-searchbar
+            class="listing-searchbar max-w-100"
+            [compact]="true"
+            i18n-placeholder
+            placeholder="Search customers"
+            (search)="onSearch($event)"
+          />
+        } @else {
+          <span class="grow-1"></span>
+        }
+
+        <button
+          class="listing-create-button shrink-0"
+          matButton="filled"
+          type="button"
+          (click)="createCustomer()"
+        >
+          <span i18n>Create customer</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="listing-card rounded-12 p-16 d-flex flex-column gap-16 w-100">
+      @if (isInitialLoad()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+          aria-live="polite"
+        >
+          <p class="heading-extra-small m-0" i18n>Loading...</p>
+        </div>
+      } @else if (!hasUsers()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+        >
+          <mat-icon
+            class="empty-state-icon"
+            [svgIcon]="isEmptySearch() ? 'search' : 'person'"
+            aria-hidden="true"
+          />
+
+          @if (isEmptySearch()) {
+            <p class="heading-extra-small m-0" i18n>No users found</p>
+            <p>
+              <span class="body-medium text-secondary" i18n>No users matched </span>
+              <span class="body-medium text-secondary" i18n>"{{ searchTerm() }}"</span>
+              <span class="body-medium text-secondary" i18n>Try a different search term.</span>
+            </p>
+          } @else {
+            <p class="heading-extra-small m-0" i18n>No users to display</p>
+            <p class="body-medium text-secondary m-0" i18n>
+              There are no users available in this list yet.
+            </p>
+          }
+        </div>
+      } @else {
+        <div class="listing-table-frame rounded-8 overflow-hidden">
+          <div class="listing-table-scroll w-100 overflow-x-auto">
+            <table
+              class="listing-table w-100"
+              mat-table
+              [dataSource]="users()"
+              matSort
+              matSortActive="firstName"
+              matSortDirection="asc"
+              matSortDisableClear
+              (matSortChange)="onSortChange($event)"
+            >
+              <ng-container matColumnDef="firstName">
+                <th class="listing-col listing-col-name" mat-header-cell *matHeaderCellDef mat-sort-header i18n>
+                  First name
+                </th>
+                <td class="listing-col listing-col-name" mat-cell *matCellDef="let user">
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="user.firstName"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ user.firstName }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="lastName">
+                <th class="listing-col listing-col-name" mat-header-cell *matHeaderCellDef mat-sort-header i18n>
+                  Last name
+                </th>
+                <td class="listing-col listing-col-name" mat-cell *matCellDef="let user">
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="user.lastName"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ user.lastName }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="username">
+                <th class="listing-col listing-col-name" mat-header-cell *matHeaderCellDef mat-sort-header i18n>
+                  Username
+                </th>
+                <td class="listing-col listing-col-name" mat-cell *matCellDef="let user">
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="user.username"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ user.username }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="email">
+                <th class="listing-col listing-col-email" mat-header-cell *matHeaderCellDef mat-sort-header i18n>
+                  Email
+                </th>
+                <td class="listing-col listing-col-email" mat-cell *matCellDef="let user">
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="user.email"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ user.email }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th class="listing-col listing-col-actions" mat-header-cell *matHeaderCellDef i18n>
+                  Actions
+                </th>
+                <td class="listing-col listing-col-actions" mat-cell *matCellDef="let user">
+                  <button
+                    matIconButton
+                    type="button"
+                    [matMenuTriggerFor]="actionsMenu"
+                    aria-label="User actions"
+                    i18n-aria-label
+                  >
+                    <mat-icon svgIcon="moreVert" aria-hidden="true" />
+                  </button>
+                  <mat-menu #actionsMenu="matMenu">
+                    <button mat-menu-item type="button" (click)="editCustomer(user)">
+                      <mat-icon svgIcon="edit" aria-hidden="true" />
+                      <span i18n>Edit</span>
+                    </button>
+                    <button mat-menu-item type="button" (click)="deleteCustomer(user)">
+                      <mat-icon svgIcon="delete" aria-hidden="true" />
+                      <span i18n>Delete</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="d-flex justify-flex-end">
+          <mat-paginator
+            class="listing-paginator max-w-100"
+            [length]="totalCount()"
+            [pageIndex]="pageIndex()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="false"
+            aria-label="Customer list paginator"
+            i18n-aria-label
+            (page)="onPageChange($event)"
+          />
+        </div>
+      }
+    </section>
+  </main>
 </div>

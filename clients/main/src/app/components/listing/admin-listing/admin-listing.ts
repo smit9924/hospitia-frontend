@@ -95,7 +95,7 @@ export class AdminListing implements OnInit {
   private loadUsers(): void {
     this.userService
       .listAdmins({
-        searchTerm: this.searchTerm() || undefined,
+        searchTerm: this.searchTerm() || "",
         pageSize: this.pageSize(),
         sortBy: this.sortBy(),
         sortDirection: this.sortDirection(),
