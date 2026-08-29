@@ -2,9 +2,9 @@
   <app-secondary-navbar [titleText]="titleText" />
 
   <main class="d-flex flex-column gap-16 p-24 w-100">
-    <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
-      <div class="d-flex wrap align-center justify-space-between gap-8">
-        @if (showSearchbar()) {
+    @if (showSearchbar()) {
+      <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
+        <div class="d-flex wrap align-center justify-space-between gap-8">
           <app-searchbar
             class="listing-searchbar max-w-100"
             [compact]="true"
@@ -12,20 +12,18 @@
             placeholder="Search customers"
             (search)="onSearch($event)"
           />
-        } @else {
-          <span class="grow-1"></span>
-        }
 
-        <button
-          class="listing-create-button shrink-0"
-          matButton="filled"
-          type="button"
-          (click)="createCustomer()"
-        >
-          <span i18n>Create customer</span>
-        </button>
-      </div>
-    </section>
+          <button
+            class="listing-create-button shrink-0"
+            matButton="filled"
+            type="button"
+            (click)="createCustomer()"
+          >
+            <span i18n>Create customer</span>
+          </button>
+        </div>
+      </section>
+    }
 
     <section class="listing-card rounded-12 p-16 d-flex flex-column gap-16 w-100">
       @if (isInitialLoad()) {
@@ -59,6 +57,14 @@
             <p class="body-medium text-secondary m-0" i18n>
               There are no users available in this list yet.
             </p>
+            <button
+              class="listing-create-button shrink-0 mt-8"
+              matButton="filled"
+              type="button"
+              (click)="createCustomer()"
+            >
+              <span i18n>Create customer</span>
+            </button>
           }
         </div>
       } @else {
