@@ -36,13 +36,7 @@ export class CustomerListing implements OnInit {
   private readonly userService = inject(User);
 
   protected readonly titleText = $localize`Customers`;
-  protected readonly displayedColumns = [
-    'firstName',
-    'lastName',
-    'username',
-    'email',
-    'actions',
-  ];
+  protected readonly displayedColumns = ['firstName', 'lastName', 'username', 'email', 'actions'];
   protected readonly pageSizeOptions = [5, 10, 25, 50];
 
   protected readonly users = signal<UserListItem[]>([]);
@@ -95,7 +89,7 @@ export class CustomerListing implements OnInit {
   private loadUsers(): void {
     this.userService
       .listCustomers({
-        searchTerm: this.searchTerm() || "",
+        searchTerm: this.searchTerm() || '',
         pageSize: this.pageSize(),
         sortBy: this.sortBy(),
         sortDirection: this.sortDirection(),

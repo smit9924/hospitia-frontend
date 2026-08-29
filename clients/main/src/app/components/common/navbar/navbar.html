@@ -75,20 +75,20 @@
           @if (showUsersMenu()) {
             <li class="body-large">
               <button
+                #usersMenuTrigger="matMenuTrigger"
                 matButton
                 type="button"
-                [matMenuTriggerFor]="usersDesktopMenu"
-                #usersMenuTrigger="matMenuTrigger"
                 aria-haspopup="menu"
                 aria-label="Users"
                 i18n-aria-label
+                [matMenuTriggerFor]="usersDesktopMenu"
               >
                 <div class="d-flex align-center gap-4 justify-content-center">
                   <span i18n>Users</span>
                   <mat-icon
                     class="d-flex align-center justify-center dropdown-icon"
-                    [svgIcon]="usersMenuTrigger.menuOpen ? 'chevronUp' : 'chevronDown'"
                     aria-hidden="true"
+                    [svgIcon]="usersMenuTrigger.menuOpen ? 'chevronUp' : 'chevronDown'"
                   />
                 </div>
               </button>
@@ -106,13 +106,7 @@
     } @else {
       <div class="auth-actions d-flex gap-8 align-center">
         <a mat-raised-button matButton="filled" i18n [routerLink]="loginLink">Log in</a>
-        <a
-          mat-raised-button
-          matButton="outlined"
-          class="bg-white"
-          i18n
-          [routerLink]="signupLink"
-        >
+        <a mat-raised-button matButton="outlined" class="bg-white" i18n [routerLink]="signupLink">
           Sign up
         </a>
       </div>

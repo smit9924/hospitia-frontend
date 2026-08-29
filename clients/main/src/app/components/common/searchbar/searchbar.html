@@ -5,8 +5,8 @@
     type="button"
     aria-label="Search"
     i18n-aria-label
-    (click)="emitSearch()"
     class="d-flex align-center justify-center searchbar-button"
+    (click)="emitSearch()"
   >
     <mat-icon svgIcon="search" aria-hidden="true" class="d-flex align-center justify-center" />
   </button>
@@ -24,13 +24,7 @@
 
   @if (term()) {
     <!-- Button: Clear -->
-    <button
-      matIconButton
-      type="button"
-      aria-label="Clear search"
-      i18n-aria-label
-      (click)="clear()"
-    >
+    <button matIconButton type="button" aria-label="Clear search" i18n-aria-label (click)="clear()">
       <mat-icon svgIcon="cross" aria-hidden="true" />
     </button>
   }

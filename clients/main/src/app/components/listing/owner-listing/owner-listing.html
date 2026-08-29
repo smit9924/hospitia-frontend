@@ -7,10 +7,10 @@
         <div class="d-flex wrap align-center justify-space-between gap-8">
           <app-searchbar
             class="listing-searchbar max-w-100"
-            [compact]="true"
             i18n-placeholder
             placeholder="Search owners"
-            (search)="onSearch($event)"
+            [compact]="true"
+            (searchChanged)="onSearch($event)"
           />
 
           <button
@@ -41,8 +41,8 @@
         >
           <mat-icon
             class="empty-state-icon"
-            [svgIcon]="isEmptySearch() ? 'search' : 'person'"
             aria-hidden="true"
+            [svgIcon]="isEmptySearch() ? 'search' : 'person'"
           />
 
           @if (isEmptySearch()) {
@@ -73,18 +73,24 @@
             <table
               class="listing-table w-100"
               mat-table
-              [dataSource]="users()"
               matSort
               matSortActive="firstName"
               matSortDirection="asc"
               matSortDisableClear
+              [dataSource]="users()"
               (matSortChange)="onSortChange($event)"
             >
               <ng-container matColumnDef="firstName">
-                <th class="listing-col listing-col-name" mat-header-cell *matHeaderCellDef mat-sort-header i18n>
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-name"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
                   First name
                 </th>
-                <td class="listing-col listing-col-name" mat-cell *matCellDef="let user">
+                <td *matCellDef="let user" class="listing-col listing-col-name" mat-cell>
                   <span
                     class="clamp-1"
                     [customMatTooltip]="user.firstName"
@@ -96,10 +102,16 @@
               </ng-container>
 
               <ng-container matColumnDef="lastName">
-                <th class="listing-col listing-col-name" mat-header-cell *matHeaderCellDef mat-sort-header i18n>
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-name"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
                   Last name
                 </th>
-                <td class="listing-col listing-col-name" mat-cell *matCellDef="let user">
+                <td *matCellDef="let user" class="listing-col listing-col-name" mat-cell>
                   <span
                     class="clamp-1"
                     [customMatTooltip]="user.lastName"
@@ -111,10 +123,16 @@
               </ng-container>
 
               <ng-container matColumnDef="username">
-                <th class="listing-col listing-col-name" mat-header-cell *matHeaderCellDef mat-sort-header i18n>
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-name"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
                   Username
                 </th>
-                <td class="listing-col listing-col-name" mat-cell *matCellDef="let user">
+                <td *matCellDef="let user" class="listing-col listing-col-name" mat-cell>
                   <span
                     class="clamp-1"
                     [customMatTooltip]="user.username"
@@ -126,10 +144,16 @@
               </ng-container>
 
               <ng-container matColumnDef="email">
-                <th class="listing-col listing-col-email" mat-header-cell *matHeaderCellDef mat-sort-header i18n>
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-email"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
                   Email
                 </th>
-                <td class="listing-col listing-col-email" mat-cell *matCellDef="let user">
+                <td *matCellDef="let user" class="listing-col listing-col-email" mat-cell>
                   <span
                     class="clamp-1"
                     [customMatTooltip]="user.email"
@@ -141,16 +165,16 @@
               </ng-container>
 
               <ng-container matColumnDef="actions">
-                <th class="listing-col listing-col-actions" mat-header-cell *matHeaderCellDef i18n>
+                <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
                   Actions
                 </th>
-                <td class="listing-col listing-col-actions" mat-cell *matCellDef="let user">
+                <td *matCellDef="let user" class="listing-col listing-col-actions" mat-cell>
                   <button
                     matIconButton
                     type="button"
-                    [matMenuTriggerFor]="actionsMenu"
                     aria-label="User actions"
                     i18n-aria-label
+                    [matMenuTriggerFor]="actionsMenu"
                   >
                     <mat-icon svgIcon="moreVert" aria-hidden="true" />
                   </button>
@@ -167,8 +191,8 @@
                 </td>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
             </table>
           </div>
         </div>
@@ -176,13 +200,13 @@
         <div class="d-flex justify-flex-end">
           <mat-paginator
             class="listing-paginator max-w-100"
+            aria-label="Owner list paginator"
+            i18n-aria-label
             [length]="totalCount()"
             [pageIndex]="pageIndex()"
             [pageSize]="pageSize()"
             [pageSizeOptions]="pageSizeOptions"
             [showFirstLastButtons]="false"
-            aria-label="Owner list paginator"
-            i18n-aria-label
             (page)="onPageChange($event)"
           />
         </div>

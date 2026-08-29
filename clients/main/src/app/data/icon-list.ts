@@ -214,5 +214,5 @@ export const IconList = [
   {
     name: 'chevronRight',
     src: 'assets/icons/chevron-right.svg',
-  }
+  },
 ];

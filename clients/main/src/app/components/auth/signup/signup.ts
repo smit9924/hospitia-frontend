@@ -138,16 +138,12 @@ export class Signup {
         }
 
         if (errorRes.errorCode === ErrorCodes.USER_WITH_EMAIL_ALREADY_EXIST) {
-          this.showBanner(
-            $localize`Email is already registered. Please use a different email.`,
-          );
+          this.showBanner($localize`Email is already registered. Please use a different email.`);
           return;
         }
 
         if (errorRes.errorCode === ErrorCodes.WEAK_PASSWORD) {
-          this.showBanner(
-            $localize`Password is too weak. Please choose a stronger password.`,
-          );
+          this.showBanner($localize`Password is too weak. Please choose a stronger password.`);
           return;
         }
 
@@ -193,16 +189,12 @@ export class Signup {
         }
 
         if (errorRes.errorCode === ErrorCodes.USER_WITH_EMAIL_ALREADY_EXIST) {
-          this.showBanner(
-            $localize`Email is already registered. Please use a different email.`,
-          );
+          this.showBanner($localize`Email is already registered. Please use a different email.`);
           return;
         }
 
         if (errorRes.errorCode === ErrorCodes.WEAK_PASSWORD) {
-          this.showBanner(
-            $localize`Password is too weak. Please choose a stronger password.`,
-          );
+          this.showBanner($localize`Password is too weak. Please choose a stronger password.`);
           return;
         }
 

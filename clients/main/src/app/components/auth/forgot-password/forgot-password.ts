@@ -35,7 +35,6 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './forgot-password.scss',
 })
 export class ForgotPassword {
-
   private authService = inject(Auth);
   private dialogService = inject(Dialog);
   private snackbarService = inject(Snackbar);
@@ -50,7 +49,6 @@ export class ForgotPassword {
   bannerMessage = '';
   isResetLinkSent = signal(false);
   resendSecondsLeft = signal(0);
-
 
   // TODO: Verified
   sendResetLink(): void {
@@ -69,7 +67,10 @@ export class ForgotPassword {
   // TODO: Verified
   resendResetLink(): void {
     if (this.resendSecondsLeft() > 0) {
-      this.showSnackbar($localize`Please wait ${this.resendSecondsLeft()} seconds before resending the password reset link.`, GenericSnackbarType.WARNING);
+      this.showSnackbar(
+        $localize`Please wait ${this.resendSecondsLeft()} seconds before resending the password reset link.`,
+        GenericSnackbarType.WARNING,
+      );
       return;
     }
 
@@ -101,8 +102,9 @@ export class ForgotPassword {
     interval(1000)
       .pipe(
         take(environment.forgotPasswordResendTimeoutSeconds),
-        takeUntilDestroyed(this.destroyRef)
-      ).subscribe(() => {
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => {
         this.resendSecondsLeft.update((seconds) => seconds - 1);
       });
   }

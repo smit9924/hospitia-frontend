@@ -70,10 +70,7 @@ export class Auth {
   }
 
   forgotPassword(email: string): Observable<null> {
-    return this.http.post<null>(
-      apiRoutes.auth.forgotPassword,
-      { email },
-    );
+    return this.http.post<null>(apiRoutes.auth.forgotPassword, { email });
   }
 
   resetPassword(token: string, newPassword: string): Observable<{ message: string }> {

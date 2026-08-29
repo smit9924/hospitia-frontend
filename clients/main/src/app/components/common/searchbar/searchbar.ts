@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class Searchbar {
   placeholder = input('Search');
   compact = input(false);
-  search = output<string>();
+  searchChanged = output<string>();
 
   protected readonly term = signal('');
 
@@ -24,11 +24,11 @@ export class Searchbar {
   }
 
   protected emitSearch(): void {
-    this.search.emit(this.term().trim());
+    this.searchChanged.emit(this.term().trim());
   }
 
   protected clear(): void {
     this.term.set('');
-    this.search.emit('');
+    this.searchChanged.emit('');
   }
 }

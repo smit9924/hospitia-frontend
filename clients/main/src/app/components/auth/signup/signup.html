@@ -213,11 +213,7 @@
 
 <ng-template #ownerSignupPanel>
   <div class="signup-panel pt-24">
-    <form
-      aria-labelledby="signup-heading"
-      [formGroup]="ownerSignupForm"
-      (ngSubmit)="signupOwner()"
-    >
+    <form aria-labelledby="signup-heading" [formGroup]="ownerSignupForm" (ngSubmit)="signupOwner()">
       <div class="d-flex flex-column gap-24">
         <mat-form-field class="w-100">
           <mat-label i18n>First Name</mat-label>

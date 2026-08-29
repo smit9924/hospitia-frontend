@@ -1,5 +1,13 @@
 import { NgOptimizedImage } from '@angular/common';
-import { AfterViewInit, Component, computed, effect, ElementRef, inject, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
