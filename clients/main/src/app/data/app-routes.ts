@@ -27,4 +27,11 @@ export const appRoutes = {
   // *** End Settings ***
 
   profile: '/profile',
+
+  // Users listing
+  adminListing: '/users/admins',
+  ownerListing: '/users/owners',
+  managerListing: '/users/managers',
+  customerListing: '/users/customers',
+  // *** End Users listing ***
 };

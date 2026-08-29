@@ -199,4 +199,20 @@ export const IconList = [
     name: 'moreVert',
     src: 'assets/icons/moreVert.svg',
   },
+  {
+    name: 'chevronUp',
+    src: 'assets/icons/chevron-up.svg',
+  },
+  {
+    name: 'chevronDown',
+    src: 'assets/icons/chevron-down.svg',
+  },
+  {
+    name: 'chevronLeft',
+    src: 'assets/icons/chevron-left.svg',
+  },
+  {
+    name: 'chevronRight',
+    src: 'assets/icons/chevron-right.svg',
+  }
 ];

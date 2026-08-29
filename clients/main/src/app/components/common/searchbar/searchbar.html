@@ -1,0 +1,37 @@
+<div class="searchbar d-flex align-center w-100">
+  <!-- Button: Search -->
+  <button
+    matIconButton
+    type="button"
+    aria-label="Search"
+    i18n-aria-label
+    (click)="emitSearch()"
+    class="d-flex align-center justify-center searchbar-button"
+  >
+    <mat-icon svgIcon="search" aria-hidden="true" class="d-flex align-center justify-center" />
+  </button>
+
+  <!-- Input: Search -->
+  <input
+    class="searchbar-input grow-1 body-medium"
+    type="search"
+    [value]="term()"
+    [placeholder]="placeholder()"
+    [attr.aria-label]="placeholder()"
+    (input)="onTermInput($event)"
+    (keydown.enter)="emitSearch()"
+  />
+
+  @if (term()) {
+    <!-- Button: Clear -->
+    <button
+      matIconButton
+      type="button"
+      aria-label="Clear search"
+      i18n-aria-label
+      (click)="clear()"
+    >
+      <mat-icon svgIcon="cross" aria-hidden="true" />
+    </button>
+  }
+</div>

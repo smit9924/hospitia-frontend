@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+
+:host:not(.searchbar-host--compact) {
+  width: 100%;
+}
+
+.searchbar {
+  border-radius: 999px;
+  background-color: var(--mat-sys-surface);
+  border: 1px solid var(--mat-sys-outline-variant);
+  box-shadow: 0 1px 3px var(--color-shadow-soft);
+  padding-inline: 4px;
+  min-height: 48px;
+}
+
+.searchbar-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--mat-sys-on-surface);
+  min-width: 0;
+  padding-block: 8px;
+
+  &::placeholder {
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+:host.searchbar-host--compact .searchbar {
+  min-height: 36px;
+  box-shadow: none;
+  padding-inline: 2px;
+}
+
+:host.searchbar-host--compact .searchbar-input {
+  padding-block: 4px;
+}
+
+:host.searchbar-host--compact .searchbar-button {
+  --mat-icon-button-state-layer-size: 32px;
+  --mat-icon-button-icon-size: 18px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}

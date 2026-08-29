@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 const apiBaseUrls = {
   auth: environment.authServiceBaseUrl,
   user: environment.authServiceBaseUrl,
+  dashboard: environment.dashboardServiceBaseUrl,
 } as const;
 
 export const apiRoutes = {
@@ -23,5 +24,9 @@ export const apiRoutes = {
     changePassword: `${apiBaseUrls.user}/users/change-password`,
     requestEmailVerificationOtp: `${apiBaseUrls.user}/users/request-email-verification-otp`,
     verifyEmailOtp: `${apiBaseUrls.user}/users/verify-email-otp`,
+    listAdmins: `${apiBaseUrls.dashboard}/users/admins`,
+    listOwners: `${apiBaseUrls.dashboard}/users/owners`,
+    listManagers: `${apiBaseUrls.dashboard}/users/managers`,
+    listCustomers: `${apiBaseUrls.dashboard}/users/customers`,
   },
 } as const;

@@ -1,5 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { ChangePasswordReq, UsernameAvailabilityReq } from '../../types/interfaces/users';
+import {
+  ChangePasswordReq,
+  UserListQuery,
+  UserListResponse,
+  UsernameAvailabilityReq,
+} from '../../types/interfaces/users';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { SkipLoading } from '../../interceptors/loader/loader-interceptor';
@@ -52,5 +57,53 @@ export class User {
    */
   verifyEmailOtp(otp: string): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(apiRoutes.users.verifyEmailOtp, { otp });
+  }
+
+  listAdmins(query: UserListQuery): Observable<UserListResponse> {
+    return this.http.get<UserListResponse>(apiRoutes.users.listAdmins, {
+      params: {
+        pageSize: query.pageSize ?? 10,
+        sortBy: query.sortBy ?? 'firstName',
+        sortDirection: query.sortDirection ?? 'asc',
+        pageNumber: query.pageNumber ?? 1,
+        searchTerm: query.searchTerm ?? '',
+      },
+    });
+  }
+
+  listOwners(query: UserListQuery): Observable<UserListResponse> {
+    return this.http.get<UserListResponse>(apiRoutes.users.listOwners, {
+      params: {
+        pageSize: query.pageSize ?? 10,
+        sortBy: query.sortBy ?? 'firstName',
+        sortDirection: query.sortDirection ?? 'asc',
+        pageNumber: query.pageNumber ?? 1,
+        searchTerm: query.searchTerm ?? '',
+      },
+    });
+  }
+
+  listManagers(query: UserListQuery): Observable<UserListResponse> {
+    return this.http.get<UserListResponse>(apiRoutes.users.listManagers, {
+      params: {
+        pageSize: query.pageSize ?? 10,
+        sortBy: query.sortBy ?? 'firstName',
+        sortDirection: query.sortDirection ?? 'asc',
+        pageNumber: query.pageNumber ?? 1,
+        searchTerm: query.searchTerm ?? '',
+      },
+    });
+  }
+
+  listCustomers(query: UserListQuery): Observable<UserListResponse> {
+    return this.http.get<UserListResponse>(apiRoutes.users.listCustomers, {
+      params: {
+        pageSize: query.pageSize ?? 10,
+        sortBy: query.sortBy ?? 'firstName',
+        sortDirection: query.sortDirection ?? 'asc',
+        pageNumber: query.pageNumber ?? 1,
+        searchTerm: query.searchTerm ?? '',
+      },
+    });
   }
 }

@@ -1,0 +1,69 @@
+.listing-card {
+  background-color: var(--mat-sys-surface);
+  border: 1px solid var(--mat-sys-outline-variant);
+  box-shadow: 0 1px 2px var(--color-shadow-soft);
+}
+
+.listing-searchbar {
+  width: 240px;
+}
+
+.listing-table-frame {
+  border: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface);
+}
+
+.listing-table-scroll {
+  overscroll-behavior-x: contain;
+}
+
+.listing-table {
+  min-width: 720px;
+
+  .listing-col {
+    padding-inline: 16px;
+  }
+
+  th.listing-col {
+    white-space: nowrap;
+  }
+}
+
+.listing-col-name {
+  min-width: 140px;
+}
+
+.listing-col-email {
+  min-width: 220px;
+}
+
+.listing-col-actions {
+  min-width: 72px;
+  width: 72px;
+}
+
+.empty-state-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.listing-paginator {
+  width: auto;
+  background-color: transparent;
+  --mat-paginator-container-size: 40px;
+}
+
+@media screen and (max-width: 576px) {
+  .listing-searchbar {
+    width: 100%;
+  }
+
+  .create-admin-button {
+    margin-inline-start: auto;
+  }
+
+  .listing-table-card {
+    padding: 12px;
+  }
+}

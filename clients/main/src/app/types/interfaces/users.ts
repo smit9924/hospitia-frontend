@@ -32,3 +32,30 @@ export interface ChangePasswordReq {
   currentPassword: string;
   newPassword: string;
 }
+
+export type UserListSortBy = 'firstName' | 'lastName' | 'username' | 'email';
+
+export type UserListSortDirection = 'asc' | 'desc';
+
+export interface UserListQuery {
+  searchTerm?: string;
+  pageSize: number;
+  sortBy: UserListSortBy;
+  sortDirection: UserListSortDirection;
+  pageNumber: number;
+}
+
+export interface UserListItem {
+  guid: string;
+  firstName: string | null;
+  lastName: string | null;
+  username: string;
+  email: string;
+}
+
+export interface UserListResponse {
+  items: UserListItem[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+}

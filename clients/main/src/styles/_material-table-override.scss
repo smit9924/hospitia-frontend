@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+
+:root {
+  @include mat.table-overrides(
+    (
+      header-headline-color: var(--mat-sys-on-surface-variant),
+    )
+  );
+}
+
+// Material has no header-background token; cells inherit the table surface.
+// Target the public header-cell selectors (not internal mat-mdc-* classes).
+table[mat-table] thead,
+table[mat-table] th[mat-header-cell],
+mat-table mat-header-row,
+mat-table mat-header-cell {
+  background-color: var(--mat-sys-surface-container);
+}

@@ -21,6 +21,13 @@
           <div mat-menu-item>
             <a matButton i18n [routerLink]="dashboardLink()">Dashboard</a>
           </div>
+          @if (showUsersMenu()) {
+            <button mat-menu-item type="button" [matMenuTriggerFor]="usersNavMenu">
+              <div class="d-flex align-center gap-4 justify-content-center">
+                <span i18n>Users</span>
+              </div>
+            </button>
+          }
         } @else {
           <div mat-menu-item>
             <a matButton i18n [routerLink]="loginLink">Log in</a>
@@ -28,6 +35,13 @@
           <div mat-menu-item>
             <a matButton i18n [routerLink]="signupLink">Sign up</a>
           </div>
+        }
+      </mat-menu>
+
+      <!-- Menu: Users(Mobile) -->
+      <mat-menu #usersNavMenu="matMenu">
+        @for (link of usersMenuLinks(); track link.route) {
+          <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
         }
       </mat-menu>
 
@@ -58,7 +72,36 @@
           <li class="body-large">
             <a matButton i18n [routerLink]="dashboardLink()">Dashboard</a>
           </li>
+          @if (showUsersMenu()) {
+            <li class="body-large">
+              <button
+                matButton
+                type="button"
+                [matMenuTriggerFor]="usersDesktopMenu"
+                #usersMenuTrigger="matMenuTrigger"
+                aria-haspopup="menu"
+                aria-label="Users"
+                i18n-aria-label
+              >
+                <div class="d-flex align-center gap-4 justify-content-center">
+                  <span i18n>Users</span>
+                  <mat-icon
+                    class="d-flex align-center justify-center dropdown-icon"
+                    [svgIcon]="usersMenuTrigger.menuOpen ? 'chevronUp' : 'chevronDown'"
+                    aria-hidden="true"
+                  />
+                </div>
+              </button>
+            </li>
+          }
         </ul>
+
+        <!-- Menu: Users (Desktop) -->
+        <mat-menu #usersDesktopMenu="matMenu">
+          @for (link of usersMenuLinks(); track link.route) {
+            <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
+          }
+        </mat-menu>
       </div>
     } @else {
       <div class="auth-actions d-flex gap-8 align-center">

@@ -20,6 +20,10 @@ import { SettingPage } from './components/settings/setting-page/setting-page';
 import { ChangePassword } from './components/settings/change-password/change-password';
 import { DisplayAndAccessibility } from './components/settings/display-and-accessibility/display-and-accessibility';
 import { PrivacyAndSecurity } from './components/settings/privacy-and-security/privacy-and-security';
+import { AdminListing } from './components/listing/admin-listing/admin-listing';
+import { OwnerListing } from './components/listing/owner-listing/owner-listing';
+import { ManagerListing } from './components/listing/manager-listing/manager-listing';
+import { CustomerListing } from './components/listing/customer-listing/customer-listing';
 
 export const routes: Routes = [
   {
@@ -158,6 +162,51 @@ export const routes: Routes = [
         canActivate: [permissionGuard],
         data: {
           requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER, UserType.CUSTOMER],
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+    ],
+  },
+  {
+    path: 'users',
+    children: [
+      {
+        path: 'admins',
+        component: AdminListing,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN],
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'owners',
+        component: OwnerListing,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN],
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'managers',
+        component: ManagerListing,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER],
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'customers',
+        component: CustomerListing,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
           showNavbar: true,
           showFooter: true,
         },
