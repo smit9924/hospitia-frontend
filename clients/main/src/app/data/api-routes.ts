@@ -28,5 +28,8 @@ export const apiRoutes = {
     listOwners: `${apiBaseUrls.dashboard}/users/owners`,
     listManagers: `${apiBaseUrls.dashboard}/users/managers`,
     listCustomers: `${apiBaseUrls.dashboard}/users/customers`,
+    getAdmin: (guid: string) => `${apiBaseUrls.user}/users/admins/${guid}`,
+    createAdmin: `${apiBaseUrls.user}/users/admins`,
+    updateAdmin: `${apiBaseUrls.user}/users/admins`,
   },
 } as const;

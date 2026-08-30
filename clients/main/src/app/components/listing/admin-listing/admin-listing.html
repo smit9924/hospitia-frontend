@@ -179,11 +179,11 @@
                     <mat-icon svgIcon="moreVert" aria-hidden="true" />
                   </button>
                   <mat-menu #actionsMenu="matMenu">
-                    <button mat-menu-item type="button" (click)="editAdmin(user)">
+                    <button mat-menu-item type="button" (click)="editAdmin(user) | async">
                       <mat-icon svgIcon="edit" aria-hidden="true" />
                       <span i18n>Edit</span>
                     </button>
-                    <button mat-menu-item type="button" (click)="deleteAdmin(user)">
+                    <button mat-menu-item type="button" (click)="deleteAdmin(user) | async">
                       <mat-icon svgIcon="delete" aria-hidden="true" />
                       <span i18n>Delete</span>
                     </button>

@@ -1,0 +1,164 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText()" [backButton]="true" />
+
+  <main class="d-flex flex-column gap-24 p-24 w-100 align-center">
+    @if (isEditMode() && isLoadingUser()) {
+      <section
+        class="user-form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <p class="heading-extra-small m-0" i18n>Loading...</p>
+      </section>
+    } @else if (userNotFound()) {
+      <section
+        class="user-form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+      >
+        <mat-icon class="empty-state-icon text-secondary" aria-hidden="true" svgIcon="person" />
+        <p class="heading-extra-small m-0" i18n>Admin not found</p>
+        <p class="body-medium text-secondary m-0" i18n>
+          The requested admin user could not be found. They may have been removed.
+        </p>
+      </section>
+    } @else if (showForm()) {
+      <mat-card class="user-form-card w-100">
+        <mat-card-header class="mb-16">
+          <mat-card-title>
+            <h2 class="heading-extra-small m-0">
+              @if (isEditMode()) {
+                <span i18n>Admin details</span>
+              } @else {
+                <span i18n>New admin details</span>
+              }
+            </h2>
+          </mat-card-title>
+          <mat-card-subtitle class="body-medium text-secondary mt-8">
+            @if (isEditMode()) {
+              <span i18n>Update the admin profile and save your changes.</span>
+            } @else {
+              <span i18n>
+                Fill in the details below. A secure password will be generated and emailed to the
+                user.
+              </span>
+            }
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="mb-24">
+            <app-banner #formBanner>
+              <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+            </app-banner>
+          </div>
+
+          <form
+            class="d-flex flex-column gap-24"
+            [formGroup]="adminForm"
+            (ngSubmit)="onSubmit()"
+          >
+            <mat-form-field class="w-100">
+              <mat-label i18n>First Name</mat-label>
+              <input
+                matInput
+                formControlName="firstName"
+                type="text"
+                placeholder="Enter first name"
+                autocomplete="given-name"
+                i18n-placeholder
+              />
+              @if (adminForm.get('firstName')?.hasError('required')) {
+                <mat-error i18n>First name is required</mat-error>
+              } @else if (adminForm.get('firstName')?.hasError('minlength')) {
+                <mat-error i18n>First name must be at least 2 characters</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+              <mat-label i18n>Last Name</mat-label>
+              <input
+                matInput
+                formControlName="lastName"
+                type="text"
+                placeholder="Enter last name"
+                autocomplete="family-name"
+                i18n-placeholder
+              />
+              @if (adminForm.get('lastName')?.hasError('required')) {
+                <mat-error i18n>Last name is required</mat-error>
+              } @else if (adminForm.get('lastName')?.hasError('minlength')) {
+                <mat-error i18n>Last name must be at least 2 characters</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Username</mat-label>
+              <input
+                matInput
+                formControlName="username"
+                type="text"
+                placeholder="Choose a username"
+                autocomplete="username"
+                i18n-placeholder
+              />
+              <mat-hint align="end"
+                >{{ adminForm.get('username')?.value?.length ?? 0 | number }} /
+                {{ usernameMaxLength | number }}</mat-hint
+              >
+              @if (adminForm.get('username')?.hasError('required')) {
+                <mat-error i18n>Username is required</mat-error>
+              } @else if (adminForm.get('username')?.hasError('minlength')) {
+                <mat-error i18n>Username must be at least 3 characters</mat-error>
+              } @else if (adminForm.get('username')?.hasError('maxlength')) {
+                <mat-error i18n>Username must be at most 50 characters</mat-error>
+              } @else if (adminForm.get('username')?.hasError('usernameInvalid')) {
+                <mat-error class="d-flex">
+                  <div class="d-flex flex-column h-100 w-100">
+                    <div>{{ usernameMustBeLabel }}:</div>
+                    <ul class="p-0 m-0 pl-16">
+                      @for (
+                        msg of adminForm.get('username')?.errors?.['usernameInvalid'];
+                        track msg
+                      ) {
+                        <li>{{ msg }}</li>
+                      }
+                    </ul>
+                  </div>
+                </mat-error>
+              } @else if (adminForm.get('username')?.hasError('usernameTaken')) {
+                <mat-error>{{ adminForm.get('username')?.errors?.['usernameTaken'] }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+              <mat-label i18n>Email</mat-label>
+              <input
+                matInput
+                formControlName="email"
+                type="email"
+                placeholder="Enter email"
+                autocomplete="email"
+                i18n-placeholder
+              />
+              @if (adminForm.get('email')?.hasError('required')) {
+                <mat-error i18n>Email is required</mat-error>
+              } @else if (adminForm.get('email')?.hasError('email')) {
+                <mat-error i18n>Please enter a valid email address</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="d-flex justify-end gap-8 wrap">
+              <button
+                matButton="filled"
+                type="submit"
+                [disabled]="!adminForm.valid || isSubmitting() || adminForm.pending"
+              >
+                <span>{{ submitLabel() }}</span>
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    }
+  </main>
+</div>

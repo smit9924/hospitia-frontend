@@ -24,6 +24,7 @@ import { AdminListing } from './components/listing/admin-listing/admin-listing';
 import { OwnerListing } from './components/listing/owner-listing/owner-listing';
 import { ManagerListing } from './components/listing/manager-listing/manager-listing';
 import { CustomerListing } from './components/listing/customer-listing/customer-listing';
+import { CreateAdmin } from './components/user-creation/create-admin/create-admin';
 
 export const routes: Routes = [
   {
@@ -171,6 +172,21 @@ export const routes: Routes = [
   {
     path: 'users',
     children: [
+      {
+        path: 'create',
+        children: [
+          {
+            path: 'admin',
+            component: CreateAdmin,
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+        ],
+      },
       {
         path: 'admins',
         component: AdminListing,

@@ -34,4 +34,8 @@ export const appRoutes = {
   managerListing: '/users/managers',
   customerListing: '/users/customers',
   // *** End Users listing ***
+
+  // User creation
+  createAdmin: '/users/create/admin',
+  // *** End User creation ***
 };

@@ -5,8 +5,8 @@ export interface UserProfileDto {
   username: string;
   role: UserType;
   guid: string;
-  first_name: string | null;
-  last_name: string | null;
+  firstName: string | null;
+  lastName: string | null;
   isEmailVerified: boolean;
 }
 
@@ -14,6 +14,10 @@ export interface UserProfileUpdate {
   username: string;
   firstName: string;
   lastName: string;
+}
+
+export interface UserUpdateRequest extends UserProfileUpdate {
+  guid: string;
 }
 
 export interface UsernameAvailabilityReq {
@@ -26,6 +30,13 @@ export interface UserSignup {
   email: string;
   username: string;
   password: string;
+}
+
+export interface UserCreateRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
 }
 
 export interface ChangePasswordReq {

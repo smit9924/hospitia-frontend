@@ -16,10 +16,10 @@ export class Dialog {
    * Opens a generic dialog and returns a MatDialogRef.
    * Use this when you need full control over the ref (e.g. update button states).
    */
-  open<D = unknown>(config: MatDialogConfig): MatDialogRef<GenericDialog, null> {
-    const ref = this.dialog.open<GenericDialog, GenericDialogConfig<D>, null>(
+  open<D = unknown, R = unknown>(config: MatDialogConfig): MatDialogRef<GenericDialog, R> {
+    const ref = this.dialog.open<GenericDialog, GenericDialogConfig<D>, R>(
       GenericDialog,
-      config,
+      config
     );
 
     return ref;
@@ -45,5 +45,36 @@ export class Dialog {
     });
 
     this.open(dialogConfig);
+  }
+
+  /**
+   * Opens a confirm dialog via GenericDialog.
+   * Cancel closes with `false`; Confirm closes with `true`.
+   */
+  openConfirmDialog(title: string, contentText: string): MatDialogRef<GenericDialog, boolean> {
+    const buttons: GenericDialogButtonMetadata[] = [
+      {
+        label: $localize`Cancel`,
+        closeOnClick: false,
+        type: GenericDialogButtonType.OUTLINED,
+      },
+      {
+        label: $localize`Confirm`,
+        closeOnClick: true,
+        type: GenericDialogButtonType.FILLED,
+      },
+    ];
+
+    const dialogData = new GenericDialogConfigData({
+      buttons,
+      title,
+      contentText,
+    });
+
+    const dialogConfig = new GenericDialogConfig<GenericDialogConfigData>({
+      data: dialogData,
+    });
+
+    return this.open<GenericDialogConfigData, boolean>(dialogConfig);
   }
 }

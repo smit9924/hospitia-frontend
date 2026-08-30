@@ -1,9 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import {
   ChangePasswordReq,
+  UserCreateRequest,
   UserListQuery,
   UserListResponse,
+  UserProfileDto,
   UsernameAvailabilityReq,
+  UserUpdateRequest,
 } from '../../types/interfaces/users';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpContext } from '@angular/common/http';
@@ -105,5 +108,17 @@ export class User {
         searchTerm: query.searchTerm ?? '',
       },
     });
+  }
+
+  getAdmin(guid: string): Observable<UserProfileDto> {
+    return this.http.get<UserProfileDto>(apiRoutes.users.getAdmin(guid));
+  }
+
+  createAdmin(payload: UserCreateRequest): Observable<UserProfileDto> {
+    return this.http.post<UserProfileDto>(apiRoutes.users.createAdmin, payload);
+  }
+
+  updateAdmin(payload: UserUpdateRequest): Observable<UserProfileDto> {
+    return this.http.put<UserProfileDto>(apiRoutes.users.updateAdmin, payload);
   }
 }
