@@ -17,10 +17,7 @@ export class Dialog {
    * Use this when you need full control over the ref (e.g. update button states).
    */
   open<D = unknown, R = unknown>(config: MatDialogConfig): MatDialogRef<GenericDialog, R> {
-    const ref = this.dialog.open<GenericDialog, GenericDialogConfig<D>, R>(
-      GenericDialog,
-      config
-    );
+    const ref = this.dialog.open<GenericDialog, GenericDialogConfig<D>, R>(GenericDialog, config);
 
     return ref;
   }

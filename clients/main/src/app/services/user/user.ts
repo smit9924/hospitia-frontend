@@ -121,4 +121,40 @@ export class User {
   updateAdmin(payload: UserUpdateRequest): Observable<UserProfileDto> {
     return this.http.put<UserProfileDto>(apiRoutes.users.updateAdmin, payload);
   }
+
+  getOwner(guid: string): Observable<UserProfileDto> {
+    return this.http.get<UserProfileDto>(apiRoutes.users.getOwner(guid));
+  }
+
+  createOwner(payload: UserCreateRequest): Observable<UserProfileDto> {
+    return this.http.post<UserProfileDto>(apiRoutes.users.createOwner, payload);
+  }
+
+  updateOwner(payload: UserUpdateRequest): Observable<UserProfileDto> {
+    return this.http.put<UserProfileDto>(apiRoutes.users.updateOwner, payload);
+  }
+
+  getManager(guid: string): Observable<UserProfileDto> {
+    return this.http.get<UserProfileDto>(apiRoutes.users.getManager(guid));
+  }
+
+  createManager(payload: UserCreateRequest): Observable<UserProfileDto> {
+    return this.http.post<UserProfileDto>(apiRoutes.users.createManager, payload);
+  }
+
+  updateManager(payload: UserUpdateRequest): Observable<UserProfileDto> {
+    return this.http.put<UserProfileDto>(apiRoutes.users.updateManager, payload);
+  }
+
+  getCustomer(guid: string): Observable<UserProfileDto> {
+    return this.http.get<UserProfileDto>(apiRoutes.users.getCustomer(guid));
+  }
+
+  createCustomer(payload: UserCreateRequest): Observable<UserProfileDto> {
+    return this.http.post<UserProfileDto>(apiRoutes.users.createCustomer, payload);
+  }
+
+  updateCustomer(payload: UserUpdateRequest): Observable<UserProfileDto> {
+    return this.http.put<UserProfileDto>(apiRoutes.users.updateCustomer, payload);
+  }
 }

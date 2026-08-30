@@ -37,5 +37,8 @@ export const appRoutes = {
 
   // User creation
   createAdmin: '/users/create/admin',
+  createOwner: '/users/create/owner',
+  createManager: '/users/create/manager',
+  createCustomer: '/users/create/customer',
   // *** End User creation ***
 };

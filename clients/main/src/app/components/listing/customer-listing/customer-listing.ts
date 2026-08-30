@@ -5,9 +5,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Searchbar } from '../../common/searchbar/searchbar';
 import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
 import { CustomMatTooltip } from '../../../directives/custom-mat-tooltip/custom-mat-tooltip';
+import { appRoutes } from '../../../data/app-routes';
 import { User } from '../../../services/user/user';
 import {
   UserListItem,
@@ -15,7 +17,7 @@ import {
   UserListSortDirection,
 } from '../../../types/interfaces/users';
 import { finalize } from 'rxjs';
-
+import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-customer-listing',
   imports: [
@@ -28,12 +30,14 @@ import { finalize } from 'rxjs';
     MatButtonModule,
     MatIconModule,
     CustomMatTooltip,
+    AsyncPipe,
   ],
   templateUrl: './customer-listing.html',
   styleUrl: './customer-listing.scss',
 })
 export class CustomerListing implements OnInit {
   private readonly userService = inject(User);
+  private readonly router = inject(Router);
 
   protected readonly titleText = $localize`Customers`;
   protected readonly displayedColumns = ['firstName', 'lastName', 'username', 'email', 'actions'];
@@ -74,15 +78,17 @@ export class CustomerListing implements OnInit {
     this.loadUsers();
   }
 
-  protected createCustomer(): void {
-    return;
+  protected async createCustomer(): Promise<void> {
+    await this.router.navigateByUrl(appRoutes.createCustomer);
   }
 
-  protected editCustomer(_user: UserListItem): void {
-    return;
+  protected async editCustomer(user: UserListItem): Promise<void> {
+    await this.router.navigate([appRoutes.createCustomer], {
+      queryParams: { guid: user.guid },
+    });
   }
 
-  protected deleteCustomer(_user: UserListItem): void {
+  protected async deleteCustomer(_user: UserListItem): Promise<void> {
     return;
   }
 

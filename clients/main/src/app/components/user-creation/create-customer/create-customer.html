@@ -16,9 +16,9 @@
         role="status"
       >
         <mat-icon class="empty-state-icon text-secondary" aria-hidden="true" svgIcon="person" />
-        <p class="heading-extra-small m-0" i18n>Admin not found</p>
+        <p class="heading-extra-small m-0" i18n>Customer not found</p>
         <p class="body-medium text-secondary m-0" i18n>
-          The requested admin user could not be found. They may have been removed.
+          The requested customer user could not be found. They may have been removed.
         </p>
       </section>
     } @else if (showForm()) {
@@ -27,15 +27,15 @@
           <mat-card-title>
             <h2 class="heading-extra-small m-0">
               @if (isEditMode()) {
-                <span i18n>Admin details</span>
+                <span i18n>Customer details</span>
               } @else {
-                <span i18n>New admin details</span>
+                <span i18n>New customer details</span>
               }
             </h2>
           </mat-card-title>
           <mat-card-subtitle class="body-medium text-secondary mt-8">
             @if (isEditMode()) {
-              <span i18n>Update the admin profile and save your changes.</span>
+              <span i18n>Update the customer profile and save your changes.</span>
             } @else {
               <span i18n>
                 Fill in the details below. A secure password will be generated and emailed to the
@@ -52,7 +52,11 @@
             </app-banner>
           </div>
 
-          <form class="d-flex flex-column gap-24" [formGroup]="adminForm" (ngSubmit)="onSubmit()">
+          <form
+            class="d-flex flex-column gap-24"
+            [formGroup]="customerForm"
+            (ngSubmit)="onSubmit()"
+          >
             <mat-form-field class="w-100">
               <mat-label i18n>First Name</mat-label>
               <input
@@ -63,9 +67,9 @@
                 autocomplete="given-name"
                 i18n-placeholder
               />
-              @if (adminForm.get('firstName')?.hasError('required')) {
+              @if (customerForm.get('firstName')?.hasError('required')) {
                 <mat-error i18n>First name is required</mat-error>
-              } @else if (adminForm.get('firstName')?.hasError('minlength')) {
+              } @else if (customerForm.get('firstName')?.hasError('minlength')) {
                 <mat-error i18n>First name must be at least 2 characters</mat-error>
               }
             </mat-form-field>
@@ -80,9 +84,9 @@
                 autocomplete="family-name"
                 i18n-placeholder
               />
-              @if (adminForm.get('lastName')?.hasError('required')) {
+              @if (customerForm.get('lastName')?.hasError('required')) {
                 <mat-error i18n>Last name is required</mat-error>
-              } @else if (adminForm.get('lastName')?.hasError('minlength')) {
+              } @else if (customerForm.get('lastName')?.hasError('minlength')) {
                 <mat-error i18n>Last name must be at least 2 characters</mat-error>
               }
             </mat-form-field>
@@ -98,22 +102,22 @@
                 i18n-placeholder
               />
               <mat-hint align="end"
-                >{{ adminForm.get('username')?.value?.length ?? 0 | number }} /
+                >{{ customerForm.get('username')?.value?.length ?? 0 | number }} /
                 {{ usernameMaxLength | number }}</mat-hint
               >
-              @if (adminForm.get('username')?.hasError('required')) {
+              @if (customerForm.get('username')?.hasError('required')) {
                 <mat-error i18n>Username is required</mat-error>
-              } @else if (adminForm.get('username')?.hasError('minlength')) {
+              } @else if (customerForm.get('username')?.hasError('minlength')) {
                 <mat-error i18n>Username must be at least 3 characters</mat-error>
-              } @else if (adminForm.get('username')?.hasError('maxlength')) {
+              } @else if (customerForm.get('username')?.hasError('maxlength')) {
                 <mat-error i18n>Username must be at most 50 characters</mat-error>
-              } @else if (adminForm.get('username')?.hasError('usernameInvalid')) {
+              } @else if (customerForm.get('username')?.hasError('usernameInvalid')) {
                 <mat-error class="d-flex">
                   <div class="d-flex flex-column h-100 w-100">
                     <div>{{ usernameMustBeLabel }}:</div>
                     <ul class="p-0 m-0 pl-16">
                       @for (
-                        msg of adminForm.get('username')?.errors?.['usernameInvalid'];
+                        msg of customerForm.get('username')?.errors?.['usernameInvalid'];
                         track msg
                       ) {
                         <li>{{ msg }}</li>
@@ -121,8 +125,8 @@
                     </ul>
                   </div>
                 </mat-error>
-              } @else if (adminForm.get('username')?.hasError('usernameTaken')) {
-                <mat-error>{{ adminForm.get('username')?.errors?.['usernameTaken'] }}</mat-error>
+              } @else if (customerForm.get('username')?.hasError('usernameTaken')) {
+                <mat-error>{{ customerForm.get('username')?.errors?.['usernameTaken'] }}</mat-error>
               }
             </mat-form-field>
 
@@ -136,9 +140,9 @@
                 autocomplete="email"
                 i18n-placeholder
               />
-              @if (adminForm.get('email')?.hasError('required')) {
+              @if (customerForm.get('email')?.hasError('required')) {
                 <mat-error i18n>Email is required</mat-error>
-              } @else if (adminForm.get('email')?.hasError('email')) {
+              } @else if (customerForm.get('email')?.hasError('email')) {
                 <mat-error i18n>Please enter a valid email address</mat-error>
               }
             </mat-form-field>
@@ -147,7 +151,7 @@
               <button
                 matButton="filled"
                 type="submit"
-                [disabled]="!adminForm.valid || isSubmitting() || adminForm.pending"
+                [disabled]="!customerForm.valid || isSubmitting() || customerForm.pending"
               >
                 <span>{{ submitLabel() }}</span>
               </button>

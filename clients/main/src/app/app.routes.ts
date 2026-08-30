@@ -25,6 +25,9 @@ import { OwnerListing } from './components/listing/owner-listing/owner-listing';
 import { ManagerListing } from './components/listing/manager-listing/manager-listing';
 import { CustomerListing } from './components/listing/customer-listing/customer-listing';
 import { CreateAdmin } from './components/user-creation/create-admin/create-admin';
+import { CreateOwner } from './components/user-creation/create-owner/create-owner';
+import { CreateManager } from './components/user-creation/create-manager/create-manager';
+import { CreateCustomer } from './components/user-creation/create-customer/create-customer';
 
 export const routes: Routes = [
   {
@@ -181,6 +184,36 @@ export const routes: Routes = [
             canActivate: [permissionGuard],
             data: {
               requiredPermission: [UserType.ADMIN],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+          {
+            path: 'owner',
+            component: CreateOwner,
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+          {
+            path: 'manager',
+            component: CreateManager,
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+          {
+            path: 'customer',
+            component: CreateCustomer,
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
               showNavbar: true,
               showFooter: true,
             },

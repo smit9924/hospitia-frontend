@@ -5,9 +5,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Searchbar } from '../../common/searchbar/searchbar';
 import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
 import { CustomMatTooltip } from '../../../directives/custom-mat-tooltip/custom-mat-tooltip';
+import { appRoutes } from '../../../data/app-routes';
 import { User } from '../../../services/user/user';
 import {
   UserListItem,
@@ -15,7 +17,7 @@ import {
   UserListSortDirection,
 } from '../../../types/interfaces/users';
 import { finalize } from 'rxjs';
-
+import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-manager-listing',
   imports: [
@@ -28,12 +30,14 @@ import { finalize } from 'rxjs';
     MatButtonModule,
     MatIconModule,
     CustomMatTooltip,
+    AsyncPipe,
   ],
   templateUrl: './manager-listing.html',
   styleUrl: './manager-listing.scss',
 })
 export class ManagerListing implements OnInit {
   private readonly userService = inject(User);
+  private readonly router = inject(Router);
 
   protected readonly titleText = $localize`Managers`;
   protected readonly displayedColumns = ['firstName', 'lastName', 'username', 'email', 'actions'];
@@ -74,15 +78,17 @@ export class ManagerListing implements OnInit {
     this.loadUsers();
   }
 
-  protected createManager(): void {
-    return;
+  protected async createManager(): Promise<void> {
+    await this.router.navigateByUrl(appRoutes.createManager);
   }
 
-  protected editManager(_user: UserListItem): void {
-    return;
+  protected async editManager(user: UserListItem): Promise<void> {
+    await this.router.navigate([appRoutes.createManager], {
+      queryParams: { guid: user.guid },
+    });
   }
 
-  protected deleteManager(_user: UserListItem): void {
+  protected async deleteManager(_user: UserListItem): Promise<void> {
     return;
   }
 
