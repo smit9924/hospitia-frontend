@@ -17,7 +17,6 @@ import {
   UserListSortDirection,
 } from '../../../types/interfaces/users';
 import { finalize } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-owner-listing',
@@ -31,7 +30,6 @@ import { AsyncPipe } from '@angular/common';
     MatButtonModule,
     MatIconModule,
     CustomMatTooltip,
-    AsyncPipe,
   ],
   templateUrl: './owner-listing.html',
   styleUrl: './owner-listing.scss',

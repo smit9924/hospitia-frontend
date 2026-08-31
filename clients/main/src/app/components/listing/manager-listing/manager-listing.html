@@ -17,7 +17,7 @@
             class="listing-create-button shrink-0"
             matButton="filled"
             type="button"
-            (click)="createManager() | async"
+            (click)="createManager()"
           >
             <span i18n>Create manager</span>
           </button>
@@ -61,7 +61,7 @@
               class="listing-create-button shrink-0 mt-8"
               matButton="filled"
               type="button"
-              (click)="createManager() | async"
+              (click)="createManager()"
             >
               <span i18n>Create manager</span>
             </button>
@@ -179,11 +179,11 @@
                     <mat-icon svgIcon="moreVert" aria-hidden="true" />
                   </button>
                   <mat-menu #actionsMenu="matMenu">
-                    <button mat-menu-item type="button" (click)="editManager(user) | async">
+                    <button mat-menu-item type="button" (click)="editManager(user)">
                       <mat-icon svgIcon="edit" aria-hidden="true" />
                       <span i18n>Edit</span>
                     </button>
-                    <button mat-menu-item type="button" (click)="deleteManager(user) | async">
+                    <button mat-menu-item type="button" (click)="deleteManager(user)">
                       <mat-icon svgIcon="delete" aria-hidden="true" />
                       <span i18n>Delete</span>
                     </button>

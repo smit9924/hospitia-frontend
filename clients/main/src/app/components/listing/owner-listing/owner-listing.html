@@ -17,7 +17,7 @@
             class="listing-create-button shrink-0"
             matButton="filled"
             type="button"
-            (click)="createOwner() | async"
+            (click)="createOwner()"
           >
             <span i18n>Create owner</span>
           </button>
@@ -61,7 +61,7 @@
               class="listing-create-button shrink-0 mt-8"
               matButton="filled"
               type="button"
-              (click)="createOwner() | async"
+              (click)="createOwner()"
             >
               <span i18n>Create owner</span>
             </button>
@@ -179,11 +179,11 @@
                     <mat-icon svgIcon="moreVert" aria-hidden="true" />
                   </button>
                   <mat-menu #actionsMenu="matMenu">
-                    <button mat-menu-item type="button" (click)="editOwner(user) | async">
+                    <button mat-menu-item type="button" (click)="editOwner(user)">
                       <mat-icon svgIcon="edit" aria-hidden="true" />
                       <span i18n>Edit</span>
                     </button>
-                    <button mat-menu-item type="button" (click)="deleteOwner(user) | async">
+                    <button mat-menu-item type="button" (click)="deleteOwner(user)">
                       <mat-icon svgIcon="delete" aria-hidden="true" />
                       <span i18n>Delete</span>
                     </button>

@@ -17,7 +17,7 @@ import {
   UserListSortDirection,
 } from '../../../types/interfaces/users';
 import { finalize } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+
 @Component({
   selector: 'app-manager-listing',
   imports: [
@@ -30,7 +30,6 @@ import { AsyncPipe } from '@angular/common';
     MatButtonModule,
     MatIconModule,
     CustomMatTooltip,
-    AsyncPipe,
   ],
   templateUrl: './manager-listing.html',
   styleUrl: './manager-listing.scss',
