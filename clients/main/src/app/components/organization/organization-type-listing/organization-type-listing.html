@@ -1,0 +1,180 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText" />
+
+  <main class="d-flex flex-column gap-16 p-24 w-100">
+    <!-- Section: Organization type filters -->
+    @if (showSearchbar()) {
+      <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
+        <div class="d-flex wrap align-center justify-space-between gap-8">
+          <!-- SEARCH: Organization types -->
+          <app-searchbar
+            class="listing-searchbar max-w-100"
+            i18n-placeholder
+            placeholder="Search organization types"
+            [compact]="true"
+            (searchChanged)="onSearch($event)"
+          />
+
+          <!-- BUTTON: Create organization type -->
+          <button
+            class="listing-create-button shrink-0"
+            matButton="filled"
+            type="button"
+            (click)="createOrganizationType()"
+          >
+            <span i18n>Create organization type</span>
+          </button>
+        </div>
+      </section>
+    }
+
+    <section class="listing-card rounded-12 p-16 d-flex flex-column gap-16 w-100">
+      <!-- Section: Organization type results -->
+      @if (isInitialLoad()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+          aria-live="polite"
+        >
+          <p class="heading-extra-small m-0" i18n>Loading...</p>
+        </div>
+      } @else if (!hasOrganizationTypes()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+        >
+          <mat-icon
+            class="empty-state-icon"
+            aria-hidden="true"
+            [svgIcon]="isEmptySearch() ? 'search' : 'businessCenter'"
+          />
+
+          @if (isEmptySearch()) {
+            <p class="heading-extra-small m-0" i18n>No organization types found</p>
+            <p>
+              <span class="body-medium text-secondary" i18n>No organization types matched </span>
+              <span class="body-medium text-secondary" i18n>"{{ searchTerm() }}"</span>
+              <span class="body-medium text-secondary" i18n>Try a different search term.</span>
+            </p>
+          } @else {
+            <p class="heading-extra-small m-0" i18n>No organization types to display</p>
+            <p class="body-medium text-secondary m-0" i18n>
+              There are no organization types available in this list yet.
+            </p>
+            <button
+              class="listing-create-button shrink-0 mt-8"
+              matButton="filled"
+              type="button"
+              (click)="createOrganizationType()"
+            >
+              <span i18n>Create organization type</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="listing-table-frame rounded-8 overflow-hidden">
+          <div class="listing-table-scroll w-100 overflow-x-auto">
+            <table
+              class="listing-table w-100"
+              mat-table
+              matSort
+              matSortActive="name"
+              matSortDirection="asc"
+              matSortDisableClear
+              [dataSource]="organizationTypes()"
+              (matSortChange)="onSortChange($event)"
+            >
+              <!-- TABLE COLUMN: Name -->
+              <ng-container matColumnDef="name">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-name"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Name
+                </th>
+                <td *matCellDef="let organizationType" class="listing-col listing-col-name" mat-cell>
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="organizationType.name"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ organizationType.name }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Description -->
+              <ng-container matColumnDef="description">
+                <th *matHeaderCellDef class="listing-col listing-col-description" mat-header-cell i18n>
+                  Description
+                </th>
+                <td
+                  *matCellDef="let organizationType"
+                  class="listing-col listing-col-description"
+                  mat-cell
+                >
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="organizationType.description"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ organizationType.description || '-' }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Actions -->
+              <ng-container matColumnDef="actions">
+                <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
+                  Actions
+                </th>
+                <td *matCellDef="let organizationType" class="listing-col listing-col-actions" mat-cell>
+                  <button
+                    matIconButton
+                    type="button"
+                    aria-label="Organization type actions"
+                    i18n-aria-label
+                    [matMenuTriggerFor]="actionsMenu"
+                  >
+                    <mat-icon svgIcon="moreVert" aria-hidden="true" />
+                  </button>
+                  <mat-menu #actionsMenu="matMenu">
+                    <button mat-menu-item type="button" (click)="editOrganizationType(organizationType)">
+                      <mat-icon svgIcon="edit" aria-hidden="true" />
+                      <span i18n>Edit</span>
+                    </button>
+                    <button mat-menu-item type="button" (click)="deleteOrganizationType(organizationType)">
+                      <mat-icon svgIcon="delete" aria-hidden="true" />
+                      <span i18n>Delete</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGINATION: Organization types -->
+        <div class="d-flex justify-flex-end">
+          <mat-paginator
+            class="listing-paginator max-w-100"
+            aria-label="Organization type list paginator"
+            i18n-aria-label
+            [length]="totalCount()"
+            [pageIndex]="pageIndex()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="false"
+            (page)="onPageChange($event)"
+          />
+        </div>
+      }
+    </section>
+  </main>
+</div>

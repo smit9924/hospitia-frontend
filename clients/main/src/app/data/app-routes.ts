@@ -41,4 +41,15 @@ export const appRoutes = {
   createManager: '/users/create/manager',
   createCustomer: '/users/create/customer',
   // *** End User creation ***
+
+  // Organization
+  organizationTypeListing: '/organization/organization-type/listing',
+  createOrganizationType: '/organization/organization-type/create',
+  organizationListingAdmin: '/organization/listing/admin',
+  organizationListingOwner: '/organization/listing/owner',
+  organizationListingManager: '/organization/listing/manager',
+  createOrganizationAdmin: '/organization/create/admin',
+  createOrganizationOwner: '/organization/create/owner',
+  viewOrganization: '/organization/view',
+  // *** End Organization ***
 };

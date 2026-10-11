@@ -4,6 +4,7 @@ export const environment = {
   version: 'DEVELOPMENT',
   authServiceBaseUrl: 'http://auth.localhost/api/v1',
   dashboardServiceBaseUrl: 'http://dashboard.localhost/api/v1',
+  bookingServiceBaseUrl: 'http://booking.localhost/api/v1',
   forgotPasswordResendTimeoutSeconds: 0,
   emailVerificationResendTimeoutSeconds: 15,
   enableOwnerSignup: true,

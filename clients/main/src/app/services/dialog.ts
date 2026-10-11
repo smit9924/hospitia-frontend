@@ -74,4 +74,5 @@ export class Dialog {
 
     return this.open<GenericDialogConfigData, boolean>(dialogConfig);
   }
+
 }

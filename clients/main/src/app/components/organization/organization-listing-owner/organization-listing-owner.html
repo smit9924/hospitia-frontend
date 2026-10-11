@@ -1,0 +1,291 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText" />
+
+  <main class="d-flex flex-column gap-16 p-24 w-100">
+    <!-- Section: Organization filters -->
+    @if (showSearchbar()) {
+      <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
+        <!-- SEARCH: Organizations -->
+        <div class="d-flex wrap align-center justify-space-between gap-8">
+          <app-searchbar
+            class="listing-searchbar max-w-100"
+            i18n-placeholder
+            placeholder="Search organizations"
+            [compact]="true"
+            (searchChanged)="onSearch($event)"
+          />
+
+          <button
+            class="listing-create-button shrink-0"
+            matButton="filled"
+            type="button"
+            (click)="createOrganization()"
+          >
+            <span i18n>Create organization</span>
+          </button>
+        </div>
+      </section>
+    }
+
+    <section class="listing-card rounded-12 p-16 d-flex flex-column gap-16 w-100">
+      <!-- Section: Organization results -->
+      @if (isInitialLoad()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+          aria-live="polite"
+        >
+          <p class="heading-extra-small m-0" i18n>Loading...</p>
+        </div>
+      } @else if (!hasOrganizations()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+        >
+          <mat-icon
+            class="empty-state-icon"
+            aria-hidden="true"
+            [svgIcon]="isEmptySearch() ? 'search' : 'businessCenter'"
+          />
+
+          @if (isEmptySearch()) {
+            <p class="heading-extra-small m-0" i18n>No organizations found</p>
+            <p>
+              <span class="body-medium text-secondary" i18n>No organizations matched </span>
+              <span class="body-medium text-secondary" i18n>"{{ searchTerm() }}"</span>
+              <span class="body-medium text-secondary" i18n>Try a different search term.</span>
+            </p>
+          } @else {
+            <p class="heading-extra-small m-0" i18n>No organizations to display</p>
+            <p class="body-medium text-secondary m-0" i18n>
+              There are no organizations available in this list yet.
+            </p>
+            <button
+              class="listing-create-button shrink-0 mt-8"
+              matButton="filled"
+              type="button"
+              (click)="createOrganization()"
+            >
+              <span i18n>Create organization</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="listing-table-frame rounded-8 overflow-hidden">
+          <div class="listing-table-scroll w-100 overflow-x-auto">
+            <table
+              class="listing-table w-100"
+              mat-table
+              matSort
+              matSortActive="name"
+              matSortDirection="asc"
+              matSortDisableClear
+              [dataSource]="organizations()"
+              (matSortChange)="onSortChange($event)"
+            >
+              <!-- TABLE COLUMN: Name -->
+              <ng-container matColumnDef="name">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-name"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Name
+                </th>
+                <td *matCellDef="let organization" class="listing-col listing-col-name" mat-cell>
+                  <button
+                    type="button"
+                    class="org-name-link clamp-1"
+                    [customMatTooltip]="organization.name"
+                    [tooltipOnlyOnEllipsis]="true"
+                    (click)="viewOrganization(organization)"
+                  >
+                    {{ organization.name }}
+                  </button>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Organization type -->
+              <ng-container matColumnDef="organizationTypeName">
+                <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell i18n>
+                  Organization Type
+                </th>
+                <td *matCellDef="let organization" class="listing-col listing-col-name" mat-cell>
+                  <span class="clamp-1">{{ organization.organizationTypeName }}</span>
+                </td>
+              </ng-container>
+
+              @if (showOwnerColumn) {
+                <ng-container matColumnDef="ownerDisplayName">
+                  <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell i18n>
+                    Owner
+                  </th>
+                  <td *matCellDef="let organization" class="listing-col listing-col-name" mat-cell>
+                    <span class="clamp-1">{{ organization.ownerDisplayName || '-' }}</span>
+                  </td>
+                </ng-container>
+              }
+
+              <!-- TABLE COLUMN: Address -->
+              <ng-container matColumnDef="addressLine1">
+                <th *matHeaderCellDef class="listing-col listing-col-address" mat-header-cell i18n>
+                  Address
+                </th>
+                <td *matCellDef="let organization" class="listing-col listing-col-address" mat-cell>
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="organization.addressLine1"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ organization.addressLine1 }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: City -->
+              <ng-container matColumnDef="city">
+                <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell i18n>
+                  City
+                </th>
+                <td *matCellDef="let organization" class="listing-col listing-col-name" mat-cell>
+                  {{ organization.city }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: State -->
+              <ng-container matColumnDef="state">
+                <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell i18n>
+                  State
+                </th>
+                <td *matCellDef="let organization" class="listing-col listing-col-name" mat-cell>
+                  {{ organization.state }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Country -->
+              <ng-container matColumnDef="country">
+                <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell i18n>
+                  Country
+                </th>
+                <td *matCellDef="let organization" class="listing-col listing-col-name" mat-cell>
+                  {{ organization.country }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Status -->
+              <ng-container matColumnDef="isActive">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-status"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Status
+                </th>
+                <td *matCellDef="let organization" class="listing-col listing-col-status" mat-cell>
+                  @if (organization.isActive) {
+                    <span class="status-chip status-chip--active" i18n>Active</span>
+                  } @else {
+                    <span class="status-chip status-chip--inactive" i18n>Inactive</span>
+                  }
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Created -->
+              <ng-container matColumnDef="createdBy">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-audit"
+                  mat-header-cell
+                  mat-sort-header="createdAt"
+                  i18n
+                >
+                  Created
+                </th>
+                <td *matCellDef="let organization" class="listing-col listing-col-audit" mat-cell>
+                  <span class="clamp-1">{{ organization.createdByDisplayName || '-' }}</span>
+                  <span class="body-small text-secondary">{{
+                    organization.createdAt | date: 'short'
+                  }}</span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Updated -->
+              <ng-container matColumnDef="updatedBy">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-audit"
+                  mat-header-cell
+                  mat-sort-header="updatedAt"
+                  i18n
+                >
+                  Updated
+                </th>
+                <td *matCellDef="let organization" class="listing-col listing-col-audit" mat-cell>
+                  <span class="clamp-1">{{ organization.updatedByDisplayName || '-' }}</span>
+                  <span class="body-small text-secondary">{{
+                    organization.updatedAt | date: 'short'
+                  }}</span>
+                </td>
+              </ng-container>
+
+              @if (showActions) {
+                <ng-container matColumnDef="actions">
+                  <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
+                    Actions
+                  </th>
+                  <td *matCellDef="let organization" class="listing-col listing-col-actions" mat-cell>
+                    <button
+                      matIconButton
+                      type="button"
+                      aria-label="Organization actions"
+                      i18n-aria-label
+                      [matMenuTriggerFor]="actionsMenu"
+                    >
+                      <mat-icon svgIcon="moreVert" aria-hidden="true" />
+                    </button>
+                    <mat-menu #actionsMenu="matMenu">
+                      <button mat-menu-item type="button" (click)="viewOrganization(organization)">
+                        <mat-icon svgIcon="visibility" aria-hidden="true" />
+                        <span i18n>View</span>
+                      </button>
+                      <button mat-menu-item type="button" (click)="editOrganization(organization)">
+                        <mat-icon svgIcon="edit" aria-hidden="true" />
+                        <span i18n>Edit</span>
+                      </button>
+                      <button mat-menu-item type="button" (click)="deleteOrganization(organization)">
+                        <mat-icon svgIcon="delete" aria-hidden="true" />
+                        <span i18n>Delete</span>
+                      </button>
+                    </mat-menu>
+                  </td>
+                </ng-container>
+              }
+
+              <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGINATION: Organizations -->
+        <div class="d-flex justify-flex-end">
+          <mat-paginator
+            class="listing-paginator max-w-100"
+            aria-label="Organization list paginator"
+            i18n-aria-label
+            [length]="totalCount()"
+            [pageIndex]="pageIndex()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="false"
+            (page)="onPageChange($event)"
+          />
+        </div>
+      }
+    </section>
+  </main>
+</div>

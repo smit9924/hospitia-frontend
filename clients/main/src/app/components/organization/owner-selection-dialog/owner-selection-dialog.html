@@ -1,0 +1,100 @@
+<!-- Dialog: Select owner -->
+<h2 matDialogTitle i18n>Select Owner</h2>
+
+<mat-dialog-content class="d-flex flex-column gap-16">
+  <!-- SEARCH: Owners -->
+  <app-searchbar
+    i18n-placeholder
+    placeholder="Search owners"
+    [compact]="true"
+    (searchChanged)="onSearch($event)"
+  />
+
+  <!-- State: Owner list -->
+  @if (isLoading()) {
+    <div
+      class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+      role="status"
+      aria-live="polite"
+    >
+      <p class="body-medium m-0" i18n>Loading...</p>
+    </div>
+  } @else if (!hasOwners()) {
+    <div class="d-flex flex-column align-center justify-center gap-8 p-24 text-center" role="status">
+      <mat-icon class="empty-state-icon" aria-hidden="true" svgIcon="person" />
+      <p class="body-medium m-0" i18n>No eligible owners found.</p>
+    </div>
+  } @else {
+    <div class="owner-table-scroll overflow-x-auto">
+      <table class="owner-table w-100" mat-table [dataSource]="owners()">
+        <!-- TABLE COLUMN: Select -->
+        <ng-container matColumnDef="select">
+          <th *matHeaderCellDef class="owner-col-select" mat-header-cell></th>
+          <td *matCellDef="let owner" class="owner-col-select" mat-cell>
+            <mat-radio-button
+              [checked]="isSelected(owner)"
+              [attr.aria-label]="owner.username"
+              (change)="selectOwner(owner)"
+            />
+          </td>
+        </ng-container>
+
+        <!-- TABLE COLUMN: First name -->
+        <ng-container matColumnDef="firstName">
+          <th *matHeaderCellDef mat-header-cell i18n>First name</th>
+          <td *matCellDef="let owner" mat-cell>{{ owner.firstName }}</td>
+        </ng-container>
+
+        <!-- TABLE COLUMN: Last name -->
+        <ng-container matColumnDef="lastName">
+          <th *matHeaderCellDef mat-header-cell i18n>Last name</th>
+          <td *matCellDef="let owner" mat-cell>{{ owner.lastName }}</td>
+        </ng-container>
+
+        <!-- TABLE COLUMN: Username -->
+        <ng-container matColumnDef="username">
+          <th *matHeaderCellDef mat-header-cell i18n>Username</th>
+          <td *matCellDef="let owner" mat-cell>{{ owner.username }}</td>
+        </ng-container>
+
+        <!-- TABLE COLUMN: Email -->
+        <ng-container matColumnDef="email">
+          <th *matHeaderCellDef mat-header-cell i18n>Email</th>
+          <td *matCellDef="let owner" mat-cell>{{ owner.email }}</td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr
+          *matRowDef="let row; columns: displayedColumns"
+          mat-row
+          class="owner-row"
+          (click)="selectOwner(row)"
+        ></tr>
+      </table>
+    </div>
+
+    <!-- PAGINATION: Owners -->
+    <mat-paginator
+      aria-label="Owner list paginator"
+      i18n-aria-label
+      [length]="totalCount()"
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="false"
+      (page)="onPageChange($event)"
+    />
+  }
+</mat-dialog-content>
+
+<!-- ACTIONS: Select owner -->
+<mat-dialog-actions align="end">
+  <!-- BUTTON: Cancel -->
+  <button matButton="outlined" type="button" (click)="cancel()">
+    <span i18n>Cancel</span>
+  </button>
+  <!-- BUTTON: Add -->
+  <button matButton="filled" type="button" [disabled]="!selected()" (click)="confirm()">
+    <span i18n>Add</span>
+  </button>
+</mat-dialog-actions>

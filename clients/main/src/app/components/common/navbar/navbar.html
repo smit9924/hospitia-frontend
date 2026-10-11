@@ -28,6 +28,13 @@
               </div>
             </button>
           }
+          @if (showOrganizationMenu()) {
+            <button mat-menu-item type="button" [matMenuTriggerFor]="organizationNavMenu">
+              <div class="d-flex align-center gap-4 justify-content-center">
+                <span i18n>Organization</span>
+              </div>
+            </button>
+          }
         } @else {
           <div mat-menu-item>
             <a matButton i18n [routerLink]="loginLink">Log in</a>
@@ -41,6 +48,13 @@
       <!-- Menu: Users(Mobile) -->
       <mat-menu #usersNavMenu="matMenu">
         @for (link of usersMenuLinks(); track link.route) {
+          <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
+        }
+      </mat-menu>
+
+      <!-- Menu: Organization(Mobile) -->
+      <mat-menu #organizationNavMenu="matMenu">
+        @for (link of organizationMenuLinks(); track link.route) {
           <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
         }
       </mat-menu>
@@ -94,11 +108,40 @@
               </button>
             </li>
           }
+          @if (showOrganizationMenu()) {
+            <li class="body-large">
+              <button
+                #organizationMenuTrigger="matMenuTrigger"
+                matButton
+                type="button"
+                aria-haspopup="menu"
+                aria-label="Organization"
+                i18n-aria-label
+                [matMenuTriggerFor]="organizationDesktopMenu"
+              >
+                <div class="d-flex align-center gap-4 justify-content-center">
+                  <span i18n>Organization</span>
+                  <mat-icon
+                    class="d-flex align-center justify-center dropdown-icon"
+                    aria-hidden="true"
+                    [svgIcon]="organizationMenuTrigger.menuOpen ? 'chevronUp' : 'chevronDown'"
+                  />
+                </div>
+              </button>
+            </li>
+          }
         </ul>
 
         <!-- Menu: Users (Desktop) -->
         <mat-menu #usersDesktopMenu="matMenu">
           @for (link of usersMenuLinks(); track link.route) {
+            <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
+          }
+        </mat-menu>
+
+        <!-- Menu: Organization (Desktop) -->
+        <mat-menu #organizationDesktopMenu="matMenu">
+          @for (link of organizationMenuLinks(); track link.route) {
             <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
           }
         </mat-menu>

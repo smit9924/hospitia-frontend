@@ -1,0 +1,227 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText()" [backButton]="true" />
+
+  <main class="d-flex flex-column gap-24 p-24 w-100 align-center">
+    @if (isEditMode() && isLoadingOrganization()) {
+      <section
+        class="org-form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <p class="heading-extra-small m-0" i18n>Loading...</p>
+      </section>
+    } @else if (organizationNotFound()) {
+      <section
+        class="org-form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+      >
+        <mat-icon class="empty-state-icon text-secondary" aria-hidden="true" svgIcon="businessCenter" />
+        <p class="heading-extra-small m-0" i18n>Organization not found</p>
+        <p class="body-medium text-secondary m-0" i18n>
+          The requested organization could not be found, or you do not have access to it.
+        </p>
+      </section>
+    } @else if (showForm()) {
+      <!-- Form: Organization -->
+      <mat-card class="org-form-card w-100">
+        <mat-card-header class="mb-16">
+          <div class="d-flex justify-space-between align-center w-100 wrap gap-8">
+            <div>
+              <mat-card-title>
+                <h2 class="heading-extra-small m-0">
+                  @if (isEditMode()) {
+                    <span i18n>Organization details</span>
+                  } @else {
+                    <span i18n>New organization details</span>
+                  }
+                </h2>
+              </mat-card-title>
+              <mat-card-subtitle class="body-medium text-secondary mt-8">
+                @if (isReadOnly()) {
+                  <span i18n>Viewing organization details.</span>
+                } @else if (isEditMode()) {
+                  <span i18n>Update the organization details and save your changes.</span>
+                } @else {
+                  <span i18n>Fill in the details below to create a new organization.</span>
+                }
+              </mat-card-subtitle>
+            </div>
+
+            @if (isReadOnly() && canToggleEdit()) {
+              <button matButton="outlined" type="button" (click)="enableEditing()">
+                <mat-icon svgIcon="edit" aria-hidden="true" />
+                <span i18n>Edit</span>
+              </button>
+            }
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="mb-24">
+            <app-banner #formBanner>
+              <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+            </app-banner>
+          </div>
+
+          <form
+            class="d-flex flex-column gap-24"
+            [formGroup]="organizationForm"
+            (ngSubmit)="onSubmit()"
+          >
+            <!-- TEXT FIELD: Name -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Name</mat-label>
+              <input matInput formControlName="name" type="text" placeholder="Enter organization name" i18n-placeholder />
+              <mat-hint align="end"
+                >{{ organizationForm.get('name')?.value?.length ?? 0 | number }} /
+                {{ nameMaxLength | number }}</mat-hint
+              >
+              @if (organizationForm.get('name')?.hasError('required')) {
+                <mat-error i18n>Name is required</mat-error>
+              } @else if (organizationForm.get('name')?.hasError('minlength')) {
+                <mat-error i18n>Name must be at least 2 characters</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- TEXT FIELD: Description -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Description</mat-label>
+              <textarea
+                matInput
+                formControlName="description"
+                rows="3"
+                placeholder="Enter an optional description"
+                i18n-placeholder
+              ></textarea>
+              @if (organizationForm.get('description')?.hasError('maxlength')) {
+                <mat-error i18n>Description must be at most 1000 characters</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- SELECT: Organization Type -->
+            <mat-form-field class="w-100">
+              <mat-label i18n>Organization Type</mat-label>
+              <mat-select formControlName="organizationTypeGuid">
+                @for (organizationType of organizationTypes(); track organizationType.guid) {
+                  <mat-option [value]="organizationType.guid">{{ organizationType.name }}</mat-option>
+                }
+              </mat-select>
+              @if (organizationForm.get('organizationTypeGuid')?.hasError('required')) {
+                <mat-error i18n>Organization type is required</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- FIELD: Owner -->
+            @if (requiresOwnerSelection()) {
+              <div class="d-flex flex-column gap-8">
+                <span class="body-medium" i18n>Owner</span>
+                <div class="d-flex align-center gap-8 wrap">
+                  @if (selectedOwner()) {
+                    <span class="body-medium"
+                      >{{ selectedOwner()?.firstName }} {{ selectedOwner()?.lastName }} ({{
+                        selectedOwner()?.username
+                      }})</span
+                    >
+                  } @else {
+                    <span class="body-medium text-secondary" i18n>No owner selected</span>
+                  }
+                  <button matButton="outlined" type="button" (click)="openOwnerSelection()">
+                    <span i18n>Select owner</span>
+                  </button>
+                </div>
+              </div>
+            } @else if (selectedOwner()) {
+              <mat-form-field class="w-100">
+                <mat-label i18n>Owner</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  disabled
+                  [value]="(selectedOwner()?.firstName ?? '') + ' ' + (selectedOwner()?.lastName ?? '')"
+                />
+              </mat-form-field>
+            }
+
+            <!-- CHECKBOX: Active -->
+            @if (isEditMode()) {
+              <mat-checkbox formControlName="isActive">
+                <span i18n>Active</span>
+              </mat-checkbox>
+            }
+
+            <!-- Section: Address -->
+            <h3 class="body-large m-0" i18n>Address</h3>
+
+            <!-- TEXT FIELD: Address Line 1 -->
+            <mat-form-field class="w-100">
+              <mat-label i18n>Address Line 1</mat-label>
+              <input matInput formControlName="addressLine1" type="text" i18n-placeholder placeholder="Street / building" />
+              @if (organizationForm.get('addressLine1')?.hasError('required')) {
+                <mat-error i18n>Address line 1 is required</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- TEXT FIELD: Address Line 2 -->
+            <mat-form-field class="w-100">
+              <mat-label i18n>Address Line 2</mat-label>
+              <input matInput formControlName="addressLine2" type="text" i18n-placeholder placeholder="Unit / suite (optional)" />
+            </mat-form-field>
+
+            <!-- TEXT FIELD: Landmark -->
+            <mat-form-field class="w-100">
+              <mat-label i18n>Landmark</mat-label>
+              <input matInput formControlName="landmark" type="text" i18n-placeholder placeholder="Nearby landmark (optional)" />
+            </mat-form-field>
+
+            <!-- TEXT FIELDS: City and State -->
+            <div class="d-flex gap-16 wrap">
+              <mat-form-field class="grow-1">
+                <mat-label i18n>City</mat-label>
+                <input matInput formControlName="city" type="text" />
+                @if (organizationForm.get('city')?.hasError('required')) {
+                  <mat-error i18n>City is required</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="grow-1">
+                <mat-label i18n>State</mat-label>
+                <input matInput formControlName="state" type="text" />
+                @if (organizationForm.get('state')?.hasError('required')) {
+                  <mat-error i18n>State is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <!-- TEXT FIELDS: Country and Postal Code -->
+            <div class="d-flex gap-16 wrap">
+              <mat-form-field class="grow-1">
+                <mat-label i18n>Country</mat-label>
+                <input matInput formControlName="country" type="text" />
+                @if (organizationForm.get('country')?.hasError('required')) {
+                  <mat-error i18n>Country is required</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="grow-1">
+                <mat-label i18n>Postal Code</mat-label>
+                <input matInput formControlName="postalCode" type="text" />
+                @if (organizationForm.get('postalCode')?.hasError('required')) {
+                  <mat-error i18n>Postal code is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <!-- BUTTON: Save organization -->
+            @if (!isReadOnly()) {
+              <div class="d-flex justify-end gap-8 wrap">
+                <button matButton="filled" type="submit" [disabled]="!organizationForm.valid || isSubmitting()">
+                  <span>{{ submitLabel() }}</span>
+                </button>
+              </div>
+            }
+          </form>
+        </mat-card-content>
+      </mat-card>
+    }
+  </main>
+</div>

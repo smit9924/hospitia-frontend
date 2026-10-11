@@ -4,6 +4,7 @@ export const environment = {
   version: '0.0.0',
   authServiceBaseUrl: 'http://auth.yatribhavan.umiyadhams.com/api/v1',
   dashboardServiceBaseUrl: 'http://dashboard.yatribhavan.umiyadhams.com/api/v1',
+  bookingServiceBaseUrl: 'http://booking.yatribhavan.umiyadhams.com/api/v1',
   forgotPasswordResendTimeoutSeconds: 30,
   emailVerificationResendTimeoutSeconds: 30,
   enableOwnerSignup: true,

@@ -1,0 +1,23 @@
+.owner-table-scroll {
+  overscroll-behavior-x: contain;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.owner-table {
+  min-width: 480px;
+}
+
+.owner-col-select {
+  width: 48px;
+}
+
+.owner-row {
+  cursor: pointer;
+}
+
+.empty-state-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--mat-sys-on-surface-variant);
+}

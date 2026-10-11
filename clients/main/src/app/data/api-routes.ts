@@ -4,6 +4,7 @@ const apiBaseUrls = {
   auth: environment.authServiceBaseUrl,
   user: environment.authServiceBaseUrl,
   dashboard: environment.dashboardServiceBaseUrl,
+  booking: environment.bookingServiceBaseUrl,
 } as const;
 
 export const apiRoutes = {
@@ -40,5 +41,22 @@ export const apiRoutes = {
     getCustomer: (guid: string) => `${apiBaseUrls.user}/users/customers/${guid}`,
     createCustomer: `${apiBaseUrls.user}/users/customers`,
     updateCustomer: `${apiBaseUrls.user}/users/customers`,
+  },
+
+  organizationType: {
+    upsert: `${apiBaseUrls.booking}/organization-type/create`,
+    delete: (guid: string) => `${apiBaseUrls.booking}/organization-type/delete?guid=${guid}`,
+    list: `${apiBaseUrls.booking}/organization-type`,
+    get: (guid: string) => `${apiBaseUrls.booking}/organization-type/${guid}`,
+  },
+
+  organization: {
+    createAdmin: `${apiBaseUrls.booking}/organization/create-by-admin`,
+    createOwner: `${apiBaseUrls.booking}/organization/create-by-owner`,
+    delete: (guid: string) => `${apiBaseUrls.booking}/organization/delete?guid=${guid}`,
+    listAdmin: `${apiBaseUrls.booking}/organization/list-for-admin`,
+    listOwner: `${apiBaseUrls.booking}/organization/list-for-owner`,
+    listManager: `${apiBaseUrls.booking}/organization/manager`,
+    get: (guid: string) => `${apiBaseUrls.booking}/organization/${guid}`,
   },
 } as const;

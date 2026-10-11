@@ -1,0 +1,27 @@
+@use '../../listing/user-listing';
+
+.listing-col-address {
+  min-width: 180px;
+}
+
+.listing-col-status {
+  min-width: 96px;
+}
+
+.listing-col-audit {
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+}
+
+.org-name-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--mat-sys-primary);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

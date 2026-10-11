@@ -16,12 +16,37 @@ import { Router, RouterLink } from '@angular/router';
 import { appRoutes } from '../../../data/app-routes';
 import { Auth } from '../../../services/auth';
 import { Profile } from '../../../services/profile';
+import { Organization } from '../../../services/organization/organization';
 import { UserType } from '../../../types/enums/auth';
 
 interface UsersMenuLink {
   label: string;
   route: string;
 }
+
+type OrganizationMenuLinkFactory = (organizationService: Organization) => UsersMenuLink[];
+
+const organizationMenuLinksByRole: Partial<Record<UserType, OrganizationMenuLinkFactory>> = {
+  [UserType.ADMIN]: (organizationService) => [
+    {
+      label: $localize`Organizations`,
+      route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.ADMIN),
+    },
+    { label: $localize`Organization Type`, route: appRoutes.organizationTypeListing },
+  ],
+  [UserType.OWNER]: (organizationService) => [
+    {
+      label: $localize`Organizations`,
+      route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.OWNER),
+    },
+  ],
+  [UserType.MANAGER]: (organizationService) => [
+    {
+      label: $localize`Organizations`,
+      route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.MANAGER),
+    },
+  ],
+};
 
 @Component({
   selector: 'app-navbar',
@@ -39,6 +64,7 @@ interface UsersMenuLink {
 export class Navbar implements AfterViewInit {
   protected readonly authService = inject(Auth);
   protected readonly profileService = inject(Profile);
+  private readonly organizationService = inject(Organization);
   private router = inject(Router);
   private elementRef = inject(ElementRef);
 
@@ -73,6 +99,13 @@ export class Navbar implements AfterViewInit {
   });
 
   protected readonly showUsersMenu = computed(() => this.usersMenuLinks().length > 0);
+
+  protected readonly organizationMenuLinks = computed((): UsersMenuLink[] => {
+    const role = this.profileService.userProfile()?.role ?? UserType.CUSTOMER;
+    return organizationMenuLinksByRole[role]?.(this.organizationService) ?? [];
+  });
+
+  protected readonly showOrganizationMenu = computed(() => this.organizationMenuLinks().length > 0);
 
   constructor() {
     effect(() => {
