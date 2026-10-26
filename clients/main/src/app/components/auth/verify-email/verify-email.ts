@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { HttpErrorResponse } from '@angular/common/http';
 import { interval, take } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { Auth } from '../../../services/auth';
 import { Dialog } from '../../../services/dialog';
 import { Profile } from '../../../services/profile';
 import { Snackbar } from '../../../services/snackbar';
@@ -24,6 +25,7 @@ import {
 } from '../../../types/enums/common';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
+import { LoginApiResponse } from '../../../types/models/auth/login-api-response';
 
 @Component({
   selector: 'app-verify-email',
@@ -41,6 +43,7 @@ import { GenericSnackbarConfigData } from '../../../types/models/common/generic-
   styleUrl: './verify-email.scss',
 })
 export class VerifyEmail implements OnInit {
+  private authService = inject(Auth);
   private userService = inject(User);
   private profileService = inject(Profile);
   private dialogService = inject(Dialog);
@@ -68,8 +71,10 @@ export class VerifyEmail implements OnInit {
     const otp = this.verifyEmailForm.value.otp;
 
     if (this.verifyEmailForm.valid && otp != null) {
-      this.userService.verifyEmailOtp(otp).subscribe({
-        next: async () => {
+      this.userService.verifyEmailOtp(otp, this.authService.refreshToken).subscribe({
+        next: async (data) => {
+          // Replace the unverified tokens so other services see the verified email claim
+          this.authService.setLoginSession(new LoginApiResponse(data));
           this.showSnackbar($localize`Email verified successfully.`, GenericSnackbarType.SUCCESS);
           await this.profileService.loadProfile();
           await this.profileService.redirectToDefaultHome();

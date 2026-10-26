@@ -44,6 +44,11 @@ export interface ChangePasswordReq {
   newPassword: string;
 }
 
+export interface VerifyEmailOtpReq {
+  otp: string;
+  refreshToken?: string;
+}
+
 export type UserListSortBy = 'firstName' | 'lastName' | 'username' | 'email';
 
 export type UserListSortDirection = 'asc' | 'desc';

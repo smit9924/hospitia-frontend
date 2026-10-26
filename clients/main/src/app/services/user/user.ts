@@ -7,7 +7,9 @@ import {
   UserProfileDto,
   UsernameAvailabilityReq,
   UserUpdateRequest,
+  VerifyEmailOtpReq,
 } from '../../types/interfaces/users';
+import { LoginApiResponseDto } from '../../types/interfaces/auth';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { SkipLoading } from '../../interceptors/loader/loader-interceptor';
@@ -58,8 +60,9 @@ export class User {
   /**
    * Verify the authenticated user's email address using an OTP.
    */
-  verifyEmailOtp(otp: string): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(apiRoutes.users.verifyEmailOtp, { otp });
+  verifyEmailOtp(otp: string, refreshToken: string | null): Observable<LoginApiResponseDto> {
+    const body: VerifyEmailOtpReq = refreshToken ? { otp, refreshToken } : { otp };
+    return this.http.post<LoginApiResponseDto>(apiRoutes.users.verifyEmailOtp, body);
   }
 
   listAdmins(query: UserListQuery): Observable<UserListResponse> {
