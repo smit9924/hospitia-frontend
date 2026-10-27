@@ -1,13 +1,16 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, RedirectCommand, Router } from '@angular/router';
 import { Profile } from '../../services/profile';
+import { ActiveOrganizationResolver } from '../../services/organization/active-organization-resolver';
 import { UserType } from '../../types/enums/auth';
 import { appRoutes } from '../../data/app-routes';
 
 export const permissionGuard: CanActivateFn = async (route, _state) => {
   const permission: UserType[] | null | undefined = route.data?.['requiredPermission'];
   const requireEmailVerified: boolean = route.data?.['requireEmailVerified'] !== false;
+  const requireActiveOrganization: boolean = route.data?.['requireActiveOrganization'] !== false;
   const profileService = inject(Profile);
+  const activeOrganizationResolver = inject(ActiveOrganizationResolver);
   const router = inject(Router);
   const userProfileData = profileService.userProfile();
 
@@ -24,7 +27,19 @@ export const permissionGuard: CanActivateFn = async (route, _state) => {
     return new RedirectCommand(router.parseUrl(appRoutes.login));
   } else if (requireEmailVerified && !userProfileData.isEmailVerified) {
     return new RedirectCommand(router.parseUrl(appRoutes.verifyEmail));
-  } else if (permission.includes(userProfileData.role)) {
+  }
+
+  if (requireActiveOrganization) {
+    // Owners and managers must have an active organization before reaching any role feature.
+    const resolution = await activeOrganizationResolver.resolve();
+    if (resolution.kind === 'redirect') {
+      return new RedirectCommand(router.parseUrl(resolution.route));
+    } else if (resolution.kind === 'blocked') {
+      return false;
+    }
+  }
+
+  if (permission.includes(userProfileData.role)) {
     // Check if the user's role matches any of the required permissions for the route.
     return true;
   } else {

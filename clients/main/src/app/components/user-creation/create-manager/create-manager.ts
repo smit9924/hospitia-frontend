@@ -1,6 +1,15 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, inject, OnInit, signal, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, DestroyRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,7 +17,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { filter, finalize, switchMap } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  finalize,
+  map,
+  startWith,
+  switchMap,
+} from 'rxjs';
 import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
 import { Banner } from '../../common/banner/banner';
 import { appRoutes } from '../../../data/app-routes';
@@ -16,6 +33,7 @@ import { Dialog } from '../../../services/dialog';
 import { Snackbar } from '../../../services/snackbar';
 import { User } from '../../../services/user/user';
 import { Profile } from '../../../services/profile';
+import { Organization } from '../../../services/organization/organization';
 import { usernameAvailabilityValidator } from '../../../directives/validators/username-availability/username-availability';
 import { usernameValidator } from '../../../directives/validators/username/username';
 import { ApiErrorResponse } from '../../../types/interfaces/common';
@@ -27,14 +45,25 @@ import {
 } from '../../../types/enums/common';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
-import { UserCreateRequest, UserUpdateRequest } from '../../../types/interfaces/users';
+import { UserType } from '../../../types/enums/auth';
+import { OrganizationListItem } from '../../../types/interfaces/organization';
+import { ManagerCreateRequest, UserUpdateRequest } from '../../../types/interfaces/users';
+
+/** Text typed into the organization search, or the organization picked from it. */
+type OrganizationFieldValue = OrganizationListItem | string | null;
 
 type ManagerForm = FormGroup<{
   firstName: FormControl<string>;
   lastName: FormControl<string>;
   username: FormControl<string>;
   email: FormControl<string>;
+  organization: FormControl<OrganizationFieldValue>;
 }>;
+
+/** Valid only once an organization has been picked from the suggestions. */
+function organizationSelectedValidator(control: AbstractControl): ValidationErrors | null {
+  return typeof control.value === 'object' && control.value !== null ? null : { required: true };
+}
 
 @Component({
   selector: 'app-create-manager',
@@ -45,6 +74,7 @@ type ManagerForm = FormGroup<{
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatAutocompleteModule,
     ReactiveFormsModule,
     Banner,
     DecimalPipe,
@@ -57,8 +87,10 @@ export class CreateManager implements OnInit {
   private readonly router = inject(Router);
   private readonly userService = inject(User);
   private readonly profileService = inject(Profile);
+  private readonly organizationService = inject(Organization);
   private readonly dialogService = inject(Dialog);
   private readonly snackbarService = inject(Snackbar);
+  private readonly destroyRef = inject(DestroyRef);
 
   @ViewChild('formBanner') banner!: Banner;
 
@@ -80,18 +112,29 @@ export class CreateManager implements OnInit {
   protected readonly isSubmitting = signal(false);
   protected readonly showForm = computed(() => !this.isLoadingUser() && !this.userNotFound());
 
+  // Admins choose the manager's organization; owners always use their active organization.
+  protected readonly requiresOrganizationSelection = computed(
+    () => this.profileService.userProfile()?.role === UserType.ADMIN && !this.isEditMode(),
+  );
+  protected readonly organizationOptions = signal<OrganizationListItem[]>([]);
+  protected readonly organizationDisplayName = (organization: OrganizationFieldValue): string =>
+    typeof organization === 'string' ? organization : (organization?.name ?? '');
+
   protected bannerMessage = '';
 
   protected readonly managerForm = this.createManagerForm();
 
   ngOnInit(): void {
     const guid = this.route.snapshot.queryParamMap.get('guid');
-    if (!guid) {
-      return;
+    if (guid) {
+      this.guid.set(guid);
     }
 
-    this.guid.set(guid);
-    this.loadUser(guid);
+    this.setUpOrganizationField();
+
+    if (guid) {
+      this.loadUser(guid);
+    }
   }
 
   protected onSubmit(): void {
@@ -146,7 +189,47 @@ export class CreateManager implements OnInit {
         nonNullable: true,
         validators: [Validators.required, Validators.email],
       }),
+      organization: new FormControl<OrganizationFieldValue>(null, {
+        validators: [organizationSelectedValidator],
+      }),
     });
+  }
+
+  private setUpOrganizationField(): void {
+    const organizationControl = this.managerForm.controls.organization;
+
+    if (!this.requiresOrganizationSelection()) {
+      organizationControl.disable();
+      return;
+    }
+
+    organizationControl.valueChanges
+      .pipe(
+        startWith(organizationControl.value),
+        map((value) => this.organizationDisplayName(value).trim()),
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((searchTerm) =>
+          this.organizationService.listAdmin({
+            searchTerm,
+            pageSize: 20,
+            sortBy: 'name',
+            sortDirection: 'asc',
+            pageNumber: 1,
+          }),
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((response) => this.organizationOptions.set(response.items));
+  }
+
+  private selectedOrganizationGuid(): string {
+    if (!this.requiresOrganizationSelection()) {
+      return this.organizationService.activeOrganization()?.guid ?? '';
+    }
+
+    const organization = this.managerForm.controls.organization.value;
+    return typeof organization === 'object' && organization !== null ? organization.guid : '';
   }
 
   private loadUser(guid: string): void {
@@ -180,7 +263,14 @@ export class CreateManager implements OnInit {
   }
 
   private createUser(): void {
-    const payload: UserCreateRequest = this.managerForm.getRawValue();
+    const raw = this.managerForm.getRawValue();
+    const payload: ManagerCreateRequest = {
+      firstName: raw.firstName,
+      lastName: raw.lastName,
+      email: raw.email,
+      username: raw.username,
+      organizationGuid: this.selectedOrganizationGuid(),
+    };
 
     this.isSubmitting.set(true);
     this.userService

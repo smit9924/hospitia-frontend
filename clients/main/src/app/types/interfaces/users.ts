@@ -39,6 +39,10 @@ export interface UserCreateRequest {
   username: string;
 }
 
+export interface ManagerCreateRequest extends UserCreateRequest {
+  organizationGuid: string;
+}
+
 export interface ChangePasswordReq {
   currentPassword: string;
   newPassword: string;

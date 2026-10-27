@@ -71,3 +71,40 @@
   height: 16px;
   width: 16px;
 }
+
+.profile-section {
+  min-width: 0;
+}
+
+.active-organization-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 240px;
+  min-width: 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface);
+
+  // On small screens the active organization is shown in the menu instead.
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+
+  .active-organization-name {
+    min-width: 0;
+  }
+}
+
+.active-organization-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.active-organization-menu-header {
+  max-width: 280px;
+  color: var(--mat-sys-on-surface);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}

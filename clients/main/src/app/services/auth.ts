@@ -105,6 +105,8 @@ export class Auth {
 
   logout(): void {
     this.deleteTokensFromLocalStorage();
+    // The active organization lasts for one login session only.
+    this.localstorageService.removeItem(localStorageKeys.activeOrganization);
     this.resetTokenSignals();
     this.router.navigateByUrl(appRoutes.login);
   }

@@ -52,4 +52,9 @@ export const appRoutes = {
   createOrganizationOwner: '/organization/create/owner',
   viewOrganization: '/organization/view',
   // *** End Organization ***
+
+  // Organization onboarding
+  onboardingCreateOrganization: '/onboarding/create-organization',
+  onboardingNoOrganization: '/onboarding/no-organization',
+  // *** End Organization onboarding ***
 };

@@ -14,6 +14,7 @@ import { loaderInterceptor } from './interceptors/loader/loader-interceptor';
 import { httpConfigInterceptor } from './interceptors/http-config/http-config-interceptor';
 import { GlobalErrorHandler } from './error/global-error-handler';
 import { authInterceptor } from './interceptors/auth/auth-interceptor';
+import { activeOrganizationInterceptor } from './interceptors/active-organization/active-organization-interceptor';
 import { Profile } from './services/profile';
 
 export const appConfig: ApplicationConfig = {
@@ -32,7 +33,12 @@ export const appConfig: ApplicationConfig = {
       },
     },
     provideHttpClient(
-      withInterceptors([loaderInterceptor, httpConfigInterceptor, authInterceptor]),
+      withInterceptors([
+        loaderInterceptor,
+        httpConfigInterceptor,
+        authInterceptor,
+        activeOrganizationInterceptor,
+      ]),
     ),
     provideAppInitializer(async () => {
       const profileService = inject(Profile);

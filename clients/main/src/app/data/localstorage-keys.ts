@@ -3,6 +3,7 @@ export const localStorageKeys = {
   accessTokenExpiry: 'authTokenExpiry',
   refreshToken: 'refreshToken',
   refreshTokenExpiry: 'refreshTokenExpiry',
+  activeOrganization: 'activeOrganization',
 
   preferredTheme: 'preferredTheme',
   largeTextPreference: 'largeTextPreference',

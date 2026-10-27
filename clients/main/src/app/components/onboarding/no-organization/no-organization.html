@@ -1,0 +1,32 @@
+<main
+  class="no-organization-page-container min-h-100 d-flex flex-column align-center justify-center w-100 gap-24 p-24"
+>
+  <mat-icon class="empty-state-icon text-secondary" aria-hidden="true" svgIcon="businessCenter" />
+
+  <div class="text-container d-flex justify-center align-center flex-column gap-8">
+    <!-- HEADING: No organization linked -->
+    <h1 #heading class="heading-large m-0" tabindex="-1" i18n>No organization linked</h1>
+    <p class="body-large text-secondary m-0" i18n>
+      Your account isn't linked to an organization yet. Contact your organization owner or an
+      administrator.
+    </p>
+  </div>
+
+  <!-- ACTIONS: No organization -->
+  <div class="d-flex justify-center gap-8 wrap">
+    <!-- BUTTON: Log out -->
+    <button matButton="outlined" type="button" (click)="logout()">
+      <span i18n>Log out</span>
+    </button>
+    <!-- BUTTON: Retry -->
+    <button
+      matButton="filled"
+      type="button"
+      [disabled]="isRetrying()"
+      [attr.aria-busy]="isRetrying()"
+      (click)="retry()"
+    >
+      <span i18n>Retry</span>
+    </button>
+  </div>
+</main>

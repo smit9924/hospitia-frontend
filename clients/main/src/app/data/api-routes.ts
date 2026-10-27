@@ -57,6 +57,8 @@ export const apiRoutes = {
     listAdmin: `${apiBaseUrls.booking}/organization/list-for-admin`,
     listOwner: `${apiBaseUrls.booking}/organization/list-for-owner`,
     listManager: `${apiBaseUrls.booking}/organization/manager`,
+    memberships: `${apiBaseUrls.booking}/organization/memberships`,
+    active: `${apiBaseUrls.booking}/organization/active`,
     get: (guid: string) => `${apiBaseUrls.booking}/organization/${guid}`,
   },
 } as const;

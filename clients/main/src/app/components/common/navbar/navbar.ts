@@ -14,6 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { appRoutes } from '../../../data/app-routes';
+import { CustomMatTooltip } from '../../../directives/custom-mat-tooltip/custom-mat-tooltip';
 import { Auth } from '../../../services/auth';
 import { Profile } from '../../../services/profile';
 import { Organization } from '../../../services/organization/organization';
@@ -57,6 +58,7 @@ const organizationMenuLinksByRole: Partial<Record<UserType, OrganizationMenuLink
     NgOptimizedImage,
     MatMenuModule,
     RouterLink,
+    CustomMatTooltip,
   ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
@@ -106,6 +108,9 @@ export class Navbar implements AfterViewInit {
   });
 
   protected readonly showOrganizationMenu = computed(() => this.organizationMenuLinks().length > 0);
+
+  // Set only for owners/managers, once their active organization is resolved.
+  protected readonly activeOrganization = this.organizationService.activeOrganization;
 
   constructor() {
     effect(() => {

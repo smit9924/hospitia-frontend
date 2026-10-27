@@ -1,6 +1,16 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, computed, inject, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  OnInit,
+  signal,
+  viewChild,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -13,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, finalize, switchMap } from 'rxjs';
 import { Banner } from '../../common/banner/banner';
+import { MinimalHeader } from '../../common/minimal-header/minimal-header';
 import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
 import { OwnerSelectionDialog } from '../owner-selection-dialog/owner-selection-dialog';
 import { appRoutes } from '../../../data/app-routes';
@@ -55,6 +66,7 @@ type OrganizationForm = FormGroup<{
   selector: 'app-create-organization',
   imports: [
     SecondaryNavbar,
+    MinimalHeader,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -79,12 +91,15 @@ export class CreateOrganization implements OnInit {
   private readonly snackbarService = inject(Snackbar);
 
   @ViewChild('formBanner') banner!: Banner;
+  private readonly onboardingHeading = viewChild<ElementRef<HTMLElement>>('onboardingHeading');
 
   protected readonly nameMaxLength = 255;
   protected readonly descriptionMaxLength = 1000;
 
   private readonly actingAsAdmin = this.route.snapshot.data['actingAsAdmin'] === true;
   private readonly isReadOnlyRoute = this.route.snapshot.data['readOnlyRoute'] === true;
+  /** Owner's blocking first-organization step: the created organization becomes active. */
+  protected readonly isOnboarding = this.route.snapshot.data['onboarding'] === true;
 
   protected readonly guid = signal<string | null>(null);
   protected readonly isEditMode = computed(() => !!this.guid());
@@ -96,9 +111,12 @@ export class CreateOrganization implements OnInit {
     }
     return $localize`Create Organization`;
   });
-  protected readonly submitLabel = computed(() =>
-    this.isEditMode() ? $localize`Save` : $localize`Create`,
-  );
+  protected readonly submitLabel = computed(() => {
+    if (this.isEditMode()) {
+      return $localize`Save`;
+    }
+    return this.isOnboarding ? $localize`Create and continue` : $localize`Create`;
+  });
 
   protected readonly isLoadingOrganization = signal(false);
   protected readonly organizationNotFound = signal(false);
@@ -116,6 +134,13 @@ export class CreateOrganization implements OnInit {
   protected bannerMessage = '';
 
   protected readonly organizationForm = this.createOrganizationForm();
+
+  constructor() {
+    if (this.isOnboarding) {
+      // Move focus to the page heading so screen readers announce the blocking step.
+      afterNextRender(() => this.onboardingHeading()?.nativeElement.focus());
+    }
+  }
 
   ngOnInit(): void {
     this.loadOrganizationTypes();
@@ -313,8 +338,12 @@ export class CreateOrganization implements OnInit {
       : this.organizationService.createAsOwner(this.buildOwnerPayload());
 
     submit$.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
-      next: () => {
+      next: (organization) => {
         this.showSuccessSnackbar($localize`Organization created successfully.`);
+        if (this.isOnboarding) {
+          this.activateCreatedOrganization(organization);
+          return;
+        }
         void this.router.navigateByUrl(this.listingRouteForActor());
       },
       error: (error: HttpErrorResponse) => this.handleSubmitError(error),
@@ -370,6 +399,17 @@ export class CreateOrganization implements OnInit {
       address: this.buildAddressInput(),
       isActive: raw.isActive,
     };
+  }
+
+  /** An owner's first organization becomes their active organization. */
+  private activateCreatedOrganization(organization: OrganizationDto): void {
+    this.organizationService.setActiveOrganization({
+      guid: organization.guid,
+      name: organization.name,
+      organizationTypeName: organization.organizationType.name,
+      city: organization.address.city,
+    });
+    void this.router.navigateByUrl(appRoutes.ownerDashboard);
   }
 
   private listingRouteForActor(): string {

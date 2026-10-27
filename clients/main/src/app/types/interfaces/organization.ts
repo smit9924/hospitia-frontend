@@ -77,3 +77,31 @@ export interface OrganizationDto {
   createdAt: string;
   updatedAt: string;
 }
+
+/** An organization the current owner/manager is actively mapped to. */
+export interface OrganizationMembershipSummary {
+  guid: string;
+  name: string;
+  organizationTypeName: string;
+  city: string | null;
+}
+
+export interface OrganizationMembershipListResponse {
+  items: OrganizationMembershipSummary[];
+}
+
+/** Active organization persisted in local storage, bound to the user who selected it. */
+export interface StoredActiveOrganization {
+  userGuid: string;
+  organization: OrganizationMembershipSummary;
+}
+
+/** Outcome of resolving the active organization before a guarded navigation. */
+export type ActiveOrganizationResolution =
+  | { kind: 'resolved' }
+  | { kind: 'redirect'; route: string }
+  | { kind: 'blocked' };
+
+export interface OrganizationSelectionDialogData {
+  organizations: OrganizationMembershipSummary[];
+}

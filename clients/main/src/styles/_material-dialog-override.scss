@@ -11,3 +11,29 @@ html {
     )
   );
 }
+
+// Dialogs opened with `panelClass: 'full-screen-dialog-mobile'` fill the viewport on small screens.
+@media screen and (max-width: 576px) {
+  .cdk-overlay-pane.full-screen-dialog-mobile {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100%;
+
+    @include mat.dialog-overrides(
+      (
+        container-shape: 0,
+        container-max-width: 100vw,
+        container-small-max-width: 100vw,
+      )
+    );
+
+    .mat-mdc-dialog-container {
+      height: 100%;
+    }
+
+    .mat-mdc-dialog-content {
+      max-height: none;
+      flex-grow: 1;
+    }
+  }
+}

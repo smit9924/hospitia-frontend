@@ -1,0 +1,42 @@
+<!-- DIALOG: Select organization -->
+<h2 matDialogTitle i18n>Select your organization</h2>
+
+<mat-dialog-content class="d-flex flex-column gap-16">
+  <p class="body-medium text-secondary m-0" i18n [id]="descriptionId">
+    Choose the organization to work with. To switch later, log out and log in again.
+  </p>
+
+  <!-- RADIO GROUP: Organizations -->
+  <mat-radio-group
+    class="d-flex flex-column gap-8"
+    aria-label="Organizations"
+    i18n-aria-label
+    (change)="onSelectionChange($event)"
+  >
+    @for (organization of organizations; track organization.guid) {
+      <!-- RADIO: Organization -->
+      <mat-radio-button class="organization-option" [value]="organization">
+        <span class="d-flex flex-column gap-4">
+          <span class="body-large wb-break-word">{{ organization.name }}</span>
+          @if (organizationDetails(organization)) {
+            <span class="body-small text-secondary wb-break-word">
+              {{ organizationDetails(organization) }}
+            </span>
+          }
+        </span>
+      </mat-radio-button>
+    }
+  </mat-radio-group>
+</mat-dialog-content>
+
+<!-- ACTIONS: Select organization -->
+<mat-dialog-actions class="justify-space-between">
+  <!-- BUTTON: Log out -->
+  <button matButton="outlined" type="button" (click)="logout()">
+    <span i18n>Log out</span>
+  </button>
+  <!-- BUTTON: Continue -->
+  <button matButton="filled" type="button" [disabled]="!selected()" (click)="continue()">
+    <span i18n>Continue</span>
+  </button>
+</mat-dialog-actions>

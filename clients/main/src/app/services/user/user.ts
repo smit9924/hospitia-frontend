@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import {
   ChangePasswordReq,
+  ManagerCreateRequest,
   UserCreateRequest,
   UserListQuery,
   UserListResponse,
@@ -141,7 +142,7 @@ export class User {
     return this.http.get<UserProfileDto>(apiRoutes.users.getManager(guid));
   }
 
-  createManager(payload: UserCreateRequest): Observable<UserProfileDto> {
+  createManager(payload: ManagerCreateRequest): Observable<UserProfileDto> {
     return this.http.post<UserProfileDto>(apiRoutes.users.createManager, payload);
   }
 

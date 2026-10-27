@@ -34,6 +34,8 @@ import { OrganizationListingAdmin } from './components/organization/organization
 import { OrganizationListingOwner } from './components/organization/organization-listing-owner/organization-listing-owner';
 import { OrganizationListingManager } from './components/organization/organization-listing-manager/organization-listing-manager';
 import { CreateOrganization } from './components/organization/create-organization/create-organization';
+import { NoOrganization } from './components/onboarding/no-organization/no-organization';
+import { organizationOnboardingGuard } from './guards/organization-onboarding/organization-onboarding-guard';
 
 export const routes: Routes = [
   {
@@ -78,6 +80,35 @@ export const routes: Routes = [
         data: {
           requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER, UserType.CUSTOMER],
           requireEmailVerified: false,
+          requireActiveOrganization: false,
+        },
+      },
+    ],
+  },
+  {
+    // Blocking steps for owners/managers who have no active organization yet.
+    path: 'onboarding',
+    children: [
+      {
+        path: 'create-organization',
+        component: CreateOrganization,
+        canActivate: [permissionGuard, organizationOnboardingGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER, UserType.CUSTOMER],
+          requireActiveOrganization: false,
+          onboardingFor: UserType.OWNER,
+          onboarding: true,
+          actingAsAdmin: false,
+        },
+      },
+      {
+        path: 'no-organization',
+        component: NoOrganization,
+        canActivate: [permissionGuard, organizationOnboardingGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER, UserType.CUSTOMER],
+          requireActiveOrganization: false,
+          onboardingFor: UserType.MANAGER,
         },
       },
     ],

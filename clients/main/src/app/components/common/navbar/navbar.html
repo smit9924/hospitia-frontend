@@ -18,6 +18,20 @@
       <!-- Menu: Links -->
       <mat-menu #navLinksMenu="matMenu">
         @if (authService.isLoggedIn) {
+          @if (activeOrganization(); as organization) {
+            <!-- TEXT: Active organization (Mobile) -->
+            <div class="active-organization-menu-header d-flex align-center gap-8 px-16 py-8">
+              <mat-icon
+                svgIcon="businessCenter"
+                aria-hidden="true"
+                class="active-organization-icon shrink-0"
+              />
+              <span class="body-medium wb-break-word">
+                <span class="visually-hidden" i18n>Active organization:</span>
+                {{ organization.name }}
+              </span>
+            </div>
+          }
           <div mat-menu-item>
             <a matButton i18n [routerLink]="dashboardLink()">Dashboard</a>
           </div>
@@ -156,7 +170,25 @@
     }
 
     @if (authService.isLoggedIn) {
-      <div>
+      <div class="d-flex align-center gap-8 profile-section">
+        @if (activeOrganization(); as organization) {
+          <!-- CHIP: Active organization -->
+          <div class="active-organization-chip body-medium">
+            <mat-icon
+              svgIcon="businessCenter"
+              aria-hidden="true"
+              class="active-organization-icon shrink-0"
+            />
+            <span class="visually-hidden" i18n>Active organization:</span>
+            <span
+              class="active-organization-name clamp-1"
+              [customMatTooltip]="organization.name"
+              [tooltipOnlyOnEllipsis]="true"
+              >{{ organization.name }}</span
+            >
+          </div>
+        }
+
         <!-- Button: Profile -->
         <button
           mat-icon-button

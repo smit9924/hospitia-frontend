@@ -1,5 +1,9 @@
 <div class="w-100">
-  <app-secondary-navbar [titleText]="titleText()" [backButton]="true" />
+  @if (isOnboarding) {
+    <app-minimal-header />
+  } @else {
+    <app-secondary-navbar [titleText]="titleText()" [backButton]="true" />
+  }
 
   <main class="d-flex flex-column gap-24 p-24 w-100 align-center">
     @if (isEditMode() && isLoadingOrganization()) {
@@ -28,16 +32,25 @@
           <div class="d-flex justify-space-between align-center w-100 wrap gap-8">
             <div>
               <mat-card-title>
-                <h2 class="heading-extra-small m-0">
-                  @if (isEditMode()) {
-                    <span i18n>Organization details</span>
-                  } @else {
-                    <span i18n>New organization details</span>
-                  }
-                </h2>
+                @if (isOnboarding) {
+                  <!-- HEADING: Onboarding -->
+                  <h1 #onboardingHeading class="heading-extra-small m-0" tabindex="-1" i18n>
+                    Set up your organization
+                  </h1>
+                } @else {
+                  <h2 class="heading-extra-small m-0">
+                    @if (isEditMode()) {
+                      <span i18n>Organization details</span>
+                    } @else {
+                      <span i18n>New organization details</span>
+                    }
+                  </h2>
+                }
               </mat-card-title>
               <mat-card-subtitle class="body-medium text-secondary mt-8">
-                @if (isReadOnly()) {
+                @if (isOnboarding) {
+                  <span i18n>You need an organization before you can continue.</span>
+                } @else if (isReadOnly()) {
                   <span i18n>Viewing organization details.</span>
                 } @else if (isEditMode()) {
                   <span i18n>Update the organization details and save your changes.</span>

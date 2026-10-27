@@ -143,6 +143,40 @@
               }
             </mat-form-field>
 
+            @if (requiresOrganizationSelection()) {
+              <!-- AUTOCOMPLETE: Organization -->
+              <mat-form-field class="w-100">
+                <mat-label i18n>Organization</mat-label>
+                <input
+                  matInput
+                  formControlName="organization"
+                  type="text"
+                  placeholder="Search organizations"
+                  i18n-placeholder
+                  [matAutocomplete]="organizationAutocomplete"
+                />
+                <mat-autocomplete
+                  #organizationAutocomplete="matAutocomplete"
+                  [requireSelection]="true"
+                  [displayWith]="organizationDisplayName"
+                >
+                  @for (organization of organizationOptions(); track organization.guid) {
+                    <!-- OPTION: Organization -->
+                    <mat-option [value]="organization">
+                      {{ organization.name }}
+                      <span class="text-secondary">· {{ organization.city }}</span>
+                    </mat-option>
+                  } @empty {
+                    <!-- OPTION: No organizations -->
+                    <mat-option disabled i18n>No organizations found</mat-option>
+                  }
+                </mat-autocomplete>
+                @if (managerForm.get('organization')?.hasError('required')) {
+                  <mat-error i18n>Organization is required.</mat-error>
+                }
+              </mat-form-field>
+            }
+
             <div class="d-flex justify-end gap-8 wrap">
               <button
                 matButton="filled"
