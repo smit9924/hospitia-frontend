@@ -208,10 +208,12 @@
                   Created
                 </th>
                 <td *matCellDef="let organization" class="listing-col listing-col-audit" mat-cell>
-                  <span class="clamp-1">{{ organization.createdByDisplayName || '-' }}</span>
-                  <span class="body-small text-secondary">{{
-                    organization.createdAt | date: 'short'
-                  }}</span>
+                  <div class="d-flex flex-column">
+                    <span class="clamp-1">{{ organization.createdByDisplayName || '-' }}</span>
+                    <span class="body-small text-secondary">{{
+                      organization.createdAt | date: 'short'
+                    }}</span>
+                  </div>
                 </td>
               </ng-container>
 
@@ -227,10 +229,12 @@
                   Updated
                 </th>
                 <td *matCellDef="let organization" class="listing-col listing-col-audit" mat-cell>
-                  <span class="clamp-1">{{ organization.updatedByDisplayName || '-' }}</span>
-                  <span class="body-small text-secondary">{{
-                    organization.updatedAt | date: 'short'
-                  }}</span>
+                  <div class="d-flex flex-column">
+                    <span class="clamp-1">{{ organization.updatedByDisplayName || '-' }}</span>
+                    <span class="body-small text-secondary">{{
+                      organization.updatedAt | date: 'short'
+                    }}</span>
+                  </div>
                 </td>
               </ng-container>
 
