@@ -208,6 +208,53 @@ describe('ActiveOrganizationResolver', () => {
     expect(errorHandler.handleError).toHaveBeenCalledWith(error);
   });
 
+  describe('with redirectOnFailure (navigation right after signup)', () => {
+    it('sends the user to the unexpected error page when the membership lookup fails', async () => {
+      signInAs(UserType.OWNER);
+      organizationService.getMemberships.mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 0 })),
+      );
+
+      expect(await resolver.resolve({ redirectOnFailure: true })).toEqual({
+        kind: 'redirect',
+        route: appRoutes.unexpectedError,
+      });
+      expect(errorHandler.handleError).not.toHaveBeenCalled();
+    });
+
+    it('sends the user to the unexpected error page when a stored organization fails to load', async () => {
+      signInAs(UserType.OWNER);
+      storedOrganization = sunrise;
+      organizationService.getActiveOrganization.mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 500 })),
+      );
+
+      expect(await resolver.resolve({ redirectOnFailure: true })).toEqual({
+        kind: 'redirect',
+        route: appRoutes.unexpectedError,
+      });
+      expect(errorHandler.handleError).not.toHaveBeenCalled();
+    });
+
+    it('stays blocked when the interceptor already handled the stored organization', async () => {
+      signInAs(UserType.OWNER);
+      storedOrganization = sunrise;
+      organizationService.getActiveOrganization.mockReturnValue(EMPTY);
+
+      expect(await resolver.resolve({ redirectOnFailure: true })).toEqual({ kind: 'blocked' });
+    });
+
+    it('still resolves normally when the lookup succeeds', async () => {
+      signInAs(UserType.OWNER);
+      memberships();
+
+      expect(await resolver.resolve({ redirectOnFailure: true })).toEqual({
+        kind: 'redirect',
+        route: appRoutes.onboardingCreateOrganization,
+      });
+    });
+  });
+
   describe('while a new account is still being set up', () => {
     const retryIntervalMs = environment.accountSetupRetryIntervalSeconds * 1000;
     const userNotFound = new HttpErrorResponse({

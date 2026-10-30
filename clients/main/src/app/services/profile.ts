@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { UserProfileDto, UserProfileUpdate } from '../types/interfaces/users';
 import { UserProfileModel } from '../types/models/users/user-profile-model';
-import { ApiErrorResponse } from '../types/interfaces/common';
+import { ApiErrorResponse, AppNavigationState } from '../types/interfaces/common';
 import { ErrorCodes } from '../types/enums/error-codes';
 import { apiRoutes } from '../data/api-routes';
 import { Router } from '@angular/router';
@@ -104,9 +104,14 @@ export class Profile {
     }
   }
 
-  async redirectToDefaultHome(): Promise<void> {
+  /**
+   * Navigate to the user's default home page.
+   *
+   * @param state Flags passed along with the navigation, read by route guards.
+   */
+  async redirectToDefaultHome(state?: AppNavigationState): Promise<void> {
     const defaultRoute = await this.getDefaultHomeRouteForUser();
-    await this.router.navigateByUrl(defaultRoute);
+    await this.router.navigateByUrl(defaultRoute, { state });
   }
 
   userRoleLabel = computed(() => {

@@ -102,6 +102,14 @@ export type ActiveOrganizationResolution =
   | { kind: 'redirect'; route: string }
   | { kind: 'blocked' };
 
+export interface ActiveOrganizationResolveOptions {
+  /**
+   * Redirect to the unexpected error page when the lookup fails, instead of
+   * reporting the error and blocking the navigation.
+   */
+  redirectOnFailure?: boolean;
+}
+
 export interface OrganizationSelectionDialogData {
   organizations: OrganizationMembershipSummary[];
 }

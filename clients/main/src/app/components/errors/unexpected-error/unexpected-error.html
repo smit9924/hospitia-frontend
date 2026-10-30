@@ -1,0 +1,32 @@
+<main
+  class="unexpected-error-page-container min-h-100 d-flex flex-column align-center justify-center w-100 gap-24 p-24"
+>
+  <mat-icon class="empty-state-icon text-secondary" aria-hidden="true" svgIcon="warning" />
+
+  <div class="text-container d-flex justify-center align-center flex-column gap-8">
+    <!-- HEADING: Something went wrong -->
+    <h1 #heading class="heading-large m-0" tabindex="-1" i18n>Something went wrong</h1>
+    <p class="body-large text-secondary m-0" i18n>
+      You're signed in, but we couldn't load your workspace. Please check your internet connection
+      and try again. If the problem persists, contact support.
+    </p>
+  </div>
+
+  <!-- ACTIONS: Something went wrong -->
+  <div class="d-flex justify-center gap-8 wrap">
+    <!-- BUTTON: Log out -->
+    <button matButton="outlined" type="button" (click)="logout()">
+      <span i18n>Log out</span>
+    </button>
+    <!-- BUTTON: Try again -->
+    <button
+      matButton="filled"
+      type="button"
+      [disabled]="isRetrying()"
+      [attr.aria-busy]="isRetrying()"
+      (click)="retry()"
+    >
+      <span i18n>Try again</span>
+    </button>
+  </div>
+</main>

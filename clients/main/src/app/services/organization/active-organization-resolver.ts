@@ -13,6 +13,7 @@ import { ErrorCodes } from '../../types/enums/error-codes';
 import { ApiErrorResponse } from '../../types/interfaces/common';
 import {
   ActiveOrganizationResolution,
+  ActiveOrganizationResolveOptions,
   OrganizationMembershipListResponse,
   OrganizationMembershipSummary,
   OrganizationSelectionDialogData,
@@ -26,6 +27,10 @@ const BLOCKED: ActiveOrganizationResolution = { kind: 'blocked' };
 const ACCOUNT_SETUP_FAILED: ActiveOrganizationResolution = {
   kind: 'redirect',
   route: appRoutes.accountSetupFailed,
+};
+const UNEXPECTED_ERROR: ActiveOrganizationResolution = {
+  kind: 'redirect',
+  route: appRoutes.unexpectedError,
 };
 
 /** Roles that always work within an active organization. */
@@ -67,10 +72,13 @@ export class ActiveOrganizationResolver {
 
   /** GUID of the active organization the backend confirmed during this app session. */
   private validatedOrganizationGuid: string | null = null;
-  /** Shared by concurrent callers so memberships are fetched and the dialog opened once. */
+  /**
+   * Shared by concurrent callers so memberships are fetched and the dialog opened once.
+   * The options of the caller that started the lookup apply to all of them.
+   */
   private pendingResolution: Promise<ActiveOrganizationResolution> | null = null;
 
-  resolve(): Promise<ActiveOrganizationResolution> {
+  resolve(options: ActiveOrganizationResolveOptions = {}): Promise<ActiveOrganizationResolution> {
     const profile = this.profileService.userProfile();
     if (
       !profile?.isEmailVerified ||
@@ -85,23 +93,28 @@ export class ActiveOrganizationResolver {
       return Promise.resolve(RESOLVED);
     }
 
-    this.pendingResolution ??= this.resolveForRole(profile.role).finally(() => {
+    this.pendingResolution ??= this.resolveForRole(profile.role, options).finally(() => {
       this.pendingResolution = null;
     });
     return this.pendingResolution;
   }
 
-  private async resolveForRole(role: UserType): Promise<ActiveOrganizationResolution> {
+  private async resolveForRole(
+    role: UserType,
+    options: ActiveOrganizationResolveOptions,
+  ): Promise<ActiveOrganizationResolution> {
     this.organizationService.restoreActiveOrganization();
 
     if (this.organizationService.activeOrganization() !== null) {
-      return this.validateActiveOrganization();
+      return this.validateActiveOrganization(options);
     }
 
-    return this.resolveFromMemberships(role);
+    return this.resolveFromMemberships(role, options);
   }
 
-  private async validateActiveOrganization(): Promise<ActiveOrganizationResolution> {
+  private async validateActiveOrganization(
+    options: ActiveOrganizationResolveOptions,
+  ): Promise<ActiveOrganizationResolution> {
     try {
       const organization = await firstValueFrom(this.organizationService.getActiveOrganization());
       this.organizationService.refreshActiveOrganization(organization);
@@ -110,14 +123,17 @@ export class ActiveOrganizationResolver {
     } catch (error) {
       // EmptyError: the active-organization interceptor already handled the
       // rejection (logged the user out, or restarted resolution).
-      if (!(error instanceof EmptyError)) {
-        this.errorHandler.handleError(error);
+      if (error instanceof EmptyError) {
+        return BLOCKED;
       }
-      return BLOCKED;
+      return this.handleLookupFailure(error, options);
     }
   }
 
-  private async resolveFromMemberships(role: UserType): Promise<ActiveOrganizationResolution> {
+  private async resolveFromMemberships(
+    role: UserType,
+    options: ActiveOrganizationResolveOptions,
+  ): Promise<ActiveOrganizationResolution> {
     let memberships: OrganizationMembershipSummary[];
     try {
       memberships = (await firstValueFrom(this.getMembershipsOnceAccountIsSetUp())).items;
@@ -126,8 +142,7 @@ export class ActiveOrganizationResolver {
         // Still not set up after every retry.
         return ACCOUNT_SETUP_FAILED;
       }
-      this.errorHandler.handleError(error);
-      return BLOCKED;
+      return this.handleLookupFailure(error, options);
     }
 
     if (memberships.length === 0) {
@@ -150,6 +165,22 @@ export class ActiveOrganizationResolver {
     this.organizationService.setActiveOrganization(organization);
     this.validatedOrganizationGuid = organization.guid;
     return RESOLVED;
+  }
+
+  /**
+   * By default, report the error and block the navigation, keeping the user on
+   * the current page. With `redirectOnFailure`, send them to the unexpected
+   * error page instead, e.g. so a completed signup form isn't left on screen.
+   */
+  private handleLookupFailure(
+    error: unknown,
+    options: ActiveOrganizationResolveOptions,
+  ): ActiveOrganizationResolution {
+    if (options.redirectOnFailure) {
+      return UNEXPECTED_ERROR;
+    }
+    this.errorHandler.handleError(error);
+    return BLOCKED;
   }
 
   /**

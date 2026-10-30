@@ -4,6 +4,7 @@ import { Profile } from '../../services/profile';
 import { ActiveOrganizationResolver } from '../../services/organization/active-organization-resolver';
 import { UserType } from '../../types/enums/auth';
 import { appRoutes } from '../../data/app-routes';
+import { AppNavigationState } from '../../types/interfaces/common';
 
 export const permissionGuard: CanActivateFn = async (route, _state) => {
   const permission: UserType[] | null | undefined = route.data?.['requiredPermission'];
@@ -31,7 +32,13 @@ export const permissionGuard: CanActivateFn = async (route, _state) => {
 
   if (requireActiveOrganization) {
     // Owners and managers must have an active organization before reaching any role feature.
-    const resolution = await activeOrganizationResolver.resolve();
+    // Right after signup, a failed lookup must not leave the user on the completed signup form.
+    const navigationState = router.currentNavigation()?.extras.state as
+      | AppNavigationState
+      | undefined;
+    const resolution = await activeOrganizationResolver.resolve({
+      redirectOnFailure: navigationState?.afterSignup === true,
+    });
     if (resolution.kind === 'redirect') {
       return new RedirectCommand(router.parseUrl(resolution.route));
     } else if (resolution.kind === 'blocked') {

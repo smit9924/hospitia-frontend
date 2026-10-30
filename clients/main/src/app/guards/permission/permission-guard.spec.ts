@@ -3,8 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import {
   ActivatedRouteSnapshot,
   CanActivateFn,
+  Navigation,
   provideRouter,
   RedirectCommand,
+  Router,
   RouterStateSnapshot,
 } from '@angular/router';
 
@@ -13,7 +15,10 @@ import { appRoutes } from '../../data/app-routes';
 import { ActiveOrganizationResolver } from '../../services/organization/active-organization-resolver';
 import { Profile } from '../../services/profile';
 import { UserType } from '../../types/enums/auth';
-import { ActiveOrganizationResolution } from '../../types/interfaces/organization';
+import {
+  ActiveOrganizationResolution,
+  ActiveOrganizationResolveOptions,
+} from '../../types/interfaces/organization';
 import { UserProfileModel } from '../../types/models/users/user-profile-model';
 
 describe('permissionGuard', () => {
@@ -21,7 +26,12 @@ describe('permissionGuard', () => {
     TestBed.runInInjectionContext(() => permissionGuard(...guardParameters));
 
   const userProfile = signal<UserProfileModel | null>(null);
-  const resolver = { resolve: vi.fn<() => Promise<ActiveOrganizationResolution>>() };
+  const resolver = {
+    resolve:
+      vi.fn<
+        (options?: ActiveOrganizationResolveOptions) => Promise<ActiveOrganizationResolution>
+      >(),
+  };
 
   const routeWith = (data: Record<string, unknown>) =>
     ({ data }) as unknown as ActivatedRouteSnapshot;
@@ -61,6 +71,25 @@ describe('permissionGuard', () => {
     expect((result as RedirectCommand).redirectTo.toString()).toBe(
       appRoutes.onboardingCreateOrganization,
     );
+  });
+
+  it('keeps the default failure handling for an ordinary navigation', async () => {
+    resolver.resolve.mockResolvedValue({ kind: 'resolved' });
+
+    await executeGuard(ownerRoute, state);
+
+    expect(resolver.resolve).toHaveBeenCalledWith({ redirectOnFailure: false });
+  });
+
+  it('asks for a redirect on failure when the navigation comes from signup', async () => {
+    resolver.resolve.mockResolvedValue({ kind: 'resolved' });
+    vi.spyOn(TestBed.inject(Router), 'currentNavigation').mockReturnValue({
+      extras: { state: { afterSignup: true } },
+    } as unknown as Navigation);
+
+    await executeGuard(ownerRoute, state);
+
+    expect(resolver.resolve).toHaveBeenCalledWith({ redirectOnFailure: true });
   });
 
   it('cancels navigation while organization resolution is blocked', async () => {
