@@ -214,7 +214,7 @@ describe('ActiveOrganizationResolver', () => {
       status: HttpStatusCode.NotFound,
       error: { errorCode: ErrorCodes.USER_NOT_FOUND, message: 'The requested user was not found.' },
     });
-    let accountSetupLoaderStates: boolean[];
+    let loader: Loader;
     let requests: number;
 
     /** The booking service answers "user not found" for the first `failures` requests. */
@@ -227,10 +227,8 @@ describe('ActiveOrganizationResolver', () => {
 
     beforeEach(() => {
       vi.useFakeTimers();
-      accountSetupLoaderStates = [];
-      TestBed.inject(Loader).accountSetupLoading$.subscribe((loading) =>
-        accountSetupLoaderStates.push(loading),
-      );
+      loader = TestBed.inject(Loader);
+      vi.spyOn(loader, 'showAccountSetupLoader');
     });
 
     afterEach(() => {
@@ -244,6 +242,7 @@ describe('ActiveOrganizationResolver', () => {
       const resolution = resolver.resolve();
       await vi.advanceTimersByTimeAsync(retryIntervalMs - 1);
       expect(requests).toBe(1);
+      expect(loader.accountSetupLoading()).toBe(true);
       await vi.advanceTimersByTimeAsync(retryIntervalMs + 1);
 
       expect(await resolution).toEqual({
@@ -251,7 +250,8 @@ describe('ActiveOrganizationResolver', () => {
         route: appRoutes.onboardingCreateOrganization,
       });
       expect(requests).toBe(3);
-      expect(accountSetupLoaderStates).toEqual([false, true, true, false]);
+      expect(loader.showAccountSetupLoader).toHaveBeenCalledTimes(2);
+      expect(loader.accountSetupLoading()).toBe(false);
       expect(errorHandler.handleError).not.toHaveBeenCalled();
     });
 
@@ -268,7 +268,7 @@ describe('ActiveOrganizationResolver', () => {
       });
       // The first request plus every retry.
       expect(requests).toBe(environment.accountSetupMaxRetries + 1);
-      expect(accountSetupLoaderStates.at(-1)).toBe(false);
+      expect(loader.accountSetupLoading()).toBe(false);
       expect(errorHandler.handleError).not.toHaveBeenCalled();
     });
 
@@ -282,7 +282,8 @@ describe('ActiveOrganizationResolver', () => {
 
       expect(await resolver.resolve()).toEqual({ kind: 'blocked' });
       expect(errorHandler.handleError).toHaveBeenCalledWith(error);
-      expect(accountSetupLoaderStates).toEqual([false, false]);
+      expect(loader.showAccountSetupLoader).not.toHaveBeenCalled();
+      expect(loader.accountSetupLoading()).toBe(false);
     });
   });
 });

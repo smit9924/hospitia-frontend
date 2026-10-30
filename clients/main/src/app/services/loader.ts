@@ -1,35 +1,34 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Loader {
-  private loaderSubject = new BehaviorSubject<boolean>(false);
+  private readonly _loading = signal(false);
 
-  loading$ = this.loaderSubject.asObservable();
+  readonly loading = this._loading.asReadonly();
 
   /**
    * Shown while a newly created account is still being set up in the other
    * services; takes precedence over the generic loader.
    */
-  private accountSetupLoaderSubject = new BehaviorSubject<boolean>(false);
+  private readonly _accountSetupLoading = signal(false);
 
-  accountSetupLoading$ = this.accountSetupLoaderSubject.asObservable();
+  readonly accountSetupLoading = this._accountSetupLoading.asReadonly();
 
   showLoader() {
-    this.loaderSubject.next(true);
+    this._loading.set(true);
   }
 
   hideLoader() {
-    this.loaderSubject.next(false);
+    this._loading.set(false);
   }
 
   showAccountSetupLoader() {
-    this.accountSetupLoaderSubject.next(true);
+    this._accountSetupLoading.set(true);
   }
 
   hideAccountSetupLoader() {
-    this.accountSetupLoaderSubject.next(false);
+    this._accountSetupLoading.set(false);
   }
 }
