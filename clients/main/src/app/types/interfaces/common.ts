@@ -7,6 +7,12 @@ export interface ApiErrorResponse<T> {
   errorCode: ErrorCodes;
 }
 
+/** Flags passed with a navigation as router state (`NavigationExtras.state`). */
+export interface AppNavigationState {
+  /** The navigation was started by a successful signup. */
+  afterSignup?: boolean;
+}
+
 export interface GenericDialogButtonMetadata {
   label: string;
   closeOnClick: boolean;

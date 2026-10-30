@@ -18,6 +18,7 @@ export const appRoutes = {
   permissionDeny: '/error/403',
   notFound: '/error/404',
   accountSetupFailed: '/error/account-setup',
+  unexpectedError: '/error/unexpected',
   // *** End Error Pages ***
 
   // Settings

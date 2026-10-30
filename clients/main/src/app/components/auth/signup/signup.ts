@@ -117,7 +117,7 @@ export class Signup {
         const dataObj = new LoginApiResponse(data);
         this.authService.setLoginSession(dataObj);
         await this.profileService.loadProfile();
-        await this.profileService.redirectToDefaultHome();
+        await this.profileService.redirectToDefaultHome({ afterSignup: true });
         this.showSuccessSnackbar();
       },
       error: (error: HttpErrorResponse) => {
@@ -168,7 +168,7 @@ export class Signup {
         const dataObj = new LoginApiResponse(data);
         this.authService.setLoginSession(dataObj);
         await this.profileService.loadProfile();
-        await this.profileService.redirectToDefaultHome();
+        await this.profileService.redirectToDefaultHome({ afterSignup: true });
         this.showSuccessSnackbar();
       },
       error: (error: HttpErrorResponse) => {
