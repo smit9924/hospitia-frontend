@@ -1,0 +1,38 @@
+<main
+  class="account-setup-failed-page-container min-h-100 d-flex flex-column align-center justify-center w-100 gap-24 p-24"
+>
+  <mat-icon
+    class="empty-state-icon text-secondary"
+    aria-hidden="true"
+    svgIcon="nestClockFarsightAnalog"
+  />
+
+  <div class="text-container d-flex justify-center align-center flex-column gap-8">
+    <!-- HEADING: Account setup incomplete -->
+    <h1 #heading class="heading-large m-0" tabindex="-1" i18n>
+      We couldn't finish setting up your account
+    </h1>
+    <p class="body-large text-secondary m-0" i18n>
+      Your account has been created, but it is taking longer than usual to get ready. Please try
+      again in a moment. If the problem persists, contact support.
+    </p>
+  </div>
+
+  <!-- ACTIONS: Account setup incomplete -->
+  <div class="d-flex justify-center gap-8 wrap">
+    <!-- BUTTON: Log out -->
+    <button matButton="outlined" type="button" (click)="logout()">
+      <span i18n>Log out</span>
+    </button>
+    <!-- BUTTON: Try again -->
+    <button
+      matButton="filled"
+      type="button"
+      [disabled]="isRetrying()"
+      [attr.aria-busy]="isRetrying()"
+      (click)="retry()"
+    >
+      <span i18n>Try again</span>
+    </button>
+  </div>
+</main>

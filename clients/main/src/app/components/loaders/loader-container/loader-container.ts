@@ -1,21 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Spinner } from '../spinner/spinner';
+import { AccountSetupLoader } from '../account-setup-loader/account-setup-loader';
 import { Loader } from '../../../services/loader';
-import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-loader-container',
-  imports: [Spinner, AsyncPipe],
+  imports: [Spinner, AccountSetupLoader],
   templateUrl: './loader-container.html',
   styleUrl: './loader-container.scss',
 })
 export class LoaderContainer {
-  private loaderService: Loader = inject(Loader);
-
-  protected loading: Observable<boolean>;
-
-  constructor() {
-    this.loading = this.loaderService.loading$;
-  }
+  protected readonly loaderService = inject(Loader);
 }

@@ -1,13 +1,16 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ErrorHandler, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { EMPTY, of, Subject, throwError } from 'rxjs';
+import { defer, EMPTY, of, Subject, throwError } from 'rxjs';
 import { OrganizationSelectionDialog } from '../../components/organization/organization-selection-dialog/organization-selection-dialog';
 import { appRoutes } from '../../data/app-routes';
+import { environment } from '../../../environments/environment';
 import { UserType } from '../../types/enums/auth';
+import { ErrorCodes } from '../../types/enums/error-codes';
 import { OrganizationMembershipSummary } from '../../types/interfaces/organization';
 import { UserProfileModel } from '../../types/models/users/user-profile-model';
+import { Loader } from '../loader';
 import { Profile } from '../profile';
 import { ActiveOrganizationResolver } from './active-organization-resolver';
 import { Organization } from './organization';
@@ -203,5 +206,84 @@ describe('ActiveOrganizationResolver', () => {
 
     expect(await resolver.resolve()).toEqual({ kind: 'blocked' });
     expect(errorHandler.handleError).toHaveBeenCalledWith(error);
+  });
+
+  describe('while a new account is still being set up', () => {
+    const retryIntervalMs = environment.accountSetupRetryIntervalSeconds * 1000;
+    const userNotFound = new HttpErrorResponse({
+      status: HttpStatusCode.NotFound,
+      error: { errorCode: ErrorCodes.USER_NOT_FOUND, message: 'The requested user was not found.' },
+    });
+    let loader: Loader;
+    let requests: number;
+
+    /** The booking service answers "user not found" for the first `failures` requests. */
+    const userKnownAfter = (failures: number) => {
+      requests = 0;
+      organizationService.getMemberships.mockReturnValue(
+        defer(() => (++requests <= failures ? throwError(() => userNotFound) : of({ items: [] }))),
+      );
+    };
+
+    beforeEach(() => {
+      vi.useFakeTimers();
+      loader = TestBed.inject(Loader);
+      vi.spyOn(loader, 'showAccountSetupLoader');
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('retries every interval behind the account setup loader, then continues', async () => {
+      signInAs(UserType.OWNER);
+      userKnownAfter(2);
+
+      const resolution = resolver.resolve();
+      await vi.advanceTimersByTimeAsync(retryIntervalMs - 1);
+      expect(requests).toBe(1);
+      expect(loader.accountSetupLoading()).toBe(true);
+      await vi.advanceTimersByTimeAsync(retryIntervalMs + 1);
+
+      expect(await resolution).toEqual({
+        kind: 'redirect',
+        route: appRoutes.onboardingCreateOrganization,
+      });
+      expect(requests).toBe(3);
+      expect(loader.showAccountSetupLoader).toHaveBeenCalledTimes(2);
+      expect(loader.accountSetupLoading()).toBe(false);
+      expect(errorHandler.handleError).not.toHaveBeenCalled();
+    });
+
+    it('shows the account setup error page once every retry is used up', async () => {
+      signInAs(UserType.OWNER);
+      userKnownAfter(Number.POSITIVE_INFINITY);
+
+      const resolution = resolver.resolve();
+      await vi.advanceTimersByTimeAsync(environment.accountSetupMaxRetries * retryIntervalMs);
+
+      expect(await resolution).toEqual({
+        kind: 'redirect',
+        route: appRoutes.accountSetupFailed,
+      });
+      // The first request plus every retry.
+      expect(requests).toBe(environment.accountSetupMaxRetries + 1);
+      expect(loader.accountSetupLoading()).toBe(false);
+      expect(errorHandler.handleError).not.toHaveBeenCalled();
+    });
+
+    it('does not retry a "not found" for anything other than the user', async () => {
+      signInAs(UserType.OWNER);
+      const error = new HttpErrorResponse({
+        status: HttpStatusCode.NotFound,
+        error: { errorCode: ErrorCodes.ORGANIZATION_NOT_FOUND },
+      });
+      organizationService.getMemberships.mockReturnValue(throwError(() => error));
+
+      expect(await resolver.resolve()).toEqual({ kind: 'blocked' });
+      expect(errorHandler.handleError).toHaveBeenCalledWith(error);
+      expect(loader.showAccountSetupLoader).not.toHaveBeenCalled();
+      expect(loader.accountSetupLoading()).toBe(false);
+    });
   });
 });

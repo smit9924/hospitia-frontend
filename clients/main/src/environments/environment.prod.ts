@@ -8,4 +8,6 @@ export const environment = {
   forgotPasswordResendTimeoutSeconds: 30,
   emailVerificationResendTimeoutSeconds: 30,
   enableOwnerSignup: true,
+  accountSetupMaxRetries: 10,
+  accountSetupRetryIntervalSeconds: 1,
 };
