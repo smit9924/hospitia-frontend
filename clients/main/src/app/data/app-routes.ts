@@ -17,6 +17,7 @@ export const appRoutes = {
   // Error Pages
   permissionDeny: '/error/403',
   notFound: '/error/404',
+  accountSetupFailed: '/error/account-setup',
   // *** End Error Pages ***
 
   // Settings

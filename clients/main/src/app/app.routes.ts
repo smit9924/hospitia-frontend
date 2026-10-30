@@ -13,6 +13,7 @@ import { permissionGuard } from './guards/permission/permission-guard';
 import { UserType } from './types/enums/auth';
 import { NotFound } from './components/errors/not-found/not-found';
 import { PermissionDeny } from './components/errors/permission-deny/permission-deny';
+import { AccountSetupFailed } from './components/errors/account-setup-failed/account-setup-failed';
 import { authRedirectionGuard } from './guards/auth-redirection/auth-redirection-guard';
 import { Profile } from './components/profile/profile/profile';
 import { LandingPage } from './components/landing-page/landing-page';
@@ -412,6 +413,15 @@ export const routes: Routes = [
       {
         path: '404',
         component: NotFound,
+      },
+      {
+        // Blocking page like onboarding: no navbar, whose links need an active organization.
+        path: 'account-setup',
+        component: AccountSetupFailed,
+        data: {
+          showNavbar: false,
+          showFooter: false,
+        },
       },
     ],
     data: {

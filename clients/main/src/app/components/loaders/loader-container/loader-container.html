@@ -1,4 +1,9 @@
-@if (loading | async) {
+@if (accountSetupLoading | async) {
+  <div class="loader-backdrop">
+    <!-- Loader: Setting up your account -->
+    <app-account-setup-loader />
+  </div>
+} @else if (loading | async) {
   <div class="loader-backdrop">
     <!-- Spinner -->
     <app-spinner />
