@@ -3,7 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '../../../environments/environment';
-import { appConstants } from '../../data/constants';
+import { appConstants } from '../../data/app-constants';
 import { Auth } from '../../services/auth';
 import { Organization } from '../../services/organization/organization';
 import { Profile } from '../../services/profile';

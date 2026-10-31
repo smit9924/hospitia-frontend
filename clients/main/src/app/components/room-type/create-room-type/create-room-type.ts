@@ -21,7 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, finalize } from 'rxjs';
 import { appRoutes } from '../../../data/app-routes';
-import { appConstants } from '../../../data/constants';
+import { appConstants } from '../../../data/app-constants';
 import { CurrencyUnit } from '../../../services/currency-unit/currency-unit';
 import { Dialog } from '../../../services/dialog';
 import { Profile } from '../../../services/profile';
