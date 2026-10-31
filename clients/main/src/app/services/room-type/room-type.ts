@@ -23,7 +23,7 @@ export class RoomType {
   private readonly http = inject(HttpClient);
 
   getRoomType(guid: string): Observable<RoomTypeListItem> {
-    return this.http.get<RoomTypeListItem>(apiRoutes.roomType.get(guid));
+    return this.http.get<RoomTypeListItem>(apiRoutes.roomType.get, { params: { guid } });
   }
 
   list(query: RoomTypeListQuery): Observable<RoomTypeListResponse> {
@@ -46,6 +46,6 @@ export class RoomType {
   }
 
   delete(guid: string): Observable<void> {
-    return this.http.delete<void>(apiRoutes.roomType.delete(guid));
+    return this.http.delete<void>(apiRoutes.roomType.delete, { params: { guid } });
   }
 }

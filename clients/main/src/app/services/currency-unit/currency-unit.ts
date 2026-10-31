@@ -18,7 +18,7 @@ export class CurrencyUnit {
   private readonly http = inject(HttpClient);
 
   getCurrencyUnit(guid: string): Observable<CurrencyUnitListItem> {
-    return this.http.get<CurrencyUnitListItem>(apiRoutes.currencyUnit.get(guid));
+    return this.http.get<CurrencyUnitListItem>(apiRoutes.currencyUnit.get, { params: { guid } });
   }
 
   list(query: CurrencyUnitListQuery): Observable<CurrencyUnitListResponse> {
@@ -46,6 +46,6 @@ export class CurrencyUnit {
   }
 
   delete(guid: string): Observable<void> {
-    return this.http.delete<void>(apiRoutes.currencyUnit.delete(guid));
+    return this.http.delete<void>(apiRoutes.currencyUnit.delete, { params: { guid } });
   }
 }

@@ -24,7 +24,7 @@ export class RoomAmenity {
   private readonly http = inject(HttpClient);
 
   getRoomAmenity(guid: string): Observable<RoomAmenityListItem> {
-    return this.http.get<RoomAmenityListItem>(apiRoutes.roomAmenity.get(guid));
+    return this.http.get<RoomAmenityListItem>(apiRoutes.roomAmenity.get, { params: { guid } });
   }
 
   list(query: RoomAmenityListQuery): Observable<RoomAmenityListResponse> {
@@ -60,6 +60,6 @@ export class RoomAmenity {
   }
 
   delete(guid: string): Observable<void> {
-    return this.http.delete<void>(apiRoutes.roomAmenity.delete(guid));
+    return this.http.delete<void>(apiRoutes.roomAmenity.delete, { params: { guid } });
   }
 }
