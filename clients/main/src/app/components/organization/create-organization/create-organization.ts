@@ -247,7 +247,7 @@ export class CreateOrganization implements OnInit {
       }),
       postalCode: new FormControl('', {
         nonNullable: true,
-        validators: [Validators.required, Validators.maxLength(20)],
+        validators: [Validators.required, Validators.pattern('^[1-9][0-9]{0,6}$')],
       }),
     });
   }
@@ -299,7 +299,7 @@ export class CreateOrganization implements OnInit {
       city: organization.address.city,
       state: organization.address.state,
       country: organization.address.country,
-      postalCode: organization.address.postalCode,
+      postalCode: String(organization.address.postalCode),
     });
 
     if (organization.owner) {
@@ -326,7 +326,7 @@ export class CreateOrganization implements OnInit {
       city: raw.city,
       state: raw.state,
       country: raw.country,
-      postalCode: raw.postalCode,
+      postalCode: Number(raw.postalCode),
     };
   }
 

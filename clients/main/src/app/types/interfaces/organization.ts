@@ -30,7 +30,7 @@ export interface AddressInput {
   city: string;
   state: string;
   country: string;
-  postalCode: string;
+  postalCode: number;
 }
 
 export interface AddressDto extends AddressInput {

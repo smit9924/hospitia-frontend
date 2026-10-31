@@ -217,9 +217,17 @@
 
               <mat-form-field class="grow-1">
                 <mat-label i18n>Postal Code</mat-label>
-                <input matInput formControlName="postalCode" type="text" />
+                <input
+                  matInput
+                  formControlName="postalCode"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="7"
+                />
                 @if (organizationForm.get('postalCode')?.hasError('required')) {
                   <mat-error i18n>Postal code is required</mat-error>
+                } @else if (organizationForm.get('postalCode')?.hasError('pattern')) {
+                  <mat-error i18n>Postal code must be a number of up to 7 digits and cannot start with 0</mat-error>
                 }
               </mat-form-field>
             </div>
