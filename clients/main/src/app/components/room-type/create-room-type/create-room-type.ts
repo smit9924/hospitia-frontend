@@ -21,7 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, finalize } from 'rxjs';
 import { appRoutes } from '../../../data/app-routes';
-import { DEFAULT_CURRENCY_CODE } from '../../../data/constants';
+import { appConstants } from '../../../data/constants';
 import { CurrencyUnit } from '../../../services/currency-unit/currency-unit';
 import { Dialog } from '../../../services/dialog';
 import { Profile } from '../../../services/profile';
@@ -298,7 +298,8 @@ export class CreateRoomType implements OnInit {
       const currencyControl = this.roomTypeForm.controls.currencyUnitGuid;
       const preferredGuid =
         preferredCurrencyGuid ??
-        currencies.find((currency) => currency.currencyCode === DEFAULT_CURRENCY_CODE)?.guid ??
+        currencies.find((currency) => currency.currencyCode === appConstants.defaultCurrencyCode)
+          ?.guid ??
         null;
       const keepsCurrentChoice = currencies.some(
         (currency) => currency.guid === currencyControl.value,
