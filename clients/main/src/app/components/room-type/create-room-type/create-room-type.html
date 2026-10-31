@@ -64,8 +64,8 @@
                   <span>{{ amenityOrganization()?.name }}</span>
                 </p>
               } @else {
-                <!-- AUTOCOMPLETE: Organization (admin) -->
-                <app-organization-picker
+                <!-- FIELD: Organization (admin) -->
+                <app-organization-selection-field
                   i18n-hint
                   hint="The room type belongs to this organization."
                   [control]="roomTypeForm.controls.organization"

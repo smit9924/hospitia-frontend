@@ -31,7 +31,7 @@ import {
   RoomAmenityUpsertRequest,
 } from '../../../types/interfaces/room-amenity';
 import { Banner } from '../../common/banner/banner';
-import { OrganizationPicker } from '../../organization/organization-picker/organization-picker';
+import { OrganizationSelectionField } from '../../organization/organization-selection-field/organization-selection-field';
 
 /** Whether an admin's new amenity is offered to everyone or to one organization. */
 type AmenityAvailability = 'default' | 'organization';
@@ -66,7 +66,7 @@ type RoomAmenityFormGroup = FormGroup<{
     MatButtonModule,
     MatIconModule,
     Banner,
-    OrganizationPicker,
+    OrganizationSelectionField,
     DecimalPipe,
   ],
   templateUrl: './room-amenity-form.html',
@@ -191,7 +191,7 @@ export class RoomAmenityForm implements OnInit {
     this.cancelled.emit();
   }
 
-  /** The organization picker is required only for an admin's organization-specific amenity. */
+  /** Choosing an organization is required only for an admin's organization-specific amenity. */
   private applyAvailability(availability: AmenityAvailability): void {
     this.selectedAvailability.set(availability);
     const organizationControl = this.amenityForm.controls.organization;

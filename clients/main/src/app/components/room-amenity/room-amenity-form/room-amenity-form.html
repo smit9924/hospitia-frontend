@@ -58,8 +58,8 @@
       </div>
 
       @if (selectedAvailability() === 'organization') {
-        <!-- AUTOCOMPLETE: Organization -->
-        <app-organization-picker
+        <!-- FIELD: Organization -->
+        <app-organization-selection-field
           i18n-hint
           hint="Only this organization will see the amenity."
           [control]="amenityForm.controls.organization"

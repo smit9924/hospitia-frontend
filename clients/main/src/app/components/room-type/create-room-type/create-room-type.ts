@@ -47,7 +47,7 @@ import { GenericSnackbarConfig } from '../../../types/models/common/generic-snac
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 import { Banner } from '../../common/banner/banner';
 import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
-import { OrganizationPicker } from '../../organization/organization-picker/organization-picker';
+import { OrganizationSelectionField } from '../../organization/organization-selection-field/organization-selection-field';
 import {
   RoomAmenityDialog,
   RoomAmenityDialogData,
@@ -96,7 +96,7 @@ type RoomTypeForm = FormGroup<{
     MatIconModule,
     ReactiveFormsModule,
     Banner,
-    OrganizationPicker,
+    OrganizationSelectionField,
     DecimalPipe,
   ],
   templateUrl: './create-room-type.html',
