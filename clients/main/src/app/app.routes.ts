@@ -329,6 +329,68 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'room-type',
+        children: [
+          {
+            path: 'listing',
+            loadComponent: () =>
+              import('./components/room-type/room-type-listing/room-type-listing').then(
+                (module) => module.RoomTypeListing,
+              ),
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+          {
+            path: 'create',
+            loadComponent: () =>
+              import('./components/room-type/create-room-type/create-room-type').then(
+                (module) => module.CreateRoomType,
+              ),
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+        ],
+      },
+      {
+        path: 'room-amenity',
+        children: [
+          {
+            path: 'listing',
+            loadComponent: () =>
+              import('./components/room-amenity/room-amenity-listing/room-amenity-listing').then(
+                (module) => module.RoomAmenityListing,
+              ),
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+          {
+            path: 'create',
+            loadComponent: () =>
+              import('./components/room-amenity/create-room-amenity/create-room-amenity').then(
+                (module) => module.CreateRoomAmenity,
+              ),
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+        ],
+      },
+      {
         path: 'listing',
         children: [
           {
@@ -397,6 +459,37 @@ export const routes: Routes = [
         data: {
           requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
           readOnlyRoute: true,
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+    ],
+  },
+  {
+    path: 'currency-unit',
+    children: [
+      {
+        path: 'listing',
+        loadComponent: () =>
+          import('./components/currency-unit/currency-unit-listing/currency-unit-listing').then(
+            (module) => module.CurrencyUnitListing,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN],
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'create',
+        loadComponent: () =>
+          import('./components/currency-unit/create-currency-unit/create-currency-unit').then(
+            (module) => module.CreateCurrencyUnit,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN],
           showNavbar: true,
           showFooter: true,
         },

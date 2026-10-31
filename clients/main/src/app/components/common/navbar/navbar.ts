@@ -34,18 +34,24 @@ const organizationMenuLinksByRole: Partial<Record<UserType, OrganizationMenuLink
       route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.ADMIN),
     },
     { label: $localize`Organization Type`, route: appRoutes.organizationTypeListing },
+    { label: $localize`Room Types`, route: appRoutes.roomTypeListing },
+    { label: $localize`Room Amenities`, route: appRoutes.roomAmenityListing },
   ],
   [UserType.OWNER]: (organizationService) => [
     {
       label: $localize`Organizations`,
       route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.OWNER),
     },
+    { label: $localize`Room Types`, route: appRoutes.roomTypeListing },
+    { label: $localize`Room Amenities`, route: appRoutes.roomAmenityListing },
   ],
   [UserType.MANAGER]: (organizationService) => [
     {
       label: $localize`Organizations`,
       route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.MANAGER),
     },
+    { label: $localize`Room Types`, route: appRoutes.roomTypeListing },
+    { label: $localize`Room Amenities`, route: appRoutes.roomAmenityListing },
   ],
 };
 
@@ -108,6 +114,12 @@ export class Navbar implements AfterViewInit {
   });
 
   protected readonly showOrganizationMenu = computed(() => this.organizationMenuLinks().length > 0);
+
+  // Currency units are system-wide reference data, managed by admins only.
+  protected readonly currencyUnitsLink = appRoutes.currencyUnitListing;
+  protected readonly showCurrencyUnitsLink = computed(
+    () => this.profileService.userProfile()?.role === UserType.ADMIN,
+  );
 
   // Set only for owners/managers, once their active organization is resolved.
   protected readonly activeOrganization = this.organizationService.activeOrganization;

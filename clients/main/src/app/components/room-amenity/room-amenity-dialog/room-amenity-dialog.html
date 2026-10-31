@@ -1,0 +1,11 @@
+<!-- Dialog: Add room amenity -->
+<h2 matDialogTitle i18n>Add New Amenity</h2>
+
+<mat-dialog-content>
+  <app-room-amenity-form
+    [organizationForNewAmenity]="data.organization"
+    [showCancelButton]="true"
+    (saved)="onAmenitySaved($event)"
+    (cancelled)="onCancel()"
+  />
+</mat-dialog-content>

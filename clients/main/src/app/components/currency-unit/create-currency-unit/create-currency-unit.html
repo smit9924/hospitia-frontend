@@ -1,0 +1,153 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText()" [backButton]="true" />
+
+  <main class="d-flex flex-column gap-24 p-24 w-100 align-center">
+    @if (isEditMode() && isLoadingCurrencyUnit()) {
+      <!-- STATE: Loading currency unit -->
+      <section
+        class="form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <p class="heading-extra-small m-0" i18n>Loading...</p>
+      </section>
+    } @else if (currencyUnitNotFound()) {
+      <!-- STATE: Currency unit not found -->
+      <section
+        class="form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+      >
+        <mat-icon
+          class="form-state-icon text-secondary"
+          aria-hidden="true"
+          svgIcon="businessCenter"
+        />
+        <p class="heading-extra-small m-0" i18n>Currency unit not found</p>
+        <p class="body-medium text-secondary m-0" i18n>
+          The requested currency unit could not be found. It may have been removed.
+        </p>
+      </section>
+    } @else if (showForm()) {
+      <!-- Form: Currency unit -->
+      <mat-card class="form-card w-100">
+        <mat-card-header class="mb-16">
+          <mat-card-title>
+            <h2 class="heading-extra-small m-0">
+              @if (isEditMode()) {
+                <span i18n>Currency unit details</span>
+              } @else {
+                <span i18n>New currency unit details</span>
+              }
+            </h2>
+          </mat-card-title>
+          <mat-card-subtitle class="body-medium text-secondary mt-8">
+            <span i18n>Use the codes published in the ISO 4217 standard.</span>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="mb-24">
+            <app-banner #formBanner>
+              <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+            </app-banner>
+          </div>
+
+          <form
+            class="d-flex flex-column gap-24"
+            [formGroup]="currencyUnitForm"
+            (ngSubmit)="onSubmit()"
+          >
+            <!-- TEXT FIELD: Currency code -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Currency code</mat-label>
+              <input
+                matInput
+                formControlName="currencyCode"
+                type="text"
+                maxlength="3"
+                autocomplete="off"
+                placeholder="e.g. INR"
+                i18n-placeholder
+                (input)="uppercaseCurrencyCode()"
+              />
+              <mat-hint i18n>Three-letter ISO 4217 alphabetic code.</mat-hint>
+              @if (currencyUnitForm.controls.currencyCode.hasError('required')) {
+                <mat-error i18n>Currency code is required</mat-error>
+              } @else if (currencyUnitForm.controls.currencyCode.hasError('pattern')) {
+                <mat-error i18n>Currency code must be exactly 3 letters</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- TEXT FIELD: Numeric code -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Numeric code</mat-label>
+              <input
+                matInput
+                formControlName="numericCode"
+                type="text"
+                inputmode="numeric"
+                maxlength="3"
+                autocomplete="off"
+                placeholder="e.g. 356"
+                i18n-placeholder
+              />
+              <mat-hint i18n>Three-digit ISO 4217 numeric code, including leading zeros.</mat-hint>
+              @if (currencyUnitForm.controls.numericCode.hasError('required')) {
+                <mat-error i18n>Numeric code is required</mat-error>
+              } @else if (currencyUnitForm.controls.numericCode.hasError('pattern')) {
+                <mat-error i18n>Numeric code must be exactly 3 digits</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- TEXT FIELD: Currency name -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Currency name</mat-label>
+              <input
+                matInput
+                formControlName="currencyName"
+                type="text"
+                placeholder="e.g. Indian Rupee"
+                i18n-placeholder
+              />
+              <mat-hint align="end"
+                >{{ currencyUnitForm.controls.currencyName.value.length | number }} /
+                {{ currencyNameMaxLength | number }}</mat-hint
+              >
+              @if (
+                currencyUnitForm.controls.currencyName.hasError('required') ||
+                currencyUnitForm.controls.currencyName.hasError('pattern')
+              ) {
+                <mat-error i18n>Currency name is required</mat-error>
+              } @else if (currencyUnitForm.controls.currencyName.hasError('maxlength')) {
+                <mat-error i18n>Currency name must be at most 100 characters</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- SELECT: Decimal places (minor unit) -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Decimal places</mat-label>
+              <mat-select formControlName="minorUnit">
+                <mat-option i18n [value]="null">Not applicable</mat-option>
+                @for (minorUnit of minorUnitOptions; track minorUnit) {
+                  <mat-option [value]="minorUnit">{{ minorUnit }}</mat-option>
+                }
+              </mat-select>
+              <mat-hint i18n>ISO 4217 minor unit, e.g. 2 for INR and 0 for JPY.</mat-hint>
+            </mat-form-field>
+
+            <!-- BUTTON: Save currency unit -->
+            <div class="d-flex justify-end gap-8 wrap">
+              <button
+                matButton="filled"
+                type="submit"
+                [disabled]="!currencyUnitForm.valid || isSubmitting()"
+              >
+                <span>{{ submitLabel() }}</span>
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    }
+  </main>
+</div>

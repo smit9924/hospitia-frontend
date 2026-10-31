@@ -61,4 +61,27 @@ export const apiRoutes = {
     active: `${apiBaseUrls.booking}/organization/active`,
     get: (guid: string) => `${apiBaseUrls.booking}/organization/${guid}`,
   },
+
+  roomType: {
+    upsert: `${apiBaseUrls.booking}/room-type/create`,
+    delete: `${apiBaseUrls.booking}/room-type/delete`,
+    list: `${apiBaseUrls.booking}/room-type`,
+    get: `${apiBaseUrls.booking}/room-type/detail`,
+  },
+
+  roomAmenity: {
+    upsert: `${apiBaseUrls.booking}/room-amenity/create`,
+    delete: `${apiBaseUrls.booking}/room-amenity/delete`,
+    list: `${apiBaseUrls.booking}/room-amenity`,
+    selectable: `${apiBaseUrls.booking}/room-amenity/selectable`,
+    get: `${apiBaseUrls.booking}/room-amenity/detail`,
+  },
+
+  currencyUnit: {
+    upsert: `${apiBaseUrls.booking}/currency-unit/create`,
+    delete: `${apiBaseUrls.booking}/currency-unit/delete`,
+    list: `${apiBaseUrls.booking}/currency-unit`,
+    options: `${apiBaseUrls.booking}/currency-unit/options`,
+    get: `${apiBaseUrls.booking}/currency-unit/detail`,
+  },
 } as const;

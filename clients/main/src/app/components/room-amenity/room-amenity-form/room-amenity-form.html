@@ -1,0 +1,130 @@
+@if (isLoadingAmenity()) {
+  <!-- STATE: Loading amenity -->
+  <div
+    class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+    role="status"
+    aria-live="polite"
+  >
+    <p class="heading-extra-small m-0" i18n>Loading...</p>
+  </div>
+} @else if (amenityNotFound()) {
+  <!-- STATE: Amenity not found -->
+  <div class="d-flex flex-column align-center justify-center gap-8 p-24 text-center" role="status">
+    <mat-icon class="form-state-icon text-secondary" aria-hidden="true" svgIcon="star" />
+    <p class="heading-extra-small m-0" i18n>Room amenity not found</p>
+    <p class="body-medium text-secondary m-0" i18n>
+      The requested room amenity could not be found. It may have been removed.
+    </p>
+  </div>
+} @else {
+  <div class="mb-24">
+    <app-banner #formBanner>
+      <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+    </app-banner>
+  </div>
+
+  <!-- Form: Room amenity -->
+  <form class="d-flex flex-column gap-24" [formGroup]="amenityForm" (ngSubmit)="onSubmit()">
+    <!-- TEXT: Amenity scope -->
+    @if (loadedAmenity(); as amenity) {
+      <p class="body-medium text-secondary m-0" role="note">
+        @if (amenity.isDefault) {
+          <span i18n>Default amenity, offered to every organization.</span>
+          @if (isReadOnly()) {
+            <span i18n> Only admins can change it.</span>
+          }
+        } @else {
+          <span i18n>Custom amenity of {{ amenity.organization?.name }}.</span>
+        }
+      </p>
+    } @else if (newAmenityOrganizationName(); as organizationName) {
+      <p class="body-medium text-secondary m-0" role="note" i18n>
+        This amenity will be available only to {{ organizationName }}.
+      </p>
+    }
+
+    <!-- RADIO GROUP: Amenity availability (admin) -->
+    @if (showAvailabilityChoice()) {
+      <div class="d-flex flex-column gap-8">
+        <span id="amenity-availability-label" class="body-medium" i18n>Available to</span>
+        <mat-radio-group
+          class="d-flex wrap gap-16"
+          formControlName="availability"
+          aria-labelledby="amenity-availability-label"
+        >
+          <mat-radio-button value="default" i18n>All organizations (default)</mat-radio-button>
+          <mat-radio-button value="organization" i18n>One organization</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      @if (selectedAvailability() === 'organization') {
+        <!-- FIELD: Organization -->
+        <app-organization-selection-field
+          i18n-hint
+          hint="Only this organization will see the amenity."
+          [control]="amenityForm.controls.organization"
+        />
+      }
+    }
+
+    <!-- TEXT FIELD: Name -->
+    <mat-form-field subscriptSizing="dynamic" class="w-100">
+      <mat-label i18n>Name</mat-label>
+      <input
+        matInput
+        formControlName="name"
+        type="text"
+        placeholder="e.g. Geyser"
+        i18n-placeholder
+        cdkFocusInitial
+      />
+      <mat-hint align="end"
+        >{{ amenityForm.controls.name.value.length | number }} /
+        {{ nameMaxLength | number }}</mat-hint
+      >
+      @if (
+        amenityForm.controls.name.hasError('required') ||
+        amenityForm.controls.name.hasError('pattern')
+      ) {
+        <mat-error i18n>Name is required</mat-error>
+      } @else if (amenityForm.controls.name.hasError('maxlength')) {
+        <mat-error i18n>Name must be at most 100 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- TEXT FIELD: Description -->
+    <mat-form-field subscriptSizing="dynamic" class="w-100">
+      <mat-label i18n>Description</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        rows="3"
+        placeholder="Enter an optional description"
+        i18n-placeholder
+      ></textarea>
+      <mat-hint align="end"
+        >{{ amenityForm.controls.description.value.length | number }} /
+        {{ descriptionMaxLength | number }}</mat-hint
+      >
+      @if (amenityForm.controls.description.hasError('maxlength')) {
+        <mat-error i18n>Description must be at most 500 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Section: Form actions -->
+    @if (!isReadOnly()) {
+      <div class="d-flex justify-end gap-8 wrap">
+        @if (showCancelButton()) {
+          <!-- BUTTON: Cancel -->
+          <button matButton="outlined" type="button" (click)="onCancel()">
+            <span i18n>Cancel</span>
+          </button>
+        }
+        <!-- BUTTON: Save amenity -->
+        <button matButton="filled" type="submit" [disabled]="!amenityForm.valid || isSubmitting()">
+          <span>{{ submitLabel() }}</span>
+        </button>
+      </div>
+    }
+  </form>
+}

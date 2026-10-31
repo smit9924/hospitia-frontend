@@ -1,0 +1,16 @@
+// Capacity, currency and cost share a row on wide screens and stack on narrow ones.
+.room-type-form-field {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.room-type-amenities {
+  border: 1px solid var(--mat-sys-outline-variant);
+}
+
+// Amenity check boxes in as many columns as fit.
+.room-type-amenity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 4px 16px;
+}

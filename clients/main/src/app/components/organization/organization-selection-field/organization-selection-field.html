@@ -1,0 +1,49 @@
+<!-- FIELD: Organization selection -->
+<div
+  class="d-flex flex-column gap-8"
+  role="group"
+  [attr.aria-labelledby]="fieldId + '-label'"
+  [attr.aria-describedby]="fieldId + '-description'"
+>
+  <!-- LABEL: Organization -->
+  <span class="body-medium" [id]="fieldId + '-label'">
+    {{ label() }}
+    @if (isRequired()) {
+      <span aria-hidden="true">*</span>
+    }
+  </span>
+
+  <div class="d-flex wrap align-center gap-16">
+    <!-- TEXT: Selected organization -->
+    @if (selectedOrganization(); as organization) {
+      <span class="organization-selection-name body-large wb-break-word" aria-live="polite">
+        {{ organization.name }}
+      </span>
+    }
+
+    <!-- BUTTON: Select / change organization -->
+    <button
+      matButton="outlined"
+      type="button"
+      [disabled]="isDisabled()"
+      (click)="openOrganizationSelection()"
+    >
+      @if (selectedOrganization()) {
+        <span i18n>Change organization</span>
+      } @else {
+        <span i18n>Select organization</span>
+      }
+    </button>
+  </div>
+
+  <!-- TEXT: Hint and error -->
+  <div [id]="fieldId + '-description'">
+    @if (showRequiredError()) {
+      <span class="organization-selection-error body-small" role="alert">
+        {{ requiredErrorText() }}
+      </span>
+    } @else if (hint()) {
+      <span class="body-small text-secondary">{{ hint() }}</span>
+    }
+  </div>
+</div>

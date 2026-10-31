@@ -3,7 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '../../../environments/environment';
-import { httpHeaders } from '../../data/http-headers';
+import { appConstants } from '../../data/app-constants';
 import { Auth } from '../../services/auth';
 import { Organization } from '../../services/organization/organization';
 import { Profile } from '../../services/profile';
@@ -59,7 +59,9 @@ describe('activeOrganizationInterceptor', () => {
     http.get(bookingUrl).subscribe();
 
     const req = httpTesting.expectOne(bookingUrl);
-    expect(req.request.headers.get(httpHeaders.activeOrganizationGuid)).toBe(sunrise.guid);
+    expect(req.request.headers.get(appConstants.httpHeaders.activeOrganizationGuid)).toBe(
+      sunrise.guid,
+    );
     req.flush({});
   });
 
@@ -67,7 +69,7 @@ describe('activeOrganizationInterceptor', () => {
     http.get(authUrl).subscribe();
 
     const req = httpTesting.expectOne(authUrl);
-    expect(req.request.headers.has(httpHeaders.activeOrganizationGuid)).toBe(false);
+    expect(req.request.headers.has(appConstants.httpHeaders.activeOrganizationGuid)).toBe(false);
     req.flush({});
   });
 
@@ -76,7 +78,7 @@ describe('activeOrganizationInterceptor', () => {
     http.get(bookingUrl).subscribe();
 
     const req = httpTesting.expectOne(bookingUrl);
-    expect(req.request.headers.has(httpHeaders.activeOrganizationGuid)).toBe(false);
+    expect(req.request.headers.has(appConstants.httpHeaders.activeOrganizationGuid)).toBe(false);
     req.flush({});
   });
 

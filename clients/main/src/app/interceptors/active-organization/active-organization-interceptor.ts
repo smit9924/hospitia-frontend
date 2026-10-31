@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, EMPTY, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { httpHeaders } from '../../data/http-headers';
+import { appConstants } from '../../data/app-constants';
 import { Auth } from '../../services/auth';
 import { Organization } from '../../services/organization/organization';
 import { Profile } from '../../services/profile';
@@ -34,7 +34,7 @@ export const activeOrganizationInterceptor: HttpInterceptorFn = (req, next) => {
   const activeOrganization = organizationService.activeOrganization();
   if (activeOrganization) {
     req = req.clone({
-      setHeaders: { [httpHeaders.activeOrganizationGuid]: activeOrganization.guid },
+      setHeaders: { [appConstants.httpHeaders.activeOrganizationGuid]: activeOrganization.guid },
     });
   }
 
