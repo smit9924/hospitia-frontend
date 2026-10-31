@@ -1,0 +1,239 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText" [backButton]="true" />
+
+  <main class="d-flex flex-column gap-24 p-24 w-100 align-center">
+    @if (isLoadingRoomType()) {
+      <!-- STATE: Loading room type -->
+      <section
+        class="form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <p class="heading-extra-small m-0" i18n>Loading...</p>
+      </section>
+    } @else if (roomTypeNotFound()) {
+      <!-- STATE: Room type not found -->
+      <section
+        class="form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+      >
+        <mat-icon class="form-state-icon text-secondary" aria-hidden="true" svgIcon="homeWork" />
+        <p class="heading-extra-small m-0" i18n>Room type not found</p>
+        <p class="body-medium text-secondary m-0" i18n>
+          The requested room type could not be found. It may have been removed.
+        </p>
+      </section>
+    } @else {
+      <!-- CARD: Room type -->
+      <mat-card class="form-card w-100">
+        <mat-card-header class="mb-16">
+          <mat-card-title>
+            <h2 class="heading-extra-small m-0">
+              @if (isEditMode) {
+                <span i18n>Room type details</span>
+              } @else {
+                <span i18n>New room type details</span>
+              }
+            </h2>
+          </mat-card-title>
+          <mat-card-subtitle class="body-medium text-secondary mt-8">
+            <span i18n
+              >A room type describes a kind of room you offer, not an individual room.</span
+            >
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="mb-24">
+            <app-banner #formBanner>
+              <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+            </app-banner>
+          </div>
+
+          <!-- Form: Room type -->
+          <form
+            class="d-flex flex-column gap-24"
+            [formGroup]="roomTypeForm"
+            (ngSubmit)="onSubmit()"
+          >
+            @if (isAdmin()) {
+              @if (isEditMode) {
+                <!-- TEXT: Organization (fixed after creation) -->
+                <p class="body-medium m-0" role="note">
+                  <span class="text-secondary" i18n>Organization: </span>
+                  <span>{{ amenityOrganization()?.name }}</span>
+                </p>
+              } @else {
+                <!-- AUTOCOMPLETE: Organization (admin) -->
+                <app-organization-picker
+                  i18n-hint
+                  hint="The room type belongs to this organization."
+                  [control]="roomTypeForm.controls.organization"
+                />
+              }
+            }
+
+            <!-- TEXT FIELD: Name -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Name</mat-label>
+              <input
+                matInput
+                formControlName="name"
+                type="text"
+                placeholder="e.g. Deluxe double"
+                i18n-placeholder
+              />
+              <mat-hint align="end"
+                >{{ roomTypeForm.controls.name.value.length | number }} /
+                {{ nameMaxLength | number }}</mat-hint
+              >
+              @if (
+                roomTypeForm.controls.name.hasError('required') ||
+                roomTypeForm.controls.name.hasError('pattern')
+              ) {
+                <mat-error i18n>Name is required</mat-error>
+              } @else if (roomTypeForm.controls.name.hasError('maxlength')) {
+                <mat-error i18n>Name must be at most 100 characters</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- TEXT FIELD: Description -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Description</mat-label>
+              <textarea
+                matInput
+                formControlName="description"
+                rows="3"
+                placeholder="Enter an optional description"
+                i18n-placeholder
+              ></textarea>
+              <mat-hint align="end"
+                >{{ roomTypeForm.controls.description.value.length | number }} /
+                {{ descriptionMaxLength | number }}</mat-hint
+              >
+              @if (roomTypeForm.controls.description.hasError('maxlength')) {
+                <mat-error i18n>Description must be at most 500 characters</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="d-flex wrap align-flex-start gap-16">
+              <!-- NUMBER FIELD: Capacity -->
+              <mat-form-field subscriptSizing="dynamic" class="room-type-form-field">
+                <mat-label i18n>Capacity (guests)</mat-label>
+                <input
+                  matInput
+                  formControlName="capacity"
+                  type="number"
+                  inputmode="numeric"
+                  step="1"
+                  placeholder="e.g. 2"
+                  i18n-placeholder
+                  [min]="minCapacity"
+                  [max]="maxCapacity"
+                />
+                @if (roomTypeForm.controls.capacity.hasError('required')) {
+                  <mat-error i18n>Capacity is required</mat-error>
+                } @else if (
+                  roomTypeForm.controls.capacity.hasError('min') ||
+                  roomTypeForm.controls.capacity.hasError('max') ||
+                  roomTypeForm.controls.capacity.hasError('wholeNumber')
+                ) {
+                  <mat-error i18n>Capacity must be a whole number from 1 to 1,000</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- SELECT: Currency -->
+              <mat-form-field subscriptSizing="dynamic" class="room-type-form-field">
+                <mat-label i18n>Currency</mat-label>
+                <mat-select formControlName="currencyUnitGuid">
+                  @for (currency of currencyOptions(); track currency.guid) {
+                    <mat-option [value]="currency.guid"
+                      >{{ currency.currencyCode }} - {{ currency.currencyName }}</mat-option
+                    >
+                  }
+                </mat-select>
+                @if (roomTypeForm.controls.currencyUnitGuid.hasError('required')) {
+                  <mat-error i18n>Currency is required</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- TEXT FIELD: Cost per night -->
+              <mat-form-field subscriptSizing="dynamic" class="room-type-form-field">
+                <mat-label i18n>Cost per night</mat-label>
+                @if (selectedCurrencyCode()) {
+                  <span matTextPrefix>{{ selectedCurrencyCode() }}&nbsp;</span>
+                }
+                <input
+                  matInput
+                  formControlName="costPerNight"
+                  type="text"
+                  inputmode="decimal"
+                  autocomplete="off"
+                  placeholder="e.g. 1500.00"
+                  i18n-placeholder
+                />
+                <mat-hint i18n>Use 0 for a free stay; up to 2 decimal places.</mat-hint>
+                @if (roomTypeForm.controls.costPerNight.hasError('required')) {
+                  <mat-error i18n>Cost per night is required</mat-error>
+                } @else if (roomTypeForm.controls.costPerNight.hasError('pattern')) {
+                  <mat-error i18n
+                    >Enter an amount from 0 to 999999999.99 with at most 2 decimal places</mat-error
+                  >
+                }
+              </mat-form-field>
+            </div>
+
+            <!-- Section: Amenities -->
+            <fieldset class="room-type-amenities rounded-8 p-16 m-0 d-flex flex-column gap-8">
+              <legend class="body-large px-4" i18n>Amenities</legend>
+
+              @if (!canChooseAmenities()) {
+                <p class="body-medium text-secondary m-0" i18n>
+                  Choose an organization to see its amenities.
+                </p>
+              } @else if (isLoadingAmenities() && amenityOptions().length === 0) {
+                <p class="body-medium text-secondary m-0" role="status" i18n>
+                  Loading amenities...
+                </p>
+              } @else if (amenityOptions().length === 0) {
+                <p class="body-medium text-secondary m-0" i18n>
+                  No amenities yet. Add the first one below.
+                </p>
+              } @else {
+                <!-- CHECKBOX GROUP: Amenities -->
+                <div class="room-type-amenity-grid">
+                  @for (amenity of amenityOptions(); track amenity.guid) {
+                    <mat-checkbox
+                      [checked]="isAmenitySelected(amenity)"
+                      (change)="toggleAmenity(amenity, $event.checked)"
+                      >{{ amenity.name }}</mat-checkbox
+                    >
+                  }
+                </div>
+              }
+
+              <!-- BUTTON: Add new amenity -->
+              <div>
+                <button
+                  matButton="outlined"
+                  type="button"
+                  [disabled]="!canChooseAmenities()"
+                  (click)="openAddAmenityDialog()"
+                >
+                  <span i18n>Add new amenity</span>
+                </button>
+              </div>
+            </fieldset>
+
+            <!-- BUTTON: Save room type -->
+            <div class="d-flex justify-end gap-8 wrap">
+              <button matButton="filled" type="submit" [disabled]="isSubmitting()">
+                <span>{{ submitLabel }}</span>
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    }
+  </main>
+</div>

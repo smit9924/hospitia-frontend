@@ -329,6 +329,37 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'room-type',
+        children: [
+          {
+            path: 'listing',
+            loadComponent: () =>
+              import('./components/room-type/room-type-listing/room-type-listing').then(
+                (module) => module.RoomTypeListing,
+              ),
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+          {
+            path: 'create',
+            loadComponent: () =>
+              import('./components/room-type/create-room-type/create-room-type').then(
+                (module) => module.CreateRoomType,
+              ),
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+        ],
+      },
+      {
         path: 'room-amenity',
         children: [
           {

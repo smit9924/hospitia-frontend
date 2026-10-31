@@ -34,6 +34,7 @@ const organizationMenuLinksByRole: Partial<Record<UserType, OrganizationMenuLink
       route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.ADMIN),
     },
     { label: $localize`Organization Type`, route: appRoutes.organizationTypeListing },
+    { label: $localize`Room Types`, route: appRoutes.roomTypeListing },
     { label: $localize`Room Amenities`, route: appRoutes.roomAmenityListing },
   ],
   [UserType.OWNER]: (organizationService) => [
@@ -41,6 +42,7 @@ const organizationMenuLinksByRole: Partial<Record<UserType, OrganizationMenuLink
       label: $localize`Organizations`,
       route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.OWNER),
     },
+    { label: $localize`Room Types`, route: appRoutes.roomTypeListing },
     { label: $localize`Room Amenities`, route: appRoutes.roomAmenityListing },
   ],
   [UserType.MANAGER]: (organizationService) => [
@@ -48,6 +50,7 @@ const organizationMenuLinksByRole: Partial<Record<UserType, OrganizationMenuLink
       label: $localize`Organizations`,
       route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.MANAGER),
     },
+    { label: $localize`Room Types`, route: appRoutes.roomTypeListing },
     { label: $localize`Room Amenities`, route: appRoutes.roomAmenityListing },
   ],
 };

@@ -54,6 +54,8 @@ export const appRoutes = {
   viewOrganization: '/organization/view',
   roomAmenityListing: '/organization/room-amenity/listing',
   createRoomAmenity: '/organization/room-amenity/create',
+  roomTypeListing: '/organization/room-type/listing',
+  createRoomType: '/organization/room-type/create',
   // *** End Organization ***
 
   // Currency units

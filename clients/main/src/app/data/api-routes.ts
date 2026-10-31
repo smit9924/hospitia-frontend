@@ -62,6 +62,13 @@ export const apiRoutes = {
     get: (guid: string) => `${apiBaseUrls.booking}/organization/${guid}`,
   },
 
+  roomType: {
+    upsert: `${apiBaseUrls.booking}/room-type/create`,
+    delete: (guid: string) => `${apiBaseUrls.booking}/room-type/delete?guid=${guid}`,
+    list: `${apiBaseUrls.booking}/room-type`,
+    get: (guid: string) => `${apiBaseUrls.booking}/room-type/${guid}`,
+  },
+
   roomAmenity: {
     upsert: `${apiBaseUrls.booking}/room-amenity/create`,
     delete: (guid: string) => `${apiBaseUrls.booking}/room-amenity/delete?guid=${guid}`,
