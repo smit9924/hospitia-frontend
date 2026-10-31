@@ -21,7 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, finalize } from 'rxjs';
 import { appRoutes } from '../../../data/app-routes';
-import { DEFAULT_CURRENCY_CODE } from '../../../data/currency';
+import { DEFAULT_CURRENCY_CODE } from '../../../data/constants';
 import { CurrencyUnit } from '../../../services/currency-unit/currency-unit';
 import { Dialog } from '../../../services/dialog';
 import { Profile } from '../../../services/profile';

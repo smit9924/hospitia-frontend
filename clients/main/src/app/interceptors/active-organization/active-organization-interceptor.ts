@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, EMPTY, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { httpHeaders } from '../../data/http-headers';
+import { httpHeaders } from '../../data/constants';
 import { Auth } from '../../services/auth';
 import { Organization } from '../../services/organization/organization';
 import { Profile } from '../../services/profile';
