@@ -19,11 +19,7 @@
         class="org-form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
         role="status"
       >
-        <mat-icon
-          class="empty-state-icon text-secondary"
-          aria-hidden="true"
-          svgIcon="businessCenter"
-        />
+        <mat-icon class="empty-state-icon text-secondary" aria-hidden="true" svgIcon="businessCenter" />
         <p class="heading-extra-small m-0" i18n>Organization not found</p>
         <p class="body-medium text-secondary m-0" i18n>
           The requested organization could not be found, or you do not have access to it.
@@ -88,13 +84,7 @@
             <!-- TEXT FIELD: Name -->
             <mat-form-field subscriptSizing="dynamic" class="w-100">
               <mat-label i18n>Name</mat-label>
-              <input
-                matInput
-                formControlName="name"
-                type="text"
-                placeholder="Enter organization name"
-                i18n-placeholder
-              />
+              <input matInput formControlName="name" type="text" placeholder="Enter organization name" i18n-placeholder />
               <mat-hint align="end"
                 >{{ organizationForm.get('name')?.value?.length ?? 0 | number }} /
                 {{ nameMaxLength | number }}</mat-hint
@@ -126,9 +116,7 @@
               <mat-label i18n>Organization Type</mat-label>
               <mat-select formControlName="organizationTypeGuid">
                 @for (organizationType of organizationTypes(); track organizationType.guid) {
-                  <mat-option [value]="organizationType.guid">{{
-                    organizationType.name
-                  }}</mat-option>
+                  <mat-option [value]="organizationType.guid">{{ organizationType.name }}</mat-option>
                 }
               </mat-select>
               @if (organizationForm.get('organizationTypeGuid')?.hasError('required')) {
@@ -162,9 +150,7 @@
                   matInput
                   type="text"
                   disabled
-                  [value]="
-                    (selectedOwner()?.firstName ?? '') + ' ' + (selectedOwner()?.lastName ?? '')
-                  "
+                  [value]="(selectedOwner()?.firstName ?? '') + ' ' + (selectedOwner()?.lastName ?? '')"
                 />
               </mat-form-field>
             }
@@ -182,13 +168,7 @@
             <!-- TEXT FIELD: Address Line 1 -->
             <mat-form-field class="w-100">
               <mat-label i18n>Address Line 1</mat-label>
-              <input
-                matInput
-                formControlName="addressLine1"
-                type="text"
-                i18n-placeholder
-                placeholder="Street / building"
-              />
+              <input matInput formControlName="addressLine1" type="text" i18n-placeholder placeholder="Street / building" />
               @if (organizationForm.get('addressLine1')?.hasError('required')) {
                 <mat-error i18n>Address line 1 is required</mat-error>
               }
@@ -197,25 +177,13 @@
             <!-- TEXT FIELD: Address Line 2 -->
             <mat-form-field class="w-100">
               <mat-label i18n>Address Line 2</mat-label>
-              <input
-                matInput
-                formControlName="addressLine2"
-                type="text"
-                i18n-placeholder
-                placeholder="Unit / suite (optional)"
-              />
+              <input matInput formControlName="addressLine2" type="text" i18n-placeholder placeholder="Unit / suite (optional)" />
             </mat-form-field>
 
             <!-- TEXT FIELD: Landmark -->
             <mat-form-field class="w-100">
               <mat-label i18n>Landmark</mat-label>
-              <input
-                matInput
-                formControlName="landmark"
-                type="text"
-                i18n-placeholder
-                placeholder="Nearby landmark (optional)"
-              />
+              <input matInput formControlName="landmark" type="text" i18n-placeholder placeholder="Nearby landmark (optional)" />
             </mat-form-field>
 
             <!-- TEXT FIELDS: City and State -->
@@ -259,10 +227,7 @@
                 @if (organizationForm.get('postalCode')?.hasError('required')) {
                   <mat-error i18n>Postal code is required</mat-error>
                 } @else if (organizationForm.get('postalCode')?.hasError('pattern')) {
-                  <mat-error i18n
-                    >Postal code must be a number of up to 7 digits and cannot start with
-                    0</mat-error
-                  >
+                  <mat-error i18n>Postal code must be a number of up to 7 digits and cannot start with 0</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -270,11 +235,7 @@
             <!-- BUTTON: Save organization -->
             @if (!isReadOnly()) {
               <div class="d-flex justify-end gap-8 wrap">
-                <button
-                  matButton="filled"
-                  type="submit"
-                  [disabled]="!organizationForm.valid || isSubmitting()"
-                >
+                <button matButton="filled" type="submit" [disabled]="!organizationForm.valid || isSubmitting()">
                   <span>{{ submitLabel() }}</span>
                 </button>
               </div>

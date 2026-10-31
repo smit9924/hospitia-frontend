@@ -95,11 +95,7 @@
                 >
                   Name
                 </th>
-                <td
-                  *matCellDef="let organizationType"
-                  class="listing-col listing-col-name"
-                  mat-cell
-                >
+                <td *matCellDef="let organizationType" class="listing-col listing-col-name" mat-cell>
                   <span
                     class="clamp-1"
                     [customMatTooltip]="organizationType.name"
@@ -112,12 +108,7 @@
 
               <!-- TABLE COLUMN: Description -->
               <ng-container matColumnDef="description">
-                <th
-                  *matHeaderCellDef
-                  class="listing-col listing-col-description"
-                  mat-header-cell
-                  i18n
-                >
+                <th *matHeaderCellDef class="listing-col listing-col-description" mat-header-cell i18n>
                   Description
                 </th>
                 <td
@@ -140,11 +131,7 @@
                 <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
                   Actions
                 </th>
-                <td
-                  *matCellDef="let organizationType"
-                  class="listing-col listing-col-actions"
-                  mat-cell
-                >
+                <td *matCellDef="let organizationType" class="listing-col listing-col-actions" mat-cell>
                   <button
                     matIconButton
                     type="button"
@@ -155,19 +142,11 @@
                     <mat-icon svgIcon="moreVert" aria-hidden="true" />
                   </button>
                   <mat-menu #actionsMenu="matMenu">
-                    <button
-                      mat-menu-item
-                      type="button"
-                      (click)="editOrganizationType(organizationType)"
-                    >
+                    <button mat-menu-item type="button" (click)="editOrganizationType(organizationType)">
                       <mat-icon svgIcon="edit" aria-hidden="true" />
                       <span i18n>Edit</span>
                     </button>
-                    <button
-                      mat-menu-item
-                      type="button"
-                      (click)="deleteOrganizationType(organizationType)"
-                    >
+                    <button mat-menu-item type="button" (click)="deleteOrganizationType(organizationType)">
                       <mat-icon svgIcon="delete" aria-hidden="true" />
                       <span i18n>Delete</span>
                     </button>

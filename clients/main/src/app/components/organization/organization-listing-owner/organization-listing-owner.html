@@ -238,19 +238,10 @@
 
               @if (showActions) {
                 <ng-container matColumnDef="actions">
-                  <th
-                    *matHeaderCellDef
-                    class="listing-col listing-col-actions"
-                    mat-header-cell
-                    i18n
-                  >
+                  <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
                     Actions
                   </th>
-                  <td
-                    *matCellDef="let organization"
-                    class="listing-col listing-col-actions"
-                    mat-cell
-                  >
+                  <td *matCellDef="let organization" class="listing-col listing-col-actions" mat-cell>
                     <button
                       matIconButton
                       type="button"
@@ -269,11 +260,7 @@
                         <mat-icon svgIcon="edit" aria-hidden="true" />
                         <span i18n>Edit</span>
                       </button>
-                      <button
-                        mat-menu-item
-                        type="button"
-                        (click)="deleteOrganization(organization)"
-                      >
+                      <button mat-menu-item type="button" (click)="deleteOrganization(organization)">
                         <mat-icon svgIcon="delete" aria-hidden="true" />
                         <span i18n>Delete</span>
                       </button>
