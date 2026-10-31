@@ -109,6 +109,12 @@ export class Navbar implements AfterViewInit {
 
   protected readonly showOrganizationMenu = computed(() => this.organizationMenuLinks().length > 0);
 
+  // Currency units are system-wide reference data, managed by admins only.
+  protected readonly currencyUnitsLink = appRoutes.currencyUnitListing;
+  protected readonly showCurrencyUnitsLink = computed(
+    () => this.profileService.userProfile()?.role === UserType.ADMIN,
+  );
+
   // Set only for owners/managers, once their active organization is resolved.
   protected readonly activeOrganization = this.organizationService.activeOrganization;
 

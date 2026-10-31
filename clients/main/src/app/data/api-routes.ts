@@ -61,4 +61,12 @@ export const apiRoutes = {
     active: `${apiBaseUrls.booking}/organization/active`,
     get: (guid: string) => `${apiBaseUrls.booking}/organization/${guid}`,
   },
+
+  currencyUnit: {
+    upsert: `${apiBaseUrls.booking}/currency-unit/create`,
+    delete: (guid: string) => `${apiBaseUrls.booking}/currency-unit/delete?guid=${guid}`,
+    list: `${apiBaseUrls.booking}/currency-unit`,
+    options: `${apiBaseUrls.booking}/currency-unit/options`,
+    get: (guid: string) => `${apiBaseUrls.booking}/currency-unit/${guid}`,
+  },
 } as const;

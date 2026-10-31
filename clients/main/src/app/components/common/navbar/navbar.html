@@ -49,6 +49,12 @@
               </div>
             </button>
           }
+          @if (showCurrencyUnitsLink()) {
+            <!-- LINK: Currency units (Mobile) -->
+            <div mat-menu-item>
+              <a matButton i18n [routerLink]="currencyUnitsLink">Currency Units</a>
+            </div>
+          }
         } @else {
           <div mat-menu-item>
             <a matButton i18n [routerLink]="loginLink">Log in</a>
@@ -142,6 +148,12 @@
                   />
                 </div>
               </button>
+            </li>
+          }
+          @if (showCurrencyUnitsLink()) {
+            <!-- LINK: Currency units (Desktop) -->
+            <li class="body-large">
+              <a matButton i18n [routerLink]="currencyUnitsLink">Currency Units</a>
             </li>
           }
         </ul>

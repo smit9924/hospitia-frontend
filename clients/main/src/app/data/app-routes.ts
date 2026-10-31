@@ -54,6 +54,11 @@ export const appRoutes = {
   viewOrganization: '/organization/view',
   // *** End Organization ***
 
+  // Currency units
+  currencyUnitListing: '/currency-unit/listing',
+  createCurrencyUnit: '/currency-unit/create',
+  // *** End Currency units ***
+
   // Organization onboarding
   onboardingCreateOrganization: '/onboarding/create-organization',
   onboardingNoOrganization: '/onboarding/no-organization',

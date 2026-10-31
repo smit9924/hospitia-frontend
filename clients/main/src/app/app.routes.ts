@@ -404,6 +404,37 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'currency-unit',
+    children: [
+      {
+        path: 'listing',
+        loadComponent: () =>
+          import('./components/currency-unit/currency-unit-listing/currency-unit-listing').then(
+            (module) => module.CurrencyUnitListing,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN],
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'create',
+        loadComponent: () =>
+          import('./components/currency-unit/create-currency-unit/create-currency-unit').then(
+            (module) => module.CreateCurrencyUnit,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN],
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+    ],
+  },
+  {
     path: 'error',
     children: [
       {
