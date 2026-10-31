@@ -34,18 +34,21 @@ const organizationMenuLinksByRole: Partial<Record<UserType, OrganizationMenuLink
       route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.ADMIN),
     },
     { label: $localize`Organization Type`, route: appRoutes.organizationTypeListing },
+    { label: $localize`Room Amenities`, route: appRoutes.roomAmenityListing },
   ],
   [UserType.OWNER]: (organizationService) => [
     {
       label: $localize`Organizations`,
       route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.OWNER),
     },
+    { label: $localize`Room Amenities`, route: appRoutes.roomAmenityListing },
   ],
   [UserType.MANAGER]: (organizationService) => [
     {
       label: $localize`Organizations`,
       route: organizationService.getDefaultOrganizationListingRouteForUser(UserType.MANAGER),
     },
+    { label: $localize`Room Amenities`, route: appRoutes.roomAmenityListing },
   ],
 };
 

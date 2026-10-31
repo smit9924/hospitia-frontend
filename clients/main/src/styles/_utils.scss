@@ -524,6 +524,17 @@
     background-color: var(--mat-sys-surface-variant);
     color: var(--mat-sys-on-surface-variant);
   }
+
+  // Neutral category labels (e.g. default vs. custom), themed in light and dark.
+  .status-chip--primary {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  .status-chip--secondary {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+  }
   /* ***End*** */
 
   /* Utility class for content announced to screen readers only */

@@ -1,0 +1,226 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText" />
+
+  <main class="d-flex flex-column gap-16 p-24 w-100">
+    <!-- Section: Room amenity filters -->
+    @if (showSearchbar()) {
+      <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
+        <div class="d-flex wrap align-center justify-space-between gap-8">
+          <!-- SEARCH: Room amenities -->
+          <app-searchbar
+            class="listing-searchbar max-w-100"
+            i18n-placeholder
+            placeholder="Search room amenities"
+            [compact]="true"
+            (searchChanged)="onSearch($event)"
+          />
+
+          <!-- BUTTON: Create room amenity -->
+          <button
+            class="listing-create-button shrink-0"
+            matButton="filled"
+            type="button"
+            (click)="createRoomAmenity()"
+          >
+            <span i18n>Create room amenity</span>
+          </button>
+        </div>
+      </section>
+    }
+
+    <section class="listing-card rounded-12 p-16 d-flex flex-column gap-16 w-100">
+      <!-- Section: Room amenity results -->
+      @if (isInitialLoad()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+          aria-live="polite"
+        >
+          <p class="heading-extra-small m-0" i18n>Loading...</p>
+        </div>
+      } @else if (!hasRoomAmenities()) {
+        <!-- EMPTY STATE: Room amenities -->
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+        >
+          <mat-icon
+            class="empty-state-icon"
+            aria-hidden="true"
+            [svgIcon]="isEmptySearch() ? 'search' : 'star'"
+          />
+
+          @if (isEmptySearch()) {
+            <p class="heading-extra-small m-0" i18n>No room amenities found</p>
+            <p>
+              <span class="body-medium text-secondary" i18n>No room amenities matched </span>
+              <span class="body-medium text-secondary" i18n>"{{ searchTerm() }}"</span>
+              <span class="body-medium text-secondary" i18n>Try a different search term.</span>
+            </p>
+          } @else {
+            <p class="heading-extra-small m-0" i18n>No room amenities to display</p>
+            <p class="body-medium text-secondary m-0" i18n>
+              There are no room amenities available in this list yet.
+            </p>
+            <button
+              class="listing-create-button shrink-0 mt-8"
+              matButton="filled"
+              type="button"
+              (click)="createRoomAmenity()"
+            >
+              <span i18n>Create room amenity</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <!-- TABLE: Room amenities -->
+        <div class="listing-table-frame rounded-8 overflow-hidden">
+          <div class="listing-table-scroll w-100 overflow-x-auto">
+            <table
+              class="listing-table w-100"
+              mat-table
+              matSort
+              matSortActive="name"
+              matSortDirection="asc"
+              matSortDisableClear
+              [dataSource]="roomAmenities()"
+              (matSortChange)="onSortChange($event)"
+            >
+              <!-- TABLE COLUMN: Name -->
+              <ng-container matColumnDef="name">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-name"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Name
+                </th>
+                <td *matCellDef="let roomAmenity" class="listing-col listing-col-name" mat-cell>
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="roomAmenity.name"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ roomAmenity.name }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Description -->
+              <ng-container matColumnDef="description">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-description"
+                  mat-header-cell
+                  i18n
+                >
+                  Description
+                </th>
+                <td
+                  *matCellDef="let roomAmenity"
+                  class="listing-col listing-col-description"
+                  mat-cell
+                >
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="roomAmenity.description"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ roomAmenity.description || '-' }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Availability (default or custom) -->
+              <ng-container matColumnDef="availability">
+                <th *matHeaderCellDef class="listing-col" mat-header-cell i18n>Type</th>
+                <td *matCellDef="let roomAmenity" class="listing-col" mat-cell>
+                  @if (roomAmenity.isDefault) {
+                    <span class="status-chip status-chip--primary" i18n>Default</span>
+                  } @else {
+                    <span class="status-chip status-chip--secondary" i18n>Custom</span>
+                  }
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Organization (admin) -->
+              <ng-container matColumnDef="organization">
+                <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell i18n>
+                  Organization
+                </th>
+                <td *matCellDef="let roomAmenity" class="listing-col listing-col-name" mat-cell>
+                  @if (roomAmenity.organization; as organization) {
+                    <span
+                      class="clamp-1"
+                      [customMatTooltip]="organization.name"
+                      [tooltipOnlyOnEllipsis]="true"
+                    >
+                      {{ organization.name }}
+                    </span>
+                  } @else {
+                    <span class="text-secondary" i18n>All organizations</span>
+                  }
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Actions -->
+              <ng-container matColumnDef="actions">
+                <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
+                  Actions
+                </th>
+                <td *matCellDef="let roomAmenity" class="listing-col listing-col-actions" mat-cell>
+                  @if (canModify(roomAmenity)) {
+                    <!-- BUTTON: Room amenity actions -->
+                    <button
+                      matIconButton
+                      type="button"
+                      [attr.aria-label]="getActionsMenuLabel(roomAmenity)"
+                      [matMenuTriggerFor]="actionsMenu"
+                    >
+                      <mat-icon svgIcon="moreVert" aria-hidden="true" />
+                    </button>
+                    <mat-menu #actionsMenu="matMenu">
+                      <!-- MENU ITEM: Edit -->
+                      <button mat-menu-item type="button" (click)="editRoomAmenity(roomAmenity)">
+                        <mat-icon svgIcon="edit" aria-hidden="true" />
+                        <span i18n>Edit</span>
+                      </button>
+                      <!-- MENU ITEM: Delete -->
+                      <button mat-menu-item type="button" (click)="deleteRoomAmenity(roomAmenity)">
+                        <mat-icon svgIcon="delete" aria-hidden="true" />
+                        <span i18n>Delete</span>
+                      </button>
+                    </mat-menu>
+                  } @else {
+                    <!-- TEXT: Default amenities are managed by admins -->
+                    <span class="visually-hidden" i18n>Managed by admins</span>
+                  }
+                </td>
+              </ng-container>
+
+              <tr *matHeaderRowDef="displayedColumns()" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns()" mat-row></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGINATION: Room amenities -->
+        <div class="d-flex justify-flex-end">
+          <mat-paginator
+            class="listing-paginator max-w-100"
+            aria-label="Room amenity list paginator"
+            i18n-aria-label
+            [length]="totalCount()"
+            [pageIndex]="pageIndex()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="false"
+            (page)="onPageChange($event)"
+          />
+        </div>
+      }
+    </section>
+  </main>
+</div>
