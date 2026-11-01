@@ -21,6 +21,7 @@ export interface RoomAmenityDialogData {
   selector: 'app-room-amenity-dialog',
   imports: [MatDialogModule, RoomAmenityForm],
   templateUrl: './room-amenity-dialog.html',
+  styleUrl: './room-amenity-dialog.scss',
 })
 export class RoomAmenityDialog {
   private readonly dialogRef = inject(MatDialogRef<RoomAmenityDialog, RoomAmenityListItem | null>);

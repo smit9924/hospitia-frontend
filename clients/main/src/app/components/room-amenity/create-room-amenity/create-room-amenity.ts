@@ -14,6 +14,7 @@ import { RoomAmenityForm } from '../room-amenity-form/room-amenity-form';
   selector: 'app-create-room-amenity',
   imports: [SecondaryNavbar, MatCardModule, RoomAmenityForm],
   templateUrl: './create-room-amenity.html',
+  styleUrl: './create-room-amenity.scss',
 })
 export class CreateRoomAmenity {
   private readonly route = inject(ActivatedRoute);

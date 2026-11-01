@@ -66,6 +66,7 @@ type RoomAmenityFormGroup = FormGroup<{
     DecimalPipe,
   ],
   templateUrl: './room-amenity-form.html',
+  styleUrl: './room-amenity-form.scss',
 })
 export class RoomAmenityForm implements OnInit {
   private readonly roomAmenityService = inject(RoomAmenity);

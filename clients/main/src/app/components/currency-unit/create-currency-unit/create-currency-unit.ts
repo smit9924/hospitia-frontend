@@ -61,6 +61,7 @@ type CurrencyUnitForm = FormGroup<{
     DecimalPipe,
   ],
   templateUrl: './create-currency-unit.html',
+  styleUrl: './create-currency-unit.scss',
 })
 export class CreateCurrencyUnit implements OnInit {
   private readonly route = inject(ActivatedRoute);
