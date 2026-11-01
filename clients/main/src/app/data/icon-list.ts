@@ -215,4 +215,48 @@ export const IconList = [
     name: 'chevronRight',
     src: 'assets/icons/chevron-right.svg',
   },
+  {
+    name: 'dashboard',
+    src: 'assets/icons/dashboard.svg',
+  },
+  {
+    name: 'bed',
+    src: 'assets/icons/bed.svg',
+  },
+  {
+    name: 'roomService',
+    src: 'assets/icons/room-service.svg',
+  },
+  {
+    name: 'category',
+    src: 'assets/icons/category.svg',
+  },
+  {
+    name: 'apartment',
+    src: 'assets/icons/apartment.svg',
+  },
+  {
+    name: 'adminPanelSettings',
+    src: 'assets/icons/admin-panel-settings.svg',
+  },
+  {
+    name: 'badge',
+    src: 'assets/icons/badge.svg',
+  },
+  {
+    name: 'groups',
+    src: 'assets/icons/groups.svg',
+  },
+  {
+    name: 'currencyExchange',
+    src: 'assets/icons/currency-exchange.svg',
+  },
+  {
+    name: 'leftPanelClose',
+    src: 'assets/icons/left-panel-close.svg',
+  },
+  {
+    name: 'leftPanelOpen',
+    src: 'assets/icons/left-panel-open.svg',
+  },
 ];

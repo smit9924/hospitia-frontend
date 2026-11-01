@@ -1,0 +1,33 @@
+@use '@angular/material' as mat;
+
+// App shell sidebar (see _app-shell.scss for layout).
+:root {
+  @include mat.sidenav-overrides(
+    (
+      container-shape: 0,
+      container-background-color: var(--app-color-card),
+      container-text-color: var(--mat-sys-on-surface),
+      container-divider-color: var(--app-color-border-subtle),
+      content-background-color: var(--app-color-page-ground),
+      content-text-color: var(--mat-sys-on-surface),
+      scrim-color: light-dark(#0f0d0a6b, #0000008f),
+    )
+  );
+}
+
+// Sidebar widths: expanded with labels, or collapsed to an icon rail on wide screens.
+.app-sidebar {
+  @include mat.sidenav-overrides(
+    (
+      container-width: 264px,
+    )
+  );
+}
+
+.app-sidebar.app-sidebar--rail {
+  @include mat.sidenav-overrides(
+    (
+      container-width: 76px,
+    )
+  );
+}

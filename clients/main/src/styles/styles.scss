@@ -5,6 +5,14 @@
 @use '_material-snackbar-override';
 @use '_material-toolbar-override';
 @use '_material-table-override';
+@use '_material-sidenav-override';
+@use '_material-form-field-override';
+@use '_material-card-override';
+@use '_material-menu-override';
+@use '_material-paginator-override';
+@use '_material-checkbox-override';
 @use 'utils';
 @use 'colors';
 @use 'global';
+@use 'app-shell';
+@use 'page-patterns';

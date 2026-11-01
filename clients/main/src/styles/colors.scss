@@ -1,3 +1,9 @@
+// Central color and surface tokens.
+//
+// Every token uses `light-dark()`, so it follows the theme chosen in Display & accessibility
+// (the `theme-light` / `theme-dark` / `theme-auto` body classes set `color-scheme`).
+// Prefer Angular Material system tokens (`--mat-sys-*`); the tokens below only cover what
+// Material does not provide.
 :root {
   /* Brand colors */
   --color-primary: #ffea00;
@@ -12,89 +18,76 @@
   --color-google-red: #ea4335;
 
   /* ============================================================
-   BANNER COLOR TOKENS (Add inside central colors.scss)
-   Using Material-like palette shades
+   APP SURFACE TOKENS
+   Layering: page ground → cards / sidebar → raised rows and inputs.
+   ============================================================ */
+  --app-color-page-ground: light-dark(var(--mat-sys-surface-container-low), var(--mat-sys-surface));
+  --app-color-card: light-dark(
+    var(--mat-sys-surface-container-lowest),
+    var(--mat-sys-surface-container-low)
+  );
+  --app-color-card-raised: light-dark(
+    var(--mat-sys-surface-container-low),
+    var(--mat-sys-surface-container)
+  );
+  --app-color-border-subtle: var(--mat-sys-outline-variant);
+  --app-color-nav-active: var(--mat-sys-secondary-container);
+  --app-color-on-nav-active: var(--mat-sys-on-secondary-container);
+  --app-shadow-card:
+    0 1px 2px light-dark(#1f1d1a0f, #00000066), 0 6px 20px light-dark(#1f1d1a0d, #0000004d);
+  --app-shadow-overlay: 0 8px 32px light-dark(#1f1d1a29, #00000099);
+  --app-color-skeleton: var(--mat-sys-surface-container-high);
+
+  /* ============================================================
+   BANNER / STATUS COLOR TOKENS
+   Semantic colors are separate from the brand accent.
    ============================================================ */
 
   /* INFO */
-  --mat-sys-info: #64b5f6;
-  --mat-sys-info-container: #e3f2fd;
-  --mat-sys-on-info-container: #0d47a1;
+  --mat-sys-info: light-dark(#3d6aa8, #8fb3e6);
+  --mat-sys-info-container: light-dark(#e5edf8, #1e2b3d);
+  --mat-sys-on-info-container: light-dark(#173c6e, #d4e3fa);
 
   /* WARNING */
-  --mat-sys-warning: #f59e0b;
-  --mat-sys-warning-container: #fef3c7;
-  --mat-sys-on-warning-container: #78350f;
+  --mat-sys-warning: light-dark(#9b5b14, #e6a95e);
+  --mat-sys-warning-container: light-dark(#f9ecd9, #3c2d1b);
+  --mat-sys-on-warning-container: light-dark(#5c3407, #fadfbe);
 
   /* ERROR */
-  --mat-sys-error: #ef5350;
-  --mat-sys-error-container: #fdecea;
-  --mat-sys-on-error-container: #b71c1c;
+  --mat-sys-error: light-dark(#b3423a, #ee8a81);
+  --mat-sys-error-container: light-dark(#f7e1df, #432422);
+  --mat-sys-on-error-container: light-dark(#7a1f19, #fbd9d5);
 
   /* SUCCESS */
-  --mat-sys-success: #66bb6a;
-  --mat-sys-success-container: #edf7ed;
-  --mat-sys-on-success-container: #1b5e20;
+  --mat-sys-success: light-dark(#2f7d5b, #72c9a0);
+  --mat-sys-success-container: light-dark(#e3f2ea, #1d3a2d);
+  --mat-sys-on-success-container: light-dark(#14472f, #cdeedd);
 
-  /* *** END BANNER COLOR TOKENS *** */
-}
+  /* *** END BANNER / STATUS COLOR TOKENS *** */
 
-@media (prefers-color-scheme: light) {
-  :root {
-    /* Backgrounds */
-    --color-background: #ffffff;
-    --color-surface: #e0e0e0;
+  /* Backgrounds */
+  --color-background: var(--app-color-card);
+  --color-surface: var(--mat-sys-surface-container-high);
 
-    /* Text */
-    --color-text-primary: #333333;
-    --color-text-secondary: #6b6b6b;
-    --color-text-inverse: #ffffff;
+  /* Text */
+  --color-text-primary: var(--mat-sys-on-surface);
+  --color-text-secondary: var(--mat-sys-on-surface-variant);
+  --color-text-inverse: var(--mat-sys-inverse-on-surface);
 
-    /* Borders & dividers */
-    --color-border: #6b6b6b;
+  /* Borders & dividers */
+  --color-border: var(--mat-sys-outline);
 
-    /* States */
-    --color-hover: rgba(0, 0, 0, 0.04);
-    --color-focus: rgba(255, 234, 0, 0.4);
+  /* States */
+  --color-hover: light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.08));
+  --color-focus: light-dark(rgba(160, 122, 60, 0.4), rgba(236, 191, 122, 0.6));
 
-    /* Overlay */
-    --color-overlay-medium: #00000052;
+  /* Overlay */
+  --color-overlay-medium: light-dark(#00000052, #0000007a);
 
-    /* Shadows */
-    --color-shadow-soft: #00000014;
-    --color-shadow-medium: #00000029;
+  /* Shadows */
+  --color-shadow-soft: light-dark(#00000014, #00000052);
+  --color-shadow-medium: light-dark(#00000029, #0000007a);
 
-    /* Rating */
-    --color-rating-star: #fbc02d;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Backgrounds */
-    --color-background: #000000;
-    --color-surface: #333333;
-
-    /* Text */
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #e0e0e0;
-    --color-text-inverse: #000000;
-
-    /* Borders & dividers */
-    --color-border: #e0e0e0;
-
-    /* States */
-    --color-hover: rgba(255, 255, 255, 0.08);
-    --color-focus: rgba(255, 234, 0, 0.6);
-
-    /* Overlay */
-    --color-overlay-medium: #0000007a;
-
-    /* Shadows */
-    --color-shadow-soft: #00000052;
-    --color-shadow-medium: #0000007a;
-
-    /* Rating */
-    --color-rating-star: #fdd835;
-  }
+  /* Rating */
+  --color-rating-star: light-dark(#fbc02d, #fdd835);
 }
