@@ -19,7 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, finalize } from 'rxjs';
+import { filter, finalize, Observable } from 'rxjs';
 import { appRoutes } from '../../../data/app-routes';
 import { appConstants } from '../../../data/app-constants';
 import { CurrencyUnit } from '../../../services/currency-unit/currency-unit';
@@ -42,7 +42,7 @@ import {
   RoomAmenityListItem,
   RoomAmenityOption,
 } from '../../../types/interfaces/room-amenity';
-import { RoomTypeListItem, RoomTypeUpsertRequest } from '../../../types/interfaces/room-type';
+import { RoomTypeAttributes, RoomTypeListItem } from '../../../types/interfaces/room-type';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 import { Banner } from '../../common/banner/banner';
@@ -255,11 +255,11 @@ export class CreateRoomType implements OnInit {
         )
         .afterClosed()
         .pipe(filter((confirmed): confirmed is true => confirmed === true))
-        .subscribe(() => this.saveRoomType($localize`Room type updated successfully.`));
+        .subscribe(() => this.updateRoomType());
       return;
     }
 
-    this.saveRoomType($localize`Room type created successfully.`);
+    this.createRoomType();
   }
 
   /** Keeps the cost prefix in sync with the chosen currency. */
@@ -363,25 +363,42 @@ export class CreateRoomType implements OnInit {
     this.loadAmenityOptions(this.isAdmin() ? roomType.organization.guid : null);
   }
 
-  private saveRoomType(successMessage: string): void {
-    this.isSubmitting.set(true);
-    this.roomTypeService
-      .upsert(this.buildUpsertRequest())
-      .pipe(finalize(() => this.isSubmitting.set(false)))
-      .subscribe({
-        next: () => {
-          this.showSnackbar(successMessage, GenericSnackbarType.SUCCESS);
-          void this.router.navigateByUrl(appRoutes.roomTypeListing);
-        },
-        error: (error: HttpErrorResponse) => this.handleSubmitError(error),
-      });
+  private createRoomType(): void {
+    const organizationGuid = this.isAdmin()
+      ? (this.roomTypeForm.controls.organization.value?.guid ?? null)
+      : null;
+    this.submitRoomType(
+      this.roomTypeService.create({ organizationGuid, ...this.buildRoomTypeAttributes() }),
+      $localize`Room type created successfully.`,
+    );
   }
 
-  private buildUpsertRequest(): RoomTypeUpsertRequest {
+  private updateRoomType(): void {
+    if (!this.roomTypeGuid) {
+      return;
+    }
+    this.submitRoomType(
+      this.roomTypeService.update({ guid: this.roomTypeGuid, ...this.buildRoomTypeAttributes() }),
+      $localize`Room type updated successfully.`,
+    );
+  }
+
+  /** Runs a create or update request, then returns to the listing on success. */
+  private submitRoomType(saveRequest: Observable<RoomTypeListItem>, successMessage: string): void {
+    this.isSubmitting.set(true);
+    saveRequest.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
+      next: () => {
+        this.showSnackbar(successMessage, GenericSnackbarType.SUCCESS);
+        void this.router.navigateByUrl(appRoutes.roomTypeListing);
+      },
+      error: (error: HttpErrorResponse) => this.handleSubmitError(error),
+    });
+  }
+
+  /** Form values sent on both create and update. */
+  private buildRoomTypeAttributes(): RoomTypeAttributes {
     const formValue = this.roomTypeForm.getRawValue();
     return {
-      guid: this.roomTypeGuid,
-      organizationGuid: this.isAdmin() ? (formValue.organization?.guid ?? null) : null,
       name: formValue.name.trim(),
       description: formValue.description.trim() || null,
       capacity: formValue.capacity ?? 0,

@@ -7,7 +7,8 @@ import {
   CurrencyUnitListQuery,
   CurrencyUnitListResponse,
   CurrencyUnitOption,
-  CurrencyUnitUpsertRequest,
+  CurrencyUnitCreateRequest,
+  CurrencyUnitUpdateRequest,
 } from '../../types/interfaces/currency-unit';
 
 /** Calls the booking service's currency unit APIs. */
@@ -38,11 +39,13 @@ export class CurrencyUnit {
     return this.http.get<CurrencyUnitOption[]>(apiRoutes.currencyUnit.options);
   }
 
-  upsert(payload: CurrencyUnitUpsertRequest): Observable<CurrencyUnitListItem> {
-    if (payload.guid) {
-      return this.http.put<CurrencyUnitListItem>(apiRoutes.currencyUnit.upsert, payload);
-    }
-    return this.http.post<CurrencyUnitListItem>(apiRoutes.currencyUnit.upsert, payload);
+  create(payload: CurrencyUnitCreateRequest): Observable<CurrencyUnitListItem> {
+    return this.http.post<CurrencyUnitListItem>(apiRoutes.currencyUnit.create, payload);
+  }
+
+  /** Updates the currency unit identified by `payload.guid`. */
+  update(payload: CurrencyUnitUpdateRequest): Observable<CurrencyUnitListItem> {
+    return this.http.put<CurrencyUnitListItem>(apiRoutes.currencyUnit.update, payload);
   }
 
   delete(guid: string): Observable<void> {

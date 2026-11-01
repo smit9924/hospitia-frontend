@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, finalize } from 'rxjs';
+import { filter, finalize, Observable } from 'rxjs';
 import { appRoutes } from '../../../data/app-routes';
 import { CurrencyUnit } from '../../../services/currency-unit/currency-unit';
 import { Dialog } from '../../../services/dialog';
@@ -21,7 +21,10 @@ import {
 } from '../../../types/enums/common';
 import { ErrorCodes } from '../../../types/enums/error-codes';
 import { ApiErrorResponse } from '../../../types/interfaces/common';
-import { CurrencyUnitUpsertRequest } from '../../../types/interfaces/currency-unit';
+import {
+  CurrencyUnitCreateRequest,
+  CurrencyUnitListItem,
+} from '../../../types/interfaces/currency-unit';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 import { Banner } from '../../common/banner/banner';
@@ -143,7 +146,7 @@ export class CreateCurrencyUnit implements OnInit {
       return;
     }
 
-    this.saveCurrencyUnit($localize`Currency unit created successfully.`);
+    this.createCurrencyUnit();
   }
 
   private loadCurrencyUnit(guid: string): void {
@@ -172,6 +175,13 @@ export class CreateCurrencyUnit implements OnInit {
       });
   }
 
+  private createCurrencyUnit(): void {
+    this.submitCurrencyUnit(
+      this.currencyUnitService.create(this.buildCurrencyUnitFields()),
+      $localize`Currency unit created successfully.`,
+    );
+  }
+
   private confirmAndUpdateCurrencyUnit(): void {
     this.dialogService
       .openConfirmDialog(
@@ -180,28 +190,39 @@ export class CreateCurrencyUnit implements OnInit {
       )
       .afterClosed()
       .pipe(filter((confirmed): confirmed is true => confirmed === true))
-      .subscribe(() => this.saveCurrencyUnit($localize`Currency unit updated successfully.`));
+      .subscribe(() => this.updateCurrencyUnit());
   }
 
-  /** Sends the form to the API, then returns to the listing on success. */
-  private saveCurrencyUnit(successMessage: string): void {
+  private updateCurrencyUnit(): void {
+    const guid = this.guid();
+    if (!guid) {
+      return;
+    }
+    this.submitCurrencyUnit(
+      this.currencyUnitService.update({ guid, ...this.buildCurrencyUnitFields() }),
+      $localize`Currency unit updated successfully.`,
+    );
+  }
+
+  /** Runs a create or update request, then returns to the listing on success. */
+  private submitCurrencyUnit(
+    saveRequest: Observable<CurrencyUnitListItem>,
+    successMessage: string,
+  ): void {
     this.isSubmitting.set(true);
-    this.currencyUnitService
-      .upsert(this.buildUpsertRequest())
-      .pipe(finalize(() => this.isSubmitting.set(false)))
-      .subscribe({
-        next: () => {
-          this.showSuccessSnackbar(successMessage);
-          void this.router.navigateByUrl(appRoutes.currencyUnitListing);
-        },
-        error: (error: HttpErrorResponse) => this.handleSubmitError(error),
-      });
+    saveRequest.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
+      next: () => {
+        this.showSuccessSnackbar(successMessage);
+        void this.router.navigateByUrl(appRoutes.currencyUnitListing);
+      },
+      error: (error: HttpErrorResponse) => this.handleSubmitError(error),
+    });
   }
 
-  private buildUpsertRequest(): CurrencyUnitUpsertRequest {
+  /** Form values, trimmed and normalized, as sent on both create and update. */
+  private buildCurrencyUnitFields(): CurrencyUnitCreateRequest {
     const formValue = this.currencyUnitForm.getRawValue();
     return {
-      guid: this.guid(),
       currencyCode: formValue.currencyCode.trim().toUpperCase(),
       numericCode: formValue.numericCode.trim(),
       currencyName: formValue.currencyName.trim(),

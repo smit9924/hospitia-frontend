@@ -6,7 +6,8 @@ import {
   RoomTypeListItem,
   RoomTypeListQuery,
   RoomTypeListResponse,
-  RoomTypeUpsertRequest,
+  RoomTypeCreateRequest,
+  RoomTypeUpdateRequest,
 } from '../../types/interfaces/room-type';
 
 /**
@@ -38,11 +39,13 @@ export class RoomType {
     });
   }
 
-  upsert(payload: RoomTypeUpsertRequest): Observable<RoomTypeListItem> {
-    if (payload.guid) {
-      return this.http.put<RoomTypeListItem>(apiRoutes.roomType.upsert, payload);
-    }
-    return this.http.post<RoomTypeListItem>(apiRoutes.roomType.upsert, payload);
+  create(payload: RoomTypeCreateRequest): Observable<RoomTypeListItem> {
+    return this.http.post<RoomTypeListItem>(apiRoutes.roomType.create, payload);
+  }
+
+  /** Updates the room type identified by `payload.guid`. */
+  update(payload: RoomTypeUpdateRequest): Observable<RoomTypeListItem> {
+    return this.http.put<RoomTypeListItem>(apiRoutes.roomType.update, payload);
   }
 
   delete(guid: string): Observable<void> {

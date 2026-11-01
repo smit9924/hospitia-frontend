@@ -20,10 +20,8 @@ export interface RoomTypeListItem {
   updatedAt: string;
 }
 
-export interface RoomTypeUpsertRequest {
-  guid?: string | null;
-  /** Required when an admin creates a room type; ignored otherwise. */
-  organizationGuid?: string | null;
+/** Room type fields shared by the create and update requests. */
+export interface RoomTypeAttributes {
   name: string;
   description: string | null;
   capacity: number;
@@ -31,6 +29,16 @@ export interface RoomTypeUpsertRequest {
   costPerNight: string;
   currencyUnitGuid: string;
   amenityGuids: string[];
+}
+
+export interface RoomTypeCreateRequest extends RoomTypeAttributes {
+  /** Required when an admin creates a room type; owners and managers send null. */
+  organizationGuid: string | null;
+}
+
+/** Updates the room type identified by `guid`; its organization never changes. */
+export interface RoomTypeUpdateRequest extends RoomTypeAttributes {
+  guid: string;
 }
 
 export type RoomTypeListQuery = PaginatedQuery<RoomTypeSortBy>;

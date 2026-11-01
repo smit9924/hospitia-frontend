@@ -29,12 +29,16 @@ export interface CurrencyUnitOption {
   minorUnit: number | null;
 }
 
-export interface CurrencyUnitUpsertRequest {
-  guid?: string | null;
+export interface CurrencyUnitCreateRequest {
   currencyCode: string;
   numericCode: string;
   currencyName: string;
   minorUnit: number | null;
+}
+
+/** Updates the currency unit identified by `guid` with the same fields as a create. */
+export interface CurrencyUnitUpdateRequest extends CurrencyUnitCreateRequest {
+  guid: string;
 }
 
 export type CurrencyUnitListQuery = PaginatedQuery<CurrencyUnitSortBy>;

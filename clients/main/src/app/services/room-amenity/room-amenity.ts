@@ -7,7 +7,8 @@ import {
   RoomAmenityListQuery,
   RoomAmenityListResponse,
   RoomAmenityOption,
-  RoomAmenityUpsertRequest,
+  RoomAmenityCreateRequest,
+  RoomAmenityUpdateRequest,
 } from '../../types/interfaces/room-amenity';
 
 /**
@@ -52,11 +53,13 @@ export class RoomAmenity {
     return this.http.get<RoomAmenityOption[]>(apiRoutes.roomAmenity.selectable, { params });
   }
 
-  upsert(payload: RoomAmenityUpsertRequest): Observable<RoomAmenityListItem> {
-    if (payload.guid) {
-      return this.http.put<RoomAmenityListItem>(apiRoutes.roomAmenity.upsert, payload);
-    }
-    return this.http.post<RoomAmenityListItem>(apiRoutes.roomAmenity.upsert, payload);
+  create(payload: RoomAmenityCreateRequest): Observable<RoomAmenityListItem> {
+    return this.http.post<RoomAmenityListItem>(apiRoutes.roomAmenity.create, payload);
+  }
+
+  /** Updates the room amenity identified by `payload.guid`. */
+  update(payload: RoomAmenityUpdateRequest): Observable<RoomAmenityListItem> {
+    return this.http.put<RoomAmenityListItem>(apiRoutes.roomAmenity.update, payload);
   }
 
   delete(guid: string): Observable<void> {

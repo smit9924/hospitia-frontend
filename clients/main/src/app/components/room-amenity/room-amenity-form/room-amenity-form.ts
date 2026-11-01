@@ -16,7 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { filter, finalize } from 'rxjs';
+import { filter, finalize, Observable } from 'rxjs';
 import { Dialog } from '../../../services/dialog';
 import { Organization } from '../../../services/organization/organization';
 import { Profile } from '../../../services/profile';
@@ -25,11 +25,7 @@ import { UserType } from '../../../types/enums/auth';
 import { BANNER_TYPES } from '../../../types/enums/common';
 import { ErrorCodes } from '../../../types/enums/error-codes';
 import { ApiErrorResponse } from '../../../types/interfaces/common';
-import {
-  OrganizationReference,
-  RoomAmenityListItem,
-  RoomAmenityUpsertRequest,
-} from '../../../types/interfaces/room-amenity';
+import { OrganizationReference, RoomAmenityListItem } from '../../../types/interfaces/room-amenity';
 import { Banner } from '../../common/banner/banner';
 import { OrganizationSelectionField } from '../../organization/organization-selection-field/organization-selection-field';
 
@@ -172,19 +168,23 @@ export class RoomAmenityForm implements OnInit {
       return;
     }
 
-    if (this.isEditMode() && this.confirmBeforeUpdate()) {
-      this.dialogService
-        .openConfirmDialog(
-          $localize`Confirm Changes`,
-          $localize`Are you sure you want to save these changes?`,
-        )
-        .afterClosed()
-        .pipe(filter((confirmed): confirmed is true => confirmed === true))
-        .subscribe(() => this.saveAmenity());
+    if (!this.isEditMode()) {
+      this.createAmenity();
       return;
     }
 
-    this.saveAmenity();
+    if (!this.confirmBeforeUpdate()) {
+      this.updateAmenity();
+      return;
+    }
+    this.dialogService
+      .openConfirmDialog(
+        $localize`Confirm Changes`,
+        $localize`Are you sure you want to save these changes?`,
+      )
+      .afterClosed()
+      .pipe(filter((confirmed): confirmed is true => confirmed === true))
+      .subscribe(() => this.updateAmenity());
   }
 
   protected onCancel(): void {
@@ -232,25 +232,39 @@ export class RoomAmenityForm implements OnInit {
       });
   }
 
-  private saveAmenity(): void {
-    this.isSubmitting.set(true);
-    this.roomAmenityService
-      .upsert(this.buildUpsertRequest())
-      .pipe(finalize(() => this.isSubmitting.set(false)))
-      .subscribe({
-        next: (amenity) => this.saved.emit(amenity),
-        error: (error: HttpErrorResponse) => this.handleSubmitError(error),
-      });
+  private createAmenity(): void {
+    const formValue = this.amenityForm.getRawValue();
+    this.submitAmenity(
+      this.roomAmenityService.create({
+        name: formValue.name.trim(),
+        description: formValue.description.trim() || null,
+        organizationGuid: this.resolveOrganizationGuidForNewAmenity(),
+      }),
+    );
   }
 
-  private buildUpsertRequest(): RoomAmenityUpsertRequest {
+  private updateAmenity(): void {
+    const amenityGuid = this.amenityGuid();
+    if (!amenityGuid) {
+      return;
+    }
     const formValue = this.amenityForm.getRawValue();
-    return {
-      guid: this.amenityGuid(),
-      name: formValue.name.trim(),
-      description: formValue.description.trim() || null,
-      organizationGuid: this.resolveOrganizationGuidForNewAmenity(),
-    };
+    this.submitAmenity(
+      this.roomAmenityService.update({
+        guid: amenityGuid,
+        name: formValue.name.trim(),
+        description: formValue.description.trim() || null,
+      }),
+    );
+  }
+
+  /** Runs a create or update request and emits the saved amenity on success. */
+  private submitAmenity(saveRequest: Observable<RoomAmenityListItem>): void {
+    this.isSubmitting.set(true);
+    saveRequest.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
+      next: (amenity) => this.saved.emit(amenity),
+      error: (error: HttpErrorResponse) => this.handleSubmitError(error),
+    });
   }
 
   /** Organization of a new admin-created amenity; null means a default amenity. */

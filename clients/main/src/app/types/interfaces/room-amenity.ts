@@ -29,15 +29,22 @@ export interface RoomAmenityOption {
   isDefault: boolean;
 }
 
-export interface RoomAmenityUpsertRequest {
-  guid?: string | null;
+export interface RoomAmenityCreateRequest {
   name: string;
   description: string | null;
   /**
-   * Read only when an admin creates an amenity: null creates a default
-   * amenity, a GUID creates a custom amenity of that organization.
+   * Read only for admins: null creates a default amenity, a GUID creates a
+   * custom amenity of that organization. Owners and managers send null; the
+   * backend uses their active organization.
    */
-  organizationGuid?: string | null;
+  organizationGuid: string | null;
+}
+
+/** Updates the amenity identified by `guid`; its scope never changes. */
+export interface RoomAmenityUpdateRequest {
+  guid: string;
+  name: string;
+  description: string | null;
 }
 
 export type RoomAmenityListQuery = PaginatedQuery<RoomAmenitySortBy>;
