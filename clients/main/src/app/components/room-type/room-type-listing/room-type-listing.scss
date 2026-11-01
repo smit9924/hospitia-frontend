@@ -1,0 +1,11 @@
+@use '../../listing/user-listing';
+
+.listing-col-number {
+  min-width: 110px;
+  white-space: nowrap;
+}
+
+.listing-col-amenities {
+  min-width: 200px;
+  max-width: 320px;
+}

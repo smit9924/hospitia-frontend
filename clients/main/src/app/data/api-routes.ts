@@ -61,4 +61,30 @@ export const apiRoutes = {
     active: `${apiBaseUrls.booking}/organization/active`,
     get: (guid: string) => `${apiBaseUrls.booking}/organization/${guid}`,
   },
+
+  roomType: {
+    create: `${apiBaseUrls.booking}/room-type/create`,
+    update: `${apiBaseUrls.booking}/room-type/update`,
+    delete: `${apiBaseUrls.booking}/room-type/delete`,
+    list: `${apiBaseUrls.booking}/room-type`,
+    get: `${apiBaseUrls.booking}/room-type/detail`,
+  },
+
+  roomAmenity: {
+    create: `${apiBaseUrls.booking}/room-amenity/create`,
+    update: `${apiBaseUrls.booking}/room-amenity/update`,
+    delete: `${apiBaseUrls.booking}/room-amenity/delete`,
+    list: `${apiBaseUrls.booking}/room-amenity`,
+    selectable: `${apiBaseUrls.booking}/room-amenity/selectable`,
+    get: `${apiBaseUrls.booking}/room-amenity/detail`,
+  },
+
+  currencyUnit: {
+    create: `${apiBaseUrls.booking}/currency-unit/create`,
+    update: `${apiBaseUrls.booking}/currency-unit/update`,
+    delete: `${apiBaseUrls.booking}/currency-unit/delete`,
+    list: `${apiBaseUrls.booking}/currency-unit`,
+    options: `${apiBaseUrls.booking}/currency-unit/options`,
+    get: `${apiBaseUrls.booking}/currency-unit/detail`,
+  },
 } as const;

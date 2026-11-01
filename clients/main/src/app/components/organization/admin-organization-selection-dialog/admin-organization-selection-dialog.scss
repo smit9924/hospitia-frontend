@@ -1,0 +1,23 @@
+.organization-table-scroll {
+  overscroll-behavior-x: contain;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.organization-table {
+  min-width: 520px;
+}
+
+.organization-col-select {
+  width: 48px;
+}
+
+.organization-row {
+  cursor: pointer;
+}
+
+.empty-state-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--mat-sys-on-surface-variant);
+}

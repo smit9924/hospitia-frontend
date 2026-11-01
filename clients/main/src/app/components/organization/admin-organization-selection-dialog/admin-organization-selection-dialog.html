@@ -1,0 +1,114 @@
+<!-- Dialog: Select organization -->
+<h2 matDialogTitle i18n>Select Organization</h2>
+
+<mat-dialog-content class="d-flex flex-column gap-16">
+  <!-- SEARCH: Organizations -->
+  <app-searchbar
+    i18n-placeholder
+    placeholder="Search organizations"
+    [compact]="true"
+    (searchChanged)="onSearch($event)"
+  />
+
+  <!-- State: Organization list -->
+  @if (isLoading()) {
+    <div
+      class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+      role="status"
+      aria-live="polite"
+    >
+      <p class="body-medium m-0" i18n>Loading...</p>
+    </div>
+  } @else if (!hasOrganizations()) {
+    <div
+      class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+      role="status"
+    >
+      <mat-icon class="empty-state-icon" aria-hidden="true" svgIcon="businessCenter" />
+      <p class="body-medium m-0" i18n>No organizations found.</p>
+    </div>
+  } @else {
+    <!-- TABLE: Organizations -->
+    <div class="organization-table-scroll overflow-x-auto">
+      <table class="organization-table w-100" mat-table [dataSource]="organizations()">
+        <!-- TABLE COLUMN: Select -->
+        <ng-container matColumnDef="select">
+          <th *matHeaderCellDef class="organization-col-select" mat-header-cell>
+            <span class="visually-hidden" i18n>Select</span>
+          </th>
+          <td *matCellDef="let organization" class="organization-col-select" mat-cell>
+            <mat-radio-button
+              name="organization"
+              [checked]="isSelected(organization)"
+              [aria-label]="organization.name"
+              (change)="selectOrganization(organization)"
+            />
+          </td>
+        </ng-container>
+
+        <!-- TABLE COLUMN: Name -->
+        <ng-container matColumnDef="name">
+          <th *matHeaderCellDef mat-header-cell i18n>Name</th>
+          <td *matCellDef="let organization" mat-cell>{{ organization.name }}</td>
+        </ng-container>
+
+        <!-- TABLE COLUMN: Type -->
+        <ng-container matColumnDef="type">
+          <th *matHeaderCellDef mat-header-cell i18n>Type</th>
+          <td *matCellDef="let organization" mat-cell>{{ organization.organizationTypeName }}</td>
+        </ng-container>
+
+        <!-- TABLE COLUMN: City -->
+        <ng-container matColumnDef="city">
+          <th *matHeaderCellDef mat-header-cell i18n>City</th>
+          <td *matCellDef="let organization" mat-cell>{{ organization.city }}</td>
+        </ng-container>
+
+        <!-- TABLE COLUMN: Owner -->
+        <ng-container matColumnDef="owner">
+          <th *matHeaderCellDef mat-header-cell i18n>Owner</th>
+          <td *matCellDef="let organization" mat-cell>
+            {{ organization.ownerDisplayName || '-' }}
+          </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr
+          *matRowDef="let row; columns: displayedColumns"
+          mat-row
+          class="organization-row"
+          (click)="selectOrganization(row)"
+        ></tr>
+      </table>
+    </div>
+
+    <!-- PAGINATION: Organizations -->
+    <mat-paginator
+      aria-label="Organization list paginator"
+      i18n-aria-label
+      [length]="totalCount()"
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="false"
+      (page)="onPageChange($event)"
+    />
+  }
+</mat-dialog-content>
+
+<!-- ACTIONS: Select organization -->
+<mat-dialog-actions align="end">
+  <!-- BUTTON: Cancel -->
+  <button matButton="outlined" type="button" (click)="cancel()">
+    <span i18n>Cancel</span>
+  </button>
+  <!-- BUTTON: Add -->
+  <button
+    matButton="filled"
+    type="button"
+    [disabled]="!selectedOrganization()"
+    (click)="addSelectedOrganization()"
+  >
+    <span i18n>Add</span>
+  </button>
+</mat-dialog-actions>

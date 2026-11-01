@@ -1,0 +1,234 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText" />
+
+  <main class="d-flex flex-column gap-16 p-24 w-100">
+    <!-- Section: Room type filters -->
+    @if (showSearchbar()) {
+      <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
+        <div class="d-flex wrap align-center justify-space-between gap-8">
+          <!-- SEARCH: Room types -->
+          <app-searchbar
+            class="listing-searchbar max-w-100"
+            i18n-placeholder
+            placeholder="Search room types"
+            [compact]="true"
+            (searchChanged)="onSearch($event)"
+          />
+
+          <!-- BUTTON: Create room type -->
+          <button
+            class="listing-create-button shrink-0"
+            matButton="filled"
+            type="button"
+            (click)="createRoomType()"
+          >
+            <span i18n>Create room type</span>
+          </button>
+        </div>
+      </section>
+    }
+
+    <section class="listing-card rounded-12 p-16 d-flex flex-column gap-16 w-100">
+      <!-- Section: Room type results -->
+      @if (isInitialLoad()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+          aria-live="polite"
+        >
+          <p class="heading-extra-small m-0" i18n>Loading...</p>
+        </div>
+      } @else if (!hasRoomTypes()) {
+        <!-- EMPTY STATE: Room types -->
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+        >
+          <mat-icon
+            class="empty-state-icon"
+            aria-hidden="true"
+            [svgIcon]="isEmptySearch() ? 'search' : 'homeWork'"
+          />
+
+          @if (isEmptySearch()) {
+            <p class="heading-extra-small m-0" i18n>No room types found</p>
+            <p>
+              <span class="body-medium text-secondary" i18n>No room types matched </span>
+              <span class="body-medium text-secondary" i18n>"{{ searchTerm() }}"</span>
+              <span class="body-medium text-secondary" i18n>Try a different search term.</span>
+            </p>
+          } @else {
+            <p class="heading-extra-small m-0" i18n>No room types to display</p>
+            <p class="body-medium text-secondary m-0" i18n>
+              Add the kinds of rooms you offer, e.g. a deluxe double or a dormitory.
+            </p>
+            <button
+              class="listing-create-button shrink-0 mt-8"
+              matButton="filled"
+              type="button"
+              (click)="createRoomType()"
+            >
+              <span i18n>Create room type</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <!-- TABLE: Room types -->
+        <div class="listing-table-frame rounded-8 overflow-hidden">
+          <div class="listing-table-scroll w-100 overflow-x-auto">
+            <table
+              class="listing-table w-100"
+              mat-table
+              matSort
+              matSortActive="name"
+              matSortDirection="asc"
+              matSortDisableClear
+              [dataSource]="roomTypes()"
+              (matSortChange)="onSortChange($event)"
+            >
+              <!-- TABLE COLUMN: Name -->
+              <ng-container matColumnDef="name">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-name"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Name
+                </th>
+                <td *matCellDef="let roomType" class="listing-col listing-col-name" mat-cell>
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="roomType.name"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ roomType.name }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Capacity -->
+              <ng-container matColumnDef="capacity">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-number"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Capacity
+                </th>
+                <td *matCellDef="let roomType" class="listing-col listing-col-number" mat-cell>
+                  {{ roomType.capacity | number }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Cost per night -->
+              <ng-container matColumnDef="costPerNight">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-number"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Cost per night
+                </th>
+                <td *matCellDef="let roomType" class="listing-col listing-col-number" mat-cell>
+                  {{ roomType.currencyUnit.currencyCode }}
+                  {{ toAmount(roomType.costPerNight) | number: '1.2-2' }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Amenities -->
+              <ng-container matColumnDef="amenities">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-amenities"
+                  mat-header-cell
+                  i18n
+                >
+                  Amenities
+                </th>
+                <td *matCellDef="let roomType" class="listing-col listing-col-amenities" mat-cell>
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="formatAmenities(roomType)"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ formatAmenities(roomType) }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Organization (admin) -->
+              <ng-container matColumnDef="organization">
+                <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell i18n>
+                  Organization
+                </th>
+                <td *matCellDef="let roomType" class="listing-col listing-col-name" mat-cell>
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="roomType.organization.name"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ roomType.organization.name }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Actions -->
+              <ng-container matColumnDef="actions">
+                <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
+                  Actions
+                </th>
+                <td *matCellDef="let roomType" class="listing-col listing-col-actions" mat-cell>
+                  <!-- BUTTON: Room type actions -->
+                  <button
+                    matIconButton
+                    type="button"
+                    [attr.aria-label]="getActionsMenuLabel(roomType)"
+                    [matMenuTriggerFor]="actionsMenu"
+                  >
+                    <mat-icon svgIcon="moreVert" aria-hidden="true" />
+                  </button>
+                  <mat-menu #actionsMenu="matMenu">
+                    <!-- MENU ITEM: Edit -->
+                    <button mat-menu-item type="button" (click)="editRoomType(roomType)">
+                      <mat-icon svgIcon="edit" aria-hidden="true" />
+                      <span i18n>Edit</span>
+                    </button>
+                    <!-- MENU ITEM: Delete -->
+                    <button mat-menu-item type="button" (click)="deleteRoomType(roomType)">
+                      <mat-icon svgIcon="delete" aria-hidden="true" />
+                      <span i18n>Delete</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr *matHeaderRowDef="displayedColumns()" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns()" mat-row></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGINATION: Room types -->
+        <div class="d-flex justify-flex-end">
+          <mat-paginator
+            class="listing-paginator max-w-100"
+            aria-label="Room type list paginator"
+            i18n-aria-label
+            [length]="totalCount()"
+            [pageIndex]="pageIndex()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="false"
+            (page)="onPageChange($event)"
+          />
+        </div>
+      }
+    </section>
+  </main>
+</div>

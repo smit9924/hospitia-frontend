@@ -1,0 +1,206 @@
+<div class="w-100">
+  <app-secondary-navbar [titleText]="titleText" />
+
+  <main class="d-flex flex-column gap-16 p-24 w-100">
+    <!-- Section: Currency unit filters -->
+    @if (showSearchbar()) {
+      <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
+        <div class="d-flex wrap align-center justify-space-between gap-8">
+          <!-- SEARCH: Currency units -->
+          <app-searchbar
+            class="listing-searchbar max-w-100"
+            i18n-placeholder
+            placeholder="Search by code or name"
+            [compact]="true"
+            (searchChanged)="onSearch($event)"
+          />
+
+          <!-- BUTTON: Create currency unit -->
+          <button
+            class="listing-create-button shrink-0"
+            matButton="filled"
+            type="button"
+            (click)="createCurrencyUnit()"
+          >
+            <span i18n>Create currency unit</span>
+          </button>
+        </div>
+      </section>
+    }
+
+    <section class="listing-card rounded-12 p-16 d-flex flex-column gap-16 w-100">
+      <!-- Section: Currency unit results -->
+      @if (isInitialLoad()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+          aria-live="polite"
+        >
+          <p class="heading-extra-small m-0" i18n>Loading...</p>
+        </div>
+      } @else if (!hasCurrencyUnits()) {
+        <!-- EMPTY STATE: Currency units -->
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+        >
+          <mat-icon
+            class="empty-state-icon"
+            aria-hidden="true"
+            [svgIcon]="isEmptySearch() ? 'search' : 'businessCenter'"
+          />
+
+          @if (isEmptySearch()) {
+            <p class="heading-extra-small m-0" i18n>No currency units found</p>
+            <p>
+              <span class="body-medium text-secondary" i18n>No currency units matched </span>
+              <span class="body-medium text-secondary" i18n>"{{ searchTerm() }}"</span>
+              <span class="body-medium text-secondary" i18n>Try a different search term.</span>
+            </p>
+          } @else {
+            <p class="heading-extra-small m-0" i18n>No currency units to display</p>
+            <p class="body-medium text-secondary m-0" i18n>
+              There are no currency units available in this list yet.
+            </p>
+            <button
+              class="listing-create-button shrink-0 mt-8"
+              matButton="filled"
+              type="button"
+              (click)="createCurrencyUnit()"
+            >
+              <span i18n>Create currency unit</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <!-- TABLE: Currency units -->
+        <div class="listing-table-frame rounded-8 overflow-hidden">
+          <div class="listing-table-scroll w-100 overflow-x-auto">
+            <table
+              class="listing-table w-100"
+              mat-table
+              matSort
+              matSortActive="currencyCode"
+              matSortDirection="asc"
+              matSortDisableClear
+              [dataSource]="currencyUnits()"
+              (matSortChange)="onSortChange($event)"
+            >
+              <!-- TABLE COLUMN: Currency code -->
+              <ng-container matColumnDef="currencyCode">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-code"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Code
+                </th>
+                <td *matCellDef="let currencyUnit" class="listing-col listing-col-code" mat-cell>
+                  {{ currencyUnit.currencyCode }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Currency name -->
+              <ng-container matColumnDef="currencyName">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-name"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Name
+                </th>
+                <td *matCellDef="let currencyUnit" class="listing-col listing-col-name" mat-cell>
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="currencyUnit.currencyName"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ currencyUnit.currencyName }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Numeric code -->
+              <ng-container matColumnDef="numericCode">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-code"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Numeric code
+                </th>
+                <td *matCellDef="let currencyUnit" class="listing-col listing-col-code" mat-cell>
+                  {{ currencyUnit.numericCode }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Minor unit -->
+              <ng-container matColumnDef="minorUnit">
+                <th *matHeaderCellDef class="listing-col listing-col-code" mat-header-cell i18n>
+                  Decimal places
+                </th>
+                <td *matCellDef="let currencyUnit" class="listing-col listing-col-code" mat-cell>
+                  {{ formatMinorUnit(currencyUnit) }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Actions -->
+              <ng-container matColumnDef="actions">
+                <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
+                  Actions
+                </th>
+                <td *matCellDef="let currencyUnit" class="listing-col listing-col-actions" mat-cell>
+                  <!-- BUTTON: Currency unit actions -->
+                  <button
+                    matIconButton
+                    type="button"
+                    [attr.aria-label]="getActionsMenuLabel(currencyUnit)"
+                    [matMenuTriggerFor]="actionsMenu"
+                  >
+                    <mat-icon svgIcon="moreVert" aria-hidden="true" />
+                  </button>
+                  <mat-menu #actionsMenu="matMenu">
+                    <!-- MENU ITEM: Edit -->
+                    <button mat-menu-item type="button" (click)="editCurrencyUnit(currencyUnit)">
+                      <mat-icon svgIcon="edit" aria-hidden="true" />
+                      <span i18n>Edit</span>
+                    </button>
+                    <!-- MENU ITEM: Delete -->
+                    <button mat-menu-item type="button" (click)="deleteCurrencyUnit(currencyUnit)">
+                      <mat-icon svgIcon="delete" aria-hidden="true" />
+                      <span i18n>Delete</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGINATION: Currency units -->
+        <div class="d-flex justify-flex-end">
+          <mat-paginator
+            class="listing-paginator max-w-100"
+            aria-label="Currency unit list paginator"
+            i18n-aria-label
+            [length]="totalCount()"
+            [pageIndex]="pageIndex()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="false"
+            (page)="onPageChange($event)"
+          />
+        </div>
+      }
+    </section>
+  </main>
+</div>
