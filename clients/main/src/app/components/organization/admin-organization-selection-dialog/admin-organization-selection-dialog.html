@@ -29,14 +29,14 @@
     </div>
   } @else {
     <!-- TABLE: Organizations -->
-    <div class="organization-table-scroll overflow-x-auto">
-      <table class="organization-table w-100" mat-table [dataSource]="organizations()">
+    <div class="selection-table-scroll overflow-x-auto">
+      <table class="selection-table w-100" mat-table [dataSource]="organizations()">
         <!-- TABLE COLUMN: Select -->
         <ng-container matColumnDef="select">
-          <th *matHeaderCellDef class="organization-col-select" mat-header-cell>
+          <th *matHeaderCellDef class="selection-col-select" mat-header-cell>
             <span class="visually-hidden" i18n>Select</span>
           </th>
-          <td *matCellDef="let organization" class="organization-col-select" mat-cell>
+          <td *matCellDef="let organization" class="selection-col-select" mat-cell>
             <mat-radio-button
               name="organization"
               [checked]="isSelected(organization)"
@@ -76,7 +76,7 @@
         <tr
           *matRowDef="let row; columns: displayedColumns"
           mat-row
-          class="organization-row"
+          class="selection-row"
           (click)="selectOrganization(row)"
         ></tr>
       </table>

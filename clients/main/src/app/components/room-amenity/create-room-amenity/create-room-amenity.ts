@@ -6,13 +6,13 @@ import { Snackbar } from '../../../services/snackbar';
 import { GenericSnackbarDuration, GenericSnackbarType } from '../../../types/enums/common';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 import { RoomAmenityForm } from '../room-amenity-form/room-amenity-form';
 
 /** Page to create a room amenity, or edit one when the route has a `guid` query parameter. */
 @Component({
   selector: 'app-create-room-amenity',
-  imports: [SecondaryNavbar, MatCardModule, RoomAmenityForm],
+  imports: [PageHeader, MatCardModule, RoomAmenityForm],
   templateUrl: './create-room-amenity.html',
   styleUrl: './create-room-amenity.scss',
 })

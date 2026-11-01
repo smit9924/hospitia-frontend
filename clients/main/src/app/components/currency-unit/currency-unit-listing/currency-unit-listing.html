@@ -1,7 +1,7 @@
 <div class="w-100">
-  <app-secondary-navbar [titleText]="titleText" />
+  <app-page-header [titleText]="titleText" />
 
-  <main class="d-flex flex-column gap-16 p-24 w-100">
+  <div class="page-container">
     <!-- Section: Currency unit filters -->
     @if (showSearchbar()) {
       <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
@@ -97,7 +97,13 @@
                 >
                   Code
                 </th>
-                <td *matCellDef="let currencyUnit" class="listing-col listing-col-code" mat-cell>
+                <td
+                  *matCellDef="let currencyUnit"
+                  class="listing-col listing-col-code"
+                  mat-cell
+                  data-label="Code"
+                  i18n-data-label
+                >
                   {{ currencyUnit.currencyCode }}
                 </td>
               </ng-container>
@@ -113,7 +119,13 @@
                 >
                   Name
                 </th>
-                <td *matCellDef="let currencyUnit" class="listing-col listing-col-name" mat-cell>
+                <td
+                  *matCellDef="let currencyUnit"
+                  class="listing-col listing-col-name"
+                  mat-cell
+                  data-label="Name"
+                  i18n-data-label
+                >
                   <span
                     class="clamp-1"
                     [customMatTooltip]="currencyUnit.currencyName"
@@ -135,7 +147,13 @@
                 >
                   Numeric code
                 </th>
-                <td *matCellDef="let currencyUnit" class="listing-col listing-col-code" mat-cell>
+                <td
+                  *matCellDef="let currencyUnit"
+                  class="listing-col listing-col-code"
+                  mat-cell
+                  data-label="Numeric code"
+                  i18n-data-label
+                >
                   {{ currencyUnit.numericCode }}
                 </td>
               </ng-container>
@@ -145,7 +163,13 @@
                 <th *matHeaderCellDef class="listing-col listing-col-code" mat-header-cell i18n>
                   Decimal places
                 </th>
-                <td *matCellDef="let currencyUnit" class="listing-col listing-col-code" mat-cell>
+                <td
+                  *matCellDef="let currencyUnit"
+                  class="listing-col listing-col-code"
+                  mat-cell
+                  data-label="Decimal places"
+                  i18n-data-label
+                >
                   {{ formatMinorUnit(currencyUnit) }}
                 </td>
               </ng-container>
@@ -202,5 +226,5 @@
         </div>
       }
     </section>
-  </main>
+  </div>
 </div>

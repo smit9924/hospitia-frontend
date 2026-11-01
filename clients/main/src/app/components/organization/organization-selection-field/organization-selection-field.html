@@ -16,7 +16,7 @@
   <div class="d-flex wrap align-center gap-16">
     <!-- TEXT: Selected organization -->
     @if (selectedOrganization(); as organization) {
-      <span class="organization-selection-name body-large wb-break-word" aria-live="polite">
+      <span class="form-selection-value body-large wb-break-word" aria-live="polite">
         {{ organization.name }}
       </span>
     }
@@ -39,7 +39,7 @@
   <!-- TEXT: Hint and error -->
   <div [id]="fieldId + '-description'">
     @if (showRequiredError()) {
-      <span class="organization-selection-error body-small" role="alert">
+      <span class="form-selection-error body-small" role="alert">
         {{ requiredErrorText() }}
       </span>
     } @else if (hint()) {

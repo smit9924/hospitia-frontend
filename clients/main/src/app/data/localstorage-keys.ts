@@ -8,4 +8,6 @@ export const localStorageKeys = {
   preferredTheme: 'preferredTheme',
   largeTextPreference: 'largeTextPreference',
   highContrastFocusPreference: 'highContrastFocusPreference',
+
+  sidebarCollapsedToRail: 'sidebarCollapsedToRail',
 } as const;

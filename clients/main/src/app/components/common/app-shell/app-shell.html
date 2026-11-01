@@ -1,0 +1,41 @@
+<!-- LINK: Skip to main content -->
+<a class="app-skip-link" href="#main-content" i18n (click)="skipToMainContent($event, mainContent)"
+  >Skip to main content</a
+>
+
+<!-- Layout: App shell -->
+<mat-sidenav-container class="app-shell" autosize>
+  @if (showsNavigation()) {
+    <!-- Section: Sidebar -->
+    <mat-sidenav
+      id="app-sidebar"
+      class="app-sidebar"
+      aria-label="Main navigation"
+      i18n-aria-label
+      [class.app-sidebar--rail]="sidebarService.showsIconRail()"
+      [mode]="sidebarService.sidenavMode()"
+      [opened]="sidebarService.isSidenavOpened()"
+      (openedChange)="sidebarService.syncSidenavOpenedState($event)"
+    >
+      <app-sidebar />
+    </mat-sidenav>
+  }
+
+  <mat-sidenav-content class="app-shell-content">
+    @if (showsNavigation()) {
+      <!-- Section: Top bar -->
+      <app-top-bar />
+    }
+
+    <!-- Section: Public header -->
+    <ng-content select="[appShellPublicHeader]" />
+
+    <!-- Section: Page content -->
+    <main #mainContent id="main-content" class="app-shell-main" tabindex="-1">
+      <ng-content />
+    </main>
+
+    <!-- Section: Public footer -->
+    <ng-content select="[appShellPublicFooter]" />
+  </mat-sidenav-content>
+</mat-sidenav-container>

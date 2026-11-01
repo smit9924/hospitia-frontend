@@ -22,7 +22,7 @@ import { RoomAmenityListItem, RoomAmenitySortBy } from '../../../types/interface
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 import { Searchbar } from '../../common/searchbar/searchbar';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 
 const DEFAULT_SORT_BY: RoomAmenitySortBy = 'name';
 
@@ -35,7 +35,7 @@ const DEFAULT_SORT_BY: RoomAmenitySortBy = 'name';
 @Component({
   selector: 'app-room-amenity-listing',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     Searchbar,
     MatTableModule,
     MatSortModule,

@@ -23,12 +23,12 @@ import {
   OrganizationTypeSortBy,
 } from '../../../types/interfaces/organization-type';
 import { Searchbar } from '../../common/searchbar/searchbar';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 
 @Component({
   selector: 'app-organization-type-listing',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     Searchbar,
     MatTableModule,
     MatSortModule,

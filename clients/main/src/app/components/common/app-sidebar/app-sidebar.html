@@ -1,0 +1,99 @@
+<div class="app-sidebar-inner">
+  <!-- Section: Brand -->
+  <div class="app-sidebar-brand">
+    <img
+      ngSrc="assets/logo/logo-full.png"
+      class="app-sidebar-logo"
+      width="126"
+      height="42"
+      alt="Hospitia"
+      i18n-alt
+      priority
+    />
+    <img
+      ngSrc="assets/logo/logo-icon.png"
+      class="app-sidebar-logo-icon"
+      width="42"
+      height="42"
+      alt="Hospitia"
+      i18n-alt
+    />
+  </div>
+
+  @if (activeOrganization(); as organization) {
+    <!-- TEXT: Active organization -->
+    <div
+      class="app-sidebar-organization"
+      matTooltipPosition="right"
+      [matTooltip]="organization.name"
+      [matTooltipDisabled]="!sidebarService.showsIconRail()"
+    >
+      <span class="app-sidebar-organization-avatar" aria-hidden="true">{{
+        activeOrganizationInitials()
+      }}</span>
+      <span class="app-sidebar-organization-text">
+        <span class="app-sidebar-organization-label" i18n>Organization</span>
+        <span
+          class="app-sidebar-organization-name clamp-1"
+          [customMatTooltip]="organization.name"
+          [tooltipOnlyOnEllipsis]="true"
+          >{{ organization.name }}</span
+        >
+      </span>
+    </div>
+  }
+
+  <!-- Section: Navigation groups -->
+  <nav class="app-sidebar-navigation" aria-label="Pages" i18n-aria-label>
+    @for (group of sidebarNavigationService.navigationGroups(); track group.label) {
+      <div>
+        <!-- TEXT: Group label -->
+        <div class="app-sidebar-group-label" [id]="'sidebar-group-' + $index">
+          {{ group.label }}
+        </div>
+        <ul class="app-sidebar-group" [attr.aria-labelledby]="'sidebar-group-' + $index">
+          @for (link of group.links; track link.label) {
+            <li>
+              <!-- LINK: Sidebar page -->
+              <a
+                class="app-sidebar-link"
+                matTooltipPosition="right"
+                [class.app-sidebar-link--active]="link.isActive"
+                [attr.aria-current]="link.isActive ? 'page' : null"
+                [routerLink]="link.route"
+                [matTooltip]="link.label"
+                [matTooltipDisabled]="!sidebarService.showsIconRail()"
+                (click)="onLinkSelected()"
+              >
+                <mat-icon aria-hidden="true" [svgIcon]="link.icon" />
+                <span class="app-sidebar-link-label">{{ link.label }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </nav>
+
+  <!-- Section: Sidebar footer links -->
+  <ul class="app-sidebar-footer app-sidebar-group">
+    @for (link of sidebarNavigationService.footerLinks(); track link.label) {
+      <li>
+        <!-- LINK: Sidebar footer page -->
+        <a
+          class="app-sidebar-link"
+          matTooltipPosition="right"
+          [class.app-sidebar-link--active]="link.isActive"
+          [attr.aria-current]="link.isActive ? 'page' : null"
+          [routerLink]="link.route"
+          [matTooltip]="link.label"
+          [matTooltipDisabled]="!sidebarService.showsIconRail()"
+          (click)="onLinkSelected()"
+        >
+          <mat-icon aria-hidden="true" [svgIcon]="link.icon" />
+          <span class="app-sidebar-link-label">{{ link.label }}</span>
+        </a>
+      </li>
+    }
+  </ul>
+</div>

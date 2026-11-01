@@ -1,0 +1,32 @@
+<header class="page-header">
+  <div class="page-header-heading">
+    @if (backButton()) {
+      <!-- BUTTON: Back -->
+      <button
+        matIconButton
+        type="button"
+        aria-label="Back"
+        i18n-aria-label
+        matTooltip="Back"
+        i18n-matTooltip
+        (click)="back()"
+      >
+        <mat-icon svgIcon="arrowBack" aria-hidden="true" />
+      </button>
+    }
+
+    <div class="page-header-text">
+      <!-- TEXT: Page title -->
+      <h1 class="page-header-title">{{ titleText() }}</h1>
+      @if (description()) {
+        <!-- TEXT: Page description -->
+        <p class="page-header-description">{{ description() }}</p>
+      }
+    </div>
+  </div>
+
+  <!-- Section: Page actions -->
+  <div class="page-header-actions">
+    <ng-content select="[pageHeaderActions]" />
+  </div>
+</header>

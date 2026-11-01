@@ -1,10 +1,10 @@
 <div class="w-100">
-  <app-secondary-navbar [titleText]="titleText()" [backButton]="true" />
+  <app-page-header [titleText]="titleText()" [backButton]="true" />
 
-  <main class="d-flex flex-column gap-24 p-24 w-100 align-center">
+  <div class="page-container page-container--form">
     @if (isEditMode() && isLoadingOrganizationType()) {
       <section
-        class="org-form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        class="form-card form-card--narrow rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
         role="status"
         aria-live="polite"
       >
@@ -12,10 +12,14 @@
       </section>
     } @else if (organizationTypeNotFound()) {
       <section
-        class="org-form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        class="form-card form-card--narrow rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
         role="status"
       >
-        <mat-icon class="empty-state-icon text-secondary" aria-hidden="true" svgIcon="businessCenter" />
+        <mat-icon
+          class="empty-state-icon text-secondary"
+          aria-hidden="true"
+          svgIcon="businessCenter"
+        />
         <p class="heading-extra-small m-0" i18n>Organization type not found</p>
         <p class="body-medium text-secondary m-0" i18n>
           The requested organization type could not be found. It may have been removed.
@@ -23,7 +27,7 @@
       </section>
     } @else if (showForm()) {
       <!-- Form: Organization type -->
-      <mat-card class="org-form-card w-100">
+      <mat-card class="form-card form-card--narrow w-100">
         <mat-card-header class="mb-16">
           <mat-card-title>
             <h2 class="heading-extra-small m-0">
@@ -98,7 +102,7 @@
             </mat-form-field>
 
             <!-- BUTTON: Save organization type -->
-            <div class="d-flex justify-end gap-8 wrap">
+            <div class="form-actions">
               <button
                 matButton="filled"
                 type="submit"
@@ -111,5 +115,5 @@
         </mat-card-content>
       </mat-card>
     }
-  </main>
+  </div>
 </div>

@@ -1,0 +1,26 @@
+<div class="w-100">
+  <app-page-header [titleText]="greeting()" [description]="description()" />
+
+  <div class="page-container">
+    <!-- TEXT: Shortcuts heading -->
+    <h2 class="dashboard-section-title" i18n>Shortcuts</h2>
+
+    <!-- Section: Shortcut cards -->
+    <ul class="dashboard-shortcut-grid list-style-none p-0 m-0">
+      @for (shortcut of shortcuts(); track shortcut.label) {
+        <li class="d-flex">
+          <!-- LINK: Shortcut card -->
+          <a class="dashboard-shortcut surface-card w-100" [routerLink]="shortcut.route">
+            <span class="dashboard-shortcut-icon" aria-hidden="true">
+              <mat-icon [svgIcon]="shortcut.icon" />
+            </span>
+            <span class="d-flex flex-column gap-4">
+              <span class="body-large font-weight-bold">{{ shortcut.label }}</span>
+              <span class="body-medium text-secondary">{{ shortcut.description }}</span>
+            </span>
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+</div>

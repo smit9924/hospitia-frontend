@@ -46,7 +46,7 @@ import { RoomTypeAttributes, RoomTypeListItem } from '../../../types/interfaces/
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 import { Banner } from '../../common/banner/banner';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 import { OrganizationSelectionField } from '../../organization/organization-selection-field/organization-selection-field';
 import {
   RoomAmenityDialog,
@@ -86,7 +86,7 @@ type RoomTypeForm = FormGroup<{
 @Component({
   selector: 'app-create-room-type',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,

@@ -5,15 +5,17 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { appRoutes } from '../../../data/app-routes';
 import { RouterLink } from '@angular/router';
+import { PageHeader } from '../../common/page-header/page-header';
 
 @Component({
   selector: 'app-setting-page',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterLink],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterLink, PageHeader],
   templateUrl: './setting-page.html',
   styleUrls: ['./setting-page.scss'],
 })
 export class SettingPage {
+  protected readonly titleText = $localize`Settings`;
+
   protected readonly settings = [
     {
       id: 1,

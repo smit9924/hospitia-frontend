@@ -55,6 +55,7 @@ export const routes: Routes = [
     data: {
       showNavbar: true,
       showFooter: true,
+      publicLayout: true,
     },
   },
   {

@@ -26,7 +26,7 @@ import {
   startWith,
   switchMap,
 } from 'rxjs';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 import { Banner } from '../../common/banner/banner';
 import { appRoutes } from '../../../data/app-routes';
 import { Dialog } from '../../../services/dialog';
@@ -68,7 +68,7 @@ function organizationSelectedValidator(control: AbstractControl): ValidationErro
 @Component({
   selector: 'app-create-manager',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,

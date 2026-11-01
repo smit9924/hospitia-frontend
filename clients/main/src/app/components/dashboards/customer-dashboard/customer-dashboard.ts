@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { DashboardOverview } from '../dashboard-overview/dashboard-overview';
 
 @Component({
   selector: 'app-customer-dashboard',
-  imports: [],
+  imports: [DashboardOverview],
   templateUrl: './customer-dashboard.html',
   styleUrl: './customer-dashboard.scss',
 })

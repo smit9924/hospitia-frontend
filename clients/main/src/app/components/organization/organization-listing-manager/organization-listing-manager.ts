@@ -13,12 +13,12 @@ import { appRoutes } from '../../../data/app-routes';
 import { Organization } from '../../../services/organization/organization';
 import { OrganizationListItem, OrganizationSortBy } from '../../../types/interfaces/organization';
 import { Searchbar } from '../../common/searchbar/searchbar';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 
 @Component({
   selector: 'app-organization-listing-manager',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     Searchbar,
     MatTableModule,
     MatSortModule,

@@ -21,12 +21,12 @@ import { GenericSnackbarConfigData } from '../../../types/models/common/generic-
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { OrganizationListItem, OrganizationSortBy } from '../../../types/interfaces/organization';
 import { Searchbar } from '../../common/searchbar/searchbar';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 
 @Component({
   selector: 'app-organization-listing-owner',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     Searchbar,
     MatTableModule,
     MatSortModule,
