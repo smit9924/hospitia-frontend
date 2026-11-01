@@ -8,8 +8,8 @@ export interface RoomStatusOption {
   chipClass: string;
   /** Registered svg icon shown with the status (see data/icon-list.ts). */
   icon: string;
-  /** Floor chart tile modifier (see styles/_page-patterns.scss). */
-  tileClass: string;
+  /** Status color class (`room-status--*` in styles/_utils.scss) for tiles, legend and dialog. */
+  statusClass: string;
 }
 
 /** Room statuses in the order offered in the room form and the floor chart. */
@@ -19,21 +19,21 @@ export const roomStatusOptions: readonly RoomStatusOption[] = [
     label: $localize`Available`,
     chipClass: 'status-chip--active',
     icon: 'checkCircle',
-    tileClass: 'room-tile--available',
+    statusClass: 'room-status--available',
   },
   {
     value: RoomStatus.UNDER_MAINTENANCE,
     label: $localize`Under maintenance`,
     chipClass: 'status-chip--warning',
     icon: 'build',
-    tileClass: 'room-tile--under-maintenance',
+    statusClass: 'room-status--under-maintenance',
   },
   {
     value: RoomStatus.OUT_OF_SERVICE,
     label: $localize`Out of service`,
     chipClass: 'status-chip--inactive',
     icon: 'block',
-    tileClass: 'room-tile--out-of-service',
+    statusClass: 'room-status--out-of-service',
   },
 ];
 

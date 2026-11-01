@@ -124,7 +124,7 @@ describe('RoomFloorChart', () => {
     await render();
 
     expect(tile('102').getAttribute('aria-label')).toBe('Room 102, Dormitory, Under maintenance');
-    expect(tile('B1-01').classList).toContain('room-tile--out-of-service');
+    expect(tile('B1-01').classList).toContain('room-status--out-of-service');
   });
 
   it('filters rooms and counts by room type', async () => {
@@ -149,7 +149,7 @@ describe('RoomFloorChart', () => {
       guid: 'r101',
       status: RoomStatus.OUT_OF_SERVICE,
     });
-    expect(tile('101').classList).toContain('room-tile--out-of-service');
+    expect(tile('101').classList).toContain('room-status--out-of-service');
     expect(countValues()).toEqual(['5', '2', '1', '2']);
     expect(lastSnackbar().text).toBe('Room 101 is now Out of service.');
     expect(lastSnackbar().actionLabel).toBe('Undo');
@@ -161,7 +161,7 @@ describe('RoomFloorChart', () => {
       guid: 'r101',
       status: RoomStatus.AVAILABLE,
     });
-    expect(tile('101').classList).toContain('room-tile--available');
+    expect(tile('101').classList).toContain('room-status--available');
     expect(lastSnackbar().text).toBe('Room 101 is back to Available.');
     expect(lastSnackbar().actionLabel).toBe('');
   });
@@ -176,7 +176,7 @@ describe('RoomFloorChart', () => {
     tile('101').click();
     await fixture.whenStable();
 
-    expect(tile('101').classList).toContain('room-tile--available');
+    expect(tile('101').classList).toContain('room-status--available');
     expect(lastSnackbar().text).toBe('Room 101 could not be updated. Please try again.');
   });
 

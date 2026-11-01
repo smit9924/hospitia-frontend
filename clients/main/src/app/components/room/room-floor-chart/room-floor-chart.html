@@ -57,7 +57,7 @@
     <div class="room-status-summary">
       <ul class="status-count-grid list-style-none p-0 m-0">
         @for (count of statusCounts(); track count.label) {
-          <li class="status-count-tile" [class]="count.tileClass">
+          <li class="status-count-tile" [class]="count.statusClass">
             <span class="status-count-icon" aria-hidden="true">
               <mat-icon [svgIcon]="count.icon" />
             </span>
@@ -78,7 +78,7 @@
           @if (count.count > 0) {
             <span
               class="room-status-distribution-segment"
-              [class]="count.tileClass"
+              [class]="count.statusClass"
               [style.flex-grow]="count.count"
             ></span>
           }
@@ -121,7 +121,7 @@
                   <button
                     type="button"
                     class="room-tile"
-                    [class]="statusOption(room.status).tileClass"
+                    [class]="statusOption(room.status).statusClass"
                     [attr.aria-label]="tileLabel(room)"
                     [attr.aria-busy]="isSaving(room)"
                     [disabled]="isSaving(room)"
@@ -148,7 +148,7 @@
     <ul class="room-status-legend list-style-none p-0 m-0" aria-label="Legend" i18n-aria-label>
       @for (option of statusOptions; track option.value) {
         <li class="room-status-legend-item">
-          <span class="room-status-legend-swatch" aria-hidden="true" [class]="option.tileClass">
+          <span class="room-status-legend-swatch" aria-hidden="true" [class]="option.statusClass">
             <mat-icon [svgIcon]="option.icon" />
           </span>
           <span class="body-small">{{ option.label }}</span>

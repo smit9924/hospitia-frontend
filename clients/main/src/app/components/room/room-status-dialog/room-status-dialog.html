@@ -1,6 +1,6 @@
 <!-- Dialog: Room status -->
 <h2 mat-dialog-title class="d-flex align-center gap-12">
-  <span class="room-status-dialog-badge" aria-hidden="true" [class]="currentStatus.tileClass">
+  <span class="room-status-dialog-badge" aria-hidden="true" [class]="currentStatus.statusClass">
     <mat-icon [svgIcon]="currentStatus.icon" />
   </span>
   <span i18n>Room {{ room.roomNumber }}</span>
@@ -50,7 +50,7 @@
           type="button"
           role="radio"
           class="room-status-option"
-          [class]="option.tileClass"
+          [class]="option.statusClass"
           [attr.aria-checked]="option.value === room.status"
           [class.room-status-option--current]="option.value === room.status"
           (click)="chooseStatus(option.value)"

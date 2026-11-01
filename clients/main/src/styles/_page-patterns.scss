@@ -1,6 +1,8 @@
-// Reusable page building blocks shared by every signed-in screen:
-// page container, page header, listing card and table, empty states, form card and actions,
-// dashboard tiles and skeletons. Components use these classes instead of their own SCSS.
+// Reusable page building blocks shared by several signed-in screens:
+// page container, cards, listing table, empty states, form card and actions, dashboard
+// shortcuts, skeletons, selection dialogs, settings cards and status pages.
+// Only patterns used by more than one component (or shown in the style guide) live here;
+// styles for a single component go in that component's own SCSS file.
 
 /* ============================================================
    PAGE CONTAINER
@@ -28,77 +30,6 @@
 }
 
 /* ============================================================
-   PAGE HEADER (components/common/page-header)
-   ============================================================ */
-
-.page-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px 16px;
-  width: 100%;
-  padding: 24px 28px 20px;
-}
-
-// Grid so the back button centers on the title line only; the description sits under the
-// title (not under the button).
-.page-header-heading {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-items: center;
-  column-gap: 8px;
-  row-gap: 2px;
-  min-width: 0;
-}
-
-.page-header-heading--with-back {
-  grid-template-columns: auto minmax(0, 1fr);
-}
-
-// The title and description become grid items of the heading.
-.page-header-text {
-  display: contents;
-}
-
-.page-header-title,
-.page-header-description {
-  grid-column: -2;
-}
-
-.page-header-title {
-  margin: 0;
-  font: var(--mat-sys-headline-small);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--mat-sys-on-surface);
-}
-
-.page-header-description {
-  margin: 0;
-  font: var(--mat-sys-body-medium);
-  color: var(--mat-sys-on-surface-variant);
-}
-
-.page-header-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-@media screen and (max-width: 599.98px) {
-  .page-header {
-    padding: 16px 16px 16px;
-  }
-
-  .page-header-title {
-    font: var(--mat-sys-title-large);
-    font-weight: 700;
-  }
-}
-
-/* ============================================================
    CARDS
    ============================================================ */
 
@@ -120,13 +51,9 @@
   box-shadow: var(--app-shadow-card);
 }
 
-// Narrower variants for short forms (users, organization types, password).
+// Narrower variant for short forms (users, organization types).
 .form-card--narrow {
   max-width: 640px;
-}
-
-.form-card--compact {
-  max-width: 480px;
 }
 
 // Large icon shown in a form page's loading/not-found states.
@@ -204,15 +131,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-.listing-col-wide,
-.listing-col-amenities {
+.listing-col-wide {
   min-width: 200px;
   max-width: 320px;
-}
-
-.listing-col-code {
-  min-width: 110px;
-  white-space: nowrap;
 }
 
 .listing-col-address {
@@ -394,12 +315,6 @@
   }
 }
 
-.dashboard-section-title {
-  margin: 8px 0 0;
-  font: var(--mat-sys-title-medium);
-  font-weight: 700;
-}
-
 /* ============================================================
    SKELETON LOADING
    ============================================================ */
@@ -432,7 +347,6 @@
     animation: none;
   }
 
-  .app-sidebar,
   .dashboard-shortcut {
     transition: none;
   }
@@ -448,34 +362,11 @@
   min-width: 0;
 }
 
-// Field that takes half a row (two per row) on wide screens; full width on phones.
-.form-field-half {
-  max-width: calc(50% - 12px); // half of the row minus half of the 24px gap
-
-  @media screen and (max-width: 768px) {
-    max-width: 100%;
-  }
-}
-
 // Bordered group of related controls with a legend (e.g. room type amenities).
 .form-fieldset {
   margin: 0;
   border: 1px solid var(--app-color-border-subtle);
   border-radius: 12px;
-}
-
-// Read-only value shown in place of an input (e.g. the chosen organization).
-.form-selection-value {
-  color: var(--mat-sys-on-surface);
-}
-
-.form-selection-error {
-  color: var(--mat-sys-error);
-}
-
-// Decorative icon in the brand accent color (e.g. a field's leading icon).
-.icon-accent {
-  color: var(--mat-sys-primary);
 }
 
 /* ============================================================
@@ -545,10 +436,6 @@
   }
 }
 
-.settings-preview {
-  background-color: var(--app-color-card-raised);
-}
-
 /* ============================================================
    STATUS PAGES (404, 403, account setup failed, no organization)
    ============================================================ */
@@ -570,451 +457,4 @@
   gap: 8px;
   max-width: 420px;
   text-align: center;
-}
-
-// Large round badge for a success outcome (e.g. password changed).
-.success-badge {
-  display: grid;
-  place-items: center;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background-color: var(--mat-sys-success-container);
-  color: var(--mat-sys-on-success-container);
-
-  mat-icon {
-    width: 64px;
-    height: 64px;
-  }
-}
-
-/* ============================================================
-   ROOM FLOOR CHART (dashboard "Rooms by floor")
-   A building cross-section: floors top-down, a ground line, basements below.
-   Status modifiers set --room-status-* properties that tiles, count tiles,
-   legend swatches and the status dialog all read.
-   ============================================================ */
-
-.room-tile--available {
-  --room-status-accent: var(--mat-sys-success);
-  --room-status-surface: var(--mat-sys-success-container);
-  --room-status-on-surface: var(--mat-sys-on-success-container);
-  --room-status-pattern: none;
-}
-
-.room-tile--under-maintenance {
-  --room-status-accent: var(--mat-sys-warning);
-  --room-status-surface: var(--mat-sys-warning-container);
-  --room-status-on-surface: var(--mat-sys-on-warning-container);
-  --room-status-pattern: none;
-}
-
-// Unusable rooms are hatched as well as tinted, so the state never relies on color alone.
-.room-tile--out-of-service {
-  --room-status-accent: var(--mat-sys-outline);
-  --room-status-surface: var(--mat-sys-surface-container-high);
-  --room-status-on-surface: var(--mat-sys-on-surface-variant);
-  --room-status-pattern: repeating-linear-gradient(
-    135deg,
-    transparent 0 7px,
-    color-mix(in srgb, var(--mat-sys-outline) 22%, transparent) 7px 9px
-  );
-}
-
-.status-count-tile--total {
-  --room-status-accent: var(--mat-sys-primary);
-  --room-status-surface: var(--mat-sys-primary-container);
-  --room-status-on-surface: var(--mat-sys-on-primary-container);
-  --room-status-pattern: none;
-}
-
-.room-floor-chart {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-}
-
-.room-floor-chart-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px 16px;
-}
-
-.room-floor-chart-title {
-  margin: 0;
-  font: var(--mat-sys-title-large);
-  font-weight: 700;
-}
-
-.room-floor-chart-filter {
-  width: 240px;
-  max-width: 100%;
-}
-
-.room-floor-chart-state {
-  max-width: none;
-  padding: 24px 0;
-}
-
-/* ---- Summary: count tiles + distribution bar ---- */
-
-.room-status-summary {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.status-count-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.status-count-tile {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  border: 1px solid color-mix(in srgb, var(--room-status-accent) 28%, transparent);
-  border-radius: 14px;
-  background:
-    var(--room-status-pattern),
-    color-mix(in srgb, var(--room-status-surface) 55%, var(--app-color-card));
-  color: var(--room-status-on-surface);
-}
-
-.status-count-icon {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background-color: var(--room-status-surface);
-  color: var(--room-status-on-surface);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--room-status-accent) 35%, transparent);
-}
-
-.status-count-value {
-  font: var(--mat-sys-headline-small);
-  font-weight: 800;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-}
-
-.status-count-percent {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  opacity: 0.8;
-}
-
-.room-status-distribution {
-  display: flex;
-  gap: 3px;
-  height: 10px;
-  border-radius: 999px;
-  overflow: hidden;
-  background-color: var(--app-color-card-raised);
-}
-
-.room-status-distribution-segment {
-  flex: 1 1 0;
-  min-width: 6px;
-  background: var(--room-status-pattern), var(--room-status-accent);
-}
-
-/* ---- Building: floor rows, ground line, basements ---- */
-
-.room-building {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--app-color-border-subtle);
-  border-top: 4px solid var(--mat-sys-primary);
-  border-radius: 16px;
-  overflow: hidden;
-  background-color: var(--app-color-card);
-}
-
-.room-floor-row {
-  display: grid;
-  grid-template-columns: 128px minmax(0, 1fr);
-  align-items: stretch;
-
-  & + .room-floor-row {
-    border-top: 1px dashed var(--app-color-border-subtle);
-  }
-}
-
-// Below ground: a subtle earth texture behind basement rows.
-.room-floor-row--basement {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent 0 10px,
-      color-mix(in srgb, var(--mat-sys-outline-variant) 30%, transparent) 10px 11px
-    ),
-    var(--app-color-card-raised);
-}
-
-.room-floor-rail {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2px;
-  padding: 14px 16px;
-  border-right: 1px solid var(--app-color-border-subtle);
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--mat-sys-primary) 8%, transparent),
-    transparent
-  );
-}
-
-.room-floor-label {
-  font: var(--mat-sys-title-medium);
-  font-weight: 800;
-  letter-spacing: -0.01em;
-}
-
-// Fixed-width tiles on wide screens, two per row on phones (see the media query below).
-.room-tile-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 136px);
-  gap: 10px;
-  padding: 14px 16px 18px;
-}
-
-.room-ground-line {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 0;
-  border-top: 3px solid var(--mat-sys-primary);
-}
-
-.room-ground-line-label {
-  position: relative;
-  top: -1px;
-  padding: 2px 12px;
-  border-radius: 999px;
-  background-color: var(--mat-sys-primary);
-  color: var(--mat-sys-on-primary);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-/* ---- Room tile ---- */
-
-.room-tile {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: auto auto;
-  align-items: center;
-  column-gap: 8px;
-  width: 100%;
-  min-height: 64px;
-  padding: 10px 10px 10px 14px;
-  border: 1px solid color-mix(in srgb, var(--room-status-accent) 40%, transparent);
-  border-radius: 14px;
-  background: var(--room-status-pattern), var(--room-status-surface);
-  color: var(--room-status-on-surface);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  overflow: hidden;
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-
-  // Status accent strip on the left edge.
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 5px;
-    background-color: var(--room-status-accent);
-  }
-
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: var(--app-shadow-card);
-  }
-
-  &:focus-visible {
-    outline: 3px solid var(--mat-sys-primary);
-    outline-offset: 2px;
-  }
-
-  &:disabled {
-    cursor: progress;
-    opacity: 0.6;
-  }
-}
-
-.room-tile-number {
-  font: var(--mat-sys-title-medium);
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.room-tile-icon {
-  width: 20px;
-  height: 20px;
-  color: var(--room-status-accent);
-}
-
-.room-tile-type {
-  grid-column: 1 / -1;
-  font: var(--mat-sys-body-small);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  opacity: 0.85;
-}
-
-/* ---- Legend ---- */
-
-.room-status-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-}
-
-.room-status-legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.room-status-legend-swatch {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border: 1px solid color-mix(in srgb, var(--room-status-accent) 40%, transparent);
-  border-radius: 8px;
-  background: var(--room-status-pattern), var(--room-status-surface);
-  color: var(--room-status-accent);
-
-  mat-icon {
-    width: 16px;
-    height: 16px;
-  }
-}
-
-/* ---- Room status dialog ---- */
-
-.room-status-dialog-badge {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--room-status-pattern), var(--room-status-surface);
-  color: var(--room-status-accent);
-}
-
-.room-status-dialog-details {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 16px;
-}
-
-.room-status-dialog-notes {
-  grid-column: 1 / -1;
-}
-
-.room-status-options {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.room-status-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 12px 8px;
-  border: 1px solid color-mix(in srgb, var(--room-status-accent) 35%, transparent);
-  border-radius: 12px;
-  background: var(--room-status-pattern), var(--app-color-card);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-label-large);
-  text-align: center;
-  cursor: pointer;
-
-  mat-icon {
-    color: var(--room-status-accent);
-  }
-
-  &:hover {
-    background: var(--room-status-pattern), var(--room-status-surface);
-  }
-
-  &:focus-visible {
-    outline: 3px solid var(--mat-sys-primary);
-    outline-offset: 2px;
-  }
-}
-
-.room-status-option--current {
-  border-width: 2px;
-  border-color: var(--room-status-accent);
-  background: var(--room-status-pattern), var(--room-status-surface);
-  color: var(--room-status-on-surface);
-  cursor: default;
-}
-
-/* ---- Small screens ---- */
-
-@media screen and (max-width: 599.98px) {
-  .room-floor-chart {
-    padding: 16px;
-  }
-
-  .status-count-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .room-floor-row {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .room-floor-rail {
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    padding: 10px 14px;
-    border-right: 0;
-    border-bottom: 1px solid var(--app-color-border-subtle);
-  }
-
-  .room-tile-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding: 12px 14px 16px;
-  }
-
-  .room-status-options {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .room-tile {
-    transition: none;
-  }
 }

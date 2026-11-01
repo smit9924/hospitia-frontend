@@ -324,3 +324,9 @@
     display: inline-flex;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .app-sidebar {
+    transition: none;
+  }
+}

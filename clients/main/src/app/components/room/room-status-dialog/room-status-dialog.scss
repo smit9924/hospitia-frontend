@@ -1,0 +1,70 @@
+// Room status dialog opened from the "Rooms by floor" chart. Status colors come from the
+// shared `room-status--*` classes (styles/_utils.scss).
+
+.room-status-dialog-badge {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--room-status-pattern), var(--room-status-surface);
+  color: var(--room-status-accent);
+}
+
+.room-status-dialog-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+}
+
+.room-status-dialog-notes {
+  grid-column: 1 / -1;
+}
+
+.room-status-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.room-status-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border: 1px solid color-mix(in srgb, var(--room-status-accent) 35%, transparent);
+  border-radius: 12px;
+  background: var(--room-status-pattern), var(--app-color-card);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-label-large);
+  text-align: center;
+  cursor: pointer;
+
+  mat-icon {
+    color: var(--room-status-accent);
+  }
+
+  &:hover {
+    background: var(--room-status-pattern), var(--room-status-surface);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+}
+
+.room-status-option--current {
+  border-width: 2px;
+  border-color: var(--room-status-accent);
+  background: var(--room-status-pattern), var(--room-status-surface);
+  color: var(--room-status-on-surface);
+  cursor: default;
+}
+
+@media screen and (max-width: 599.98px) {
+  .room-status-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

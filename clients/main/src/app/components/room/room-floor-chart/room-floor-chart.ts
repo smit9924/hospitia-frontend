@@ -43,7 +43,7 @@ interface RoomStatusCount {
   count: number;
   /** Share of the shown rooms, 0-100, rounded. */
   percent: number;
-  tileClass: string;
+  statusClass: string;
 }
 
 /** Room type filter value meaning "every room type". */
@@ -120,7 +120,7 @@ export class RoomFloorChart {
         icon: 'meetingRoom',
         count: rooms.length,
         percent: rooms.length === 0 ? 0 : 100,
-        tileClass: 'status-count-tile--total',
+        statusClass: 'status-count-tile--total',
       },
       ...roomStatusOptions.map((option) => {
         const count = rooms.filter((room) => room.status === option.value).length;
@@ -129,7 +129,7 @@ export class RoomFloorChart {
           icon: option.icon,
           count,
           percent: percentOf(count),
-          tileClass: option.tileClass,
+          statusClass: option.statusClass,
         };
       }),
     ];
