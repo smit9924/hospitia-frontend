@@ -26,7 +26,7 @@ import {
 import { passwordStrengthValidator } from '../../../directives/validators/password-strength-check/password-strength-check';
 import { ErrorCodes } from '../../../types/enums/error-codes';
 import { Dialog } from '../../../services/dialog';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 
 @Component({
   selector: 'app-change-password',
@@ -38,7 +38,7 @@ import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar'
     MatButtonModule,
     MatIconModule,
     Banner,
-    SecondaryNavbar,
+    PageHeader,
   ],
   templateUrl: './change-password.html',
   styleUrl: './change-password.scss',

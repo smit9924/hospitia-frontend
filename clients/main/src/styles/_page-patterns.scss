@@ -1,0 +1,589 @@
+// Reusable page building blocks shared by every signed-in screen:
+// page container, page header, listing card and table, empty states, form card and actions,
+// dashboard tiles and skeletons. Components use these classes instead of their own SCSS.
+
+/* ============================================================
+   PAGE CONTAINER
+   ============================================================ */
+
+// Content area of a routed page, below the page header.
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 0 28px 32px;
+}
+
+// Centered column for create/edit forms.
+.page-container--form {
+  align-items: center;
+  gap: 24px;
+}
+
+@media screen and (max-width: 599.98px) {
+  .page-container {
+    padding: 0 16px 24px;
+  }
+}
+
+/* ============================================================
+   PAGE HEADER (components/common/page-header)
+   ============================================================ */
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 16px;
+  width: 100%;
+  padding: 24px 28px 20px;
+}
+
+// Grid so the back button centers on the title line only; the description sits under the
+// title (not under the button).
+.page-header-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 2px;
+  min-width: 0;
+}
+
+.page-header-heading--with-back {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+// The title and description become grid items of the heading.
+.page-header-text {
+  display: contents;
+}
+
+.page-header-title,
+.page-header-description {
+  grid-column: -2;
+}
+
+.page-header-title {
+  margin: 0;
+  font: var(--mat-sys-headline-small);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--mat-sys-on-surface);
+}
+
+.page-header-description {
+  margin: 0;
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.page-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+@media screen and (max-width: 599.98px) {
+  .page-header {
+    padding: 16px 16px 16px;
+  }
+
+  .page-header-title {
+    font: var(--mat-sys-title-large);
+    font-weight: 700;
+  }
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+// Base surface for listing sections, settings panels and dashboard widgets.
+.surface-card,
+.listing-card {
+  background-color: var(--app-color-card);
+  border: 1px solid var(--app-color-border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--app-shadow-card);
+}
+
+// Card that wraps a create/edit form page (and its loading/not-found states).
+.form-card {
+  max-width: 720px;
+  background-color: var(--app-color-card);
+  border: 1px solid var(--app-color-border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--app-shadow-card);
+}
+
+// Narrower variants for short forms (users, organization types, password).
+.form-card--narrow {
+  max-width: 640px;
+}
+
+.form-card--compact {
+  max-width: 480px;
+}
+
+// Large icon shown in a form page's loading/not-found states.
+.form-state-icon,
+.empty-state-icon {
+  width: 48px;
+  height: 48px;
+  font-size: 48px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+// Primary and secondary form actions; stays visible at the bottom while a long form scrolls.
+.form-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-inline: -16px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--app-color-border-subtle);
+  background-color: color-mix(in srgb, var(--app-color-card) 92%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+/* ============================================================
+   LISTING (search toolbar + table + paginator)
+   ============================================================ */
+
+.listing-searchbar {
+  width: 280px;
+}
+
+.listing-table-frame {
+  border: 1px solid var(--app-color-border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--app-color-card);
+}
+
+.listing-table-scroll {
+  overscroll-behavior-x: contain;
+}
+
+.listing-table {
+  min-width: 720px;
+
+  .listing-col {
+    padding-inline: 16px;
+  }
+
+  th.listing-col {
+    white-space: nowrap;
+  }
+}
+
+.listing-col-name {
+  min-width: 140px;
+  font-weight: 600;
+}
+
+.listing-col-email {
+  min-width: 220px;
+}
+
+.listing-col-description {
+  min-width: 220px;
+}
+
+.listing-col-number {
+  min-width: 110px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.listing-col-wide,
+.listing-col-amenities {
+  min-width: 200px;
+  max-width: 320px;
+}
+
+.listing-col-code {
+  min-width: 110px;
+  white-space: nowrap;
+}
+
+.listing-col-address {
+  min-width: 180px;
+}
+
+.listing-col-status {
+  min-width: 96px;
+}
+
+.listing-col-audit {
+  min-width: 160px;
+}
+
+// Button that reads as an inline link, e.g. an organization name that opens its details.
+.text-link-button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--mat-sys-primary);
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+}
+
+.listing-col-actions {
+  min-width: 72px;
+  width: 72px;
+}
+
+.listing-paginator {
+  width: auto;
+  background-color: transparent;
+}
+
+// Phones: each table row becomes a card. Cells show their column name from `data-label`.
+@media screen and (max-width: 599.98px) {
+  .listing-searchbar {
+    width: 100%;
+  }
+
+  .listing-create-button {
+    margin-inline-start: auto;
+  }
+
+  .listing-table-frame {
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  .listing-table-scroll {
+    overflow-x: visible;
+  }
+
+  .listing-table {
+    min-width: 0;
+    background-color: transparent;
+
+    thead {
+      display: none;
+    }
+
+    tbody,
+    tr[mat-row],
+    td[mat-cell] {
+      display: block;
+      width: 100%;
+    }
+
+    tr[mat-row] {
+      position: relative;
+      height: auto;
+      margin-bottom: 10px;
+      padding: 10px 0;
+      border: 1px solid var(--app-color-border-subtle);
+      border-radius: 12px;
+      background-color: var(--app-color-card-raised);
+    }
+
+    td[mat-cell].listing-col {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      max-width: none;
+      padding: 4px 16px;
+      border: 0;
+      text-align: right;
+
+      &[data-label]::before {
+        content: attr(data-label);
+        flex: none;
+        font: var(--mat-sys-label-medium);
+        color: var(--mat-sys-on-surface-variant);
+        text-align: left;
+      }
+    }
+
+    // The first column is the card title.
+    td[mat-cell].listing-col:first-child {
+      padding-inline-end: 56px;
+      font: var(--mat-sys-title-small);
+      font-weight: 700;
+      text-align: left;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    // Row actions sit in the card's top-right corner.
+    td[mat-cell].listing-col-actions {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: auto;
+      padding: 0;
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+}
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+
+.dashboard-shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.dashboard-shortcut {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    border-color: var(--mat-sys-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+}
+
+.dashboard-shortcut-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+
+  mat-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.dashboard-section-title {
+  margin: 8px 0 0;
+  font: var(--mat-sys-title-medium);
+  font-weight: 700;
+}
+
+/* ============================================================
+   SKELETON LOADING
+   ============================================================ */
+
+.skeleton-line {
+  display: block;
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--app-color-skeleton) 0%,
+    var(--app-color-card-raised) 50%,
+    var(--app-color-skeleton) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-line {
+    animation: none;
+  }
+
+  .app-sidebar,
+  .dashboard-shortcut {
+    transition: none;
+  }
+}
+
+/* ============================================================
+   FORM HELPERS
+   ============================================================ */
+
+// Field that shares a row with siblings on wide screens and stacks on narrow ones.
+.form-field-flex {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+// Field that takes half a row (two per row) on wide screens; full width on phones.
+.form-field-half {
+  max-width: calc(50% - 12px); // half of the row minus half of the 24px gap
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+  }
+}
+
+// Bordered group of related controls with a legend (e.g. room type amenities).
+.form-fieldset {
+  margin: 0;
+  border: 1px solid var(--app-color-border-subtle);
+  border-radius: 12px;
+}
+
+// Read-only value shown in place of an input (e.g. the chosen organization).
+.form-selection-value {
+  color: var(--mat-sys-on-surface);
+}
+
+.form-selection-error {
+  color: var(--mat-sys-error);
+}
+
+// Decorative icon in the brand accent color (e.g. a field's leading icon).
+.icon-accent {
+  color: var(--mat-sys-primary);
+}
+
+/* ============================================================
+   SELECTION DIALOGS (pick one row from a table)
+   ============================================================ */
+
+.selection-table-scroll {
+  max-height: 320px;
+  overflow-y: auto;
+  overscroll-behavior-x: contain;
+}
+
+.selection-table {
+  min-width: 520px;
+}
+
+.selection-col-select {
+  width: 48px;
+}
+
+.selection-row {
+  cursor: pointer;
+}
+
+/* ============================================================
+   SETTINGS CARDS (settings home and display & accessibility)
+   ============================================================ */
+
+.settings-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+}
+
+.settings-card {
+  background-color: var(--app-color-card);
+  border: 1px solid var(--app-color-border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--app-shadow-card);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+
+  &:hover {
+    border-color: var(--mat-sys-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+}
+
+.settings-card-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+
+  mat-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.settings-preview {
+  background-color: var(--app-color-card-raised);
+}
+
+/* ============================================================
+   STATUS PAGES (404, 403, account setup failed, no organization)
+   ============================================================ */
+
+.status-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  padding: 24px;
+}
+
+.status-page-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 420px;
+  text-align: center;
+}
+
+// Large round badge for a success outcome (e.g. password changed).
+.success-badge {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background-color: var(--mat-sys-success-container);
+  color: var(--mat-sys-on-success-container);
+
+  mat-icon {
+    width: 64px;
+    height: 64px;
+  }
+}

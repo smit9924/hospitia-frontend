@@ -1,7 +1,7 @@
 <div class="w-100">
-  <app-secondary-navbar [titleText]="titleText" />
+  <app-page-header [titleText]="titleText" />
 
-  <main class="d-flex flex-column gap-24 p-24 w-100">
+  <div class="page-container">
     <mat-card>
       <mat-card-content class="d-flex justify-flex-start align-center">
         <div class="d-flex justify-center align-center gap-24 wrap">
@@ -109,7 +109,7 @@
           >
             <div class="d-flex gap-24 wrap">
               <!-- TEXT FIELD: First name -->
-              <mat-form-field class="w-100 mw-50">
+              <mat-form-field class="w-100 form-field-half">
                 <mat-label i18n>First name</mat-label>
                 <input
                   matInput
@@ -124,7 +124,7 @@
               </mat-form-field>
 
               <!-- TEXT FIELD: Last name -->
-              <mat-form-field class="w-100 mw-50">
+              <mat-form-field class="w-100 form-field-half">
                 <mat-label i18n>Last name</mat-label>
                 <input
                   matInput
@@ -195,5 +195,5 @@
         </div>
       </mat-card-content>
     </mat-card>
-  </main>
+  </div>
 </div>

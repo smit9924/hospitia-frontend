@@ -1,10 +1,10 @@
 <!-- Pre-loader/Progress bar/Spinner -->
 <app-loader-container />
 
-<div class="d-flex flex-column w-100 min-h-100">
-  <!-- Primary navbar -->
-  @if (layoutService.showNavbar()) {
-    <div class="position-sticky top-0 z-3">
+<app-shell [showsNavigation]="showsAppShellNavigation()">
+  @if (showsPublicHeader()) {
+    <!-- Primary navbar (public pages) -->
+    <div appShellPublicHeader class="position-sticky top-0 z-3">
       <app-navbar />
     </div>
   }
@@ -14,8 +14,10 @@
     <router-outlet />
   </div>
 
-  <!-- Footer -->
-  @if (layoutService.showFooter()) {
-    <app-footer />
+  @if (showsPublicFooter()) {
+    <!-- Footer (public pages) -->
+    <div appShellPublicFooter>
+      <app-footer />
+    </div>
   }
-</div>
+</app-shell>

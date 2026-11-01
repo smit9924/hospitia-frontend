@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal, ViewChild } from '@angular/core';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 import { MatCardModule } from '@angular/material/card';
 import { NgOptimizedImage } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
@@ -30,7 +30,7 @@ import { User } from '../../../services/user/user';
   selector: 'app-profile',
   imports: [
     MatCardModule,
-    SecondaryNavbar,
+    PageHeader,
     NgOptimizedImage,
     MatDividerModule,
     MatFormFieldModule,

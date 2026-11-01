@@ -1,0 +1,326 @@
+// App shell for signed-in pages: collapsible sidebar, top bar and scrolling content.
+// Markup lives in components/common/app-shell, components/common/app-sidebar and
+// components/common/app-top-bar; all their styling is here so it stays in one place.
+
+.app-shell {
+  height: 100%;
+  min-height: 100vh;
+}
+
+.app-shell-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+// Main area below the top bar; routed pages fill it.
+.app-shell-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+// Keyboard users can jump past the sidebar straight to the page.
+.app-skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  font: var(--mat-sys-label-large);
+  transform: translateY(-200%);
+
+  &:focus {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+// Widths come from the sidenav tokens in _material-sidenav-override.scss.
+.app-sidebar {
+  transition: width 0.2s ease;
+}
+
+.app-sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.app-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 64px;
+  padding-inline: 20px;
+  flex: none;
+}
+
+.app-sidebar-logo {
+  display: block;
+  height: 36px;
+  width: auto;
+}
+
+.app-sidebar-logo-icon {
+  display: none;
+  height: 36px;
+  width: 36px;
+}
+
+.app-sidebar-organization {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 12px 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--app-color-border-subtle);
+  border-radius: 12px;
+  background-color: var(--app-color-card-raised);
+  min-width: 0;
+  flex: none;
+}
+
+.app-sidebar-organization-avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 9px;
+  background-color: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+  font: var(--mat-sys-label-large);
+  font-weight: 700;
+}
+
+.app-sidebar-organization-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-sidebar-organization-label {
+  font: var(--mat-sys-label-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.app-sidebar-organization-name {
+  font: var(--mat-sys-label-large);
+  font-weight: 700;
+}
+
+.app-sidebar-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 4px 12px 12px;
+}
+
+.app-sidebar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app-sidebar-group-label {
+  padding: 0 12px 4px;
+  font: var(--mat-sys-label-small);
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--mat-sys-on-surface-variant);
+  white-space: nowrap;
+}
+
+.app-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-label-large);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  mat-icon {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  &:hover {
+    background-color: var(--app-color-card-raised);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+
+  &.app-sidebar-link--active {
+    background-color: var(--app-color-nav-active);
+    color: var(--app-color-on-nav-active);
+
+    mat-icon {
+      color: var(--app-color-on-nav-active);
+    }
+  }
+}
+
+.app-sidebar-footer {
+  flex: none;
+  padding: 10px 12px;
+  border-top: 1px solid var(--app-color-border-subtle);
+}
+
+// Desktop "rail": the sidebar is collapsed to icons with tooltips.
+.app-sidebar--rail {
+  .app-sidebar-brand {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .app-sidebar-logo {
+    display: none;
+  }
+
+  .app-sidebar-logo-icon {
+    display: block;
+  }
+
+  .app-sidebar-organization {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .app-sidebar-organization-text,
+  .app-sidebar-group-label,
+  .app-sidebar-link-label {
+    display: none;
+  }
+
+  .app-sidebar-link {
+    justify-content: center;
+  }
+}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+
+.app-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 64px;
+  padding-inline: 16px 20px;
+  border-bottom: 1px solid var(--app-color-border-subtle);
+  background-color: color-mix(in srgb, var(--app-color-page-ground) 88%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.app-top-bar-spacer {
+  flex: 1 1 auto;
+}
+
+.app-top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.app-top-bar-avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  font: var(--mat-sys-label-large);
+  font-weight: 700;
+}
+
+.app-top-bar-menu-header {
+  display: flex;
+  flex-direction: column;
+  max-width: 280px;
+  padding: 8px 16px 12px;
+  border-bottom: 1px solid var(--app-color-border-subtle);
+}
+
+@media screen and (max-width: 599.98px) {
+  .app-top-bar {
+    padding-inline: 8px 12px;
+  }
+}
+
+/* ============================================================
+   PUBLIC HEADER (components/common/navbar, public pages only)
+   ============================================================ */
+
+.public-header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--app-color-border-subtle);
+  background-color: color-mix(in srgb, var(--app-color-card) 92%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.public-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(1200px, 100%);
+}
+
+.public-header-logo {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+
+.public-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Scoped under .public-header so it wins over Material's own icon-button display rule.
+.public-header .public-header-menu-button {
+  display: none;
+}
+
+@media screen and (max-width: 599.98px) {
+  .public-header .public-header-actions {
+    display: none;
+  }
+
+  .public-header .public-header-menu-button {
+    display: inline-flex;
+  }
+}

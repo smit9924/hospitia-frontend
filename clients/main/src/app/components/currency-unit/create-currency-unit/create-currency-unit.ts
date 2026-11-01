@@ -28,7 +28,7 @@ import {
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 import { Banner } from '../../common/banner/banner';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 
 /** ISO 4217 alphabetic code: three letters (stored uppercase). */
 const CURRENCY_CODE_PATTERN = /^[A-Za-z]{3}$/;
@@ -49,7 +49,7 @@ type CurrencyUnitForm = FormGroup<{
 @Component({
   selector: 'app-create-currency-unit',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,

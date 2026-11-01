@@ -1,7 +1,7 @@
 <div class="w-100">
-  <app-secondary-navbar [titleText]="titleText" />
+  <app-page-header [titleText]="titleText" />
 
-  <main class="d-flex flex-column gap-16 p-24 w-100">
+  <div class="page-container">
     <!-- Section: Room type filters -->
     @if (showSearchbar()) {
       <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
@@ -97,7 +97,13 @@
                 >
                   Name
                 </th>
-                <td *matCellDef="let roomType" class="listing-col listing-col-name" mat-cell>
+                <td
+                  *matCellDef="let roomType"
+                  class="listing-col listing-col-name"
+                  mat-cell
+                  data-label="Name"
+                  i18n-data-label
+                >
                   <span
                     class="clamp-1"
                     [customMatTooltip]="roomType.name"
@@ -119,7 +125,13 @@
                 >
                   Capacity
                 </th>
-                <td *matCellDef="let roomType" class="listing-col listing-col-number" mat-cell>
+                <td
+                  *matCellDef="let roomType"
+                  class="listing-col listing-col-number"
+                  mat-cell
+                  data-label="Capacity"
+                  i18n-data-label
+                >
                   {{ roomType.capacity | number }}
                 </td>
               </ng-container>
@@ -135,7 +147,13 @@
                 >
                   Cost per night
                 </th>
-                <td *matCellDef="let roomType" class="listing-col listing-col-number" mat-cell>
+                <td
+                  *matCellDef="let roomType"
+                  class="listing-col listing-col-number"
+                  mat-cell
+                  data-label="Cost per night"
+                  i18n-data-label
+                >
                   {{ roomType.currencyUnit.currencyCode }}
                   {{ toAmount(roomType.costPerNight) | number: '1.2-2' }}
                 </td>
@@ -151,7 +169,13 @@
                 >
                   Amenities
                 </th>
-                <td *matCellDef="let roomType" class="listing-col listing-col-amenities" mat-cell>
+                <td
+                  *matCellDef="let roomType"
+                  class="listing-col listing-col-amenities"
+                  mat-cell
+                  data-label="Amenities"
+                  i18n-data-label
+                >
                   <span
                     class="clamp-1"
                     [customMatTooltip]="formatAmenities(roomType)"
@@ -167,7 +191,13 @@
                 <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell i18n>
                   Organization
                 </th>
-                <td *matCellDef="let roomType" class="listing-col listing-col-name" mat-cell>
+                <td
+                  *matCellDef="let roomType"
+                  class="listing-col listing-col-name"
+                  mat-cell
+                  data-label="Organization"
+                  i18n-data-label
+                >
                   <span
                     class="clamp-1"
                     [customMatTooltip]="roomType.organization.name"
@@ -230,5 +260,5 @@
         </div>
       }
     </section>
-  </main>
+  </div>
 </div>

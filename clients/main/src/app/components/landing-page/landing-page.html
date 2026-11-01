@@ -1,4 +1,4 @@
-<main class="landing-page w-100">
+<div class="landing-page w-100">
   <!-- SECTION: Hero -->
   <section
     class="hero-section page-section content d-flex justify-center align-center overflow-hidden position-relative"
@@ -169,8 +169,16 @@
                 Book Now
               </button>
 
-              <button mat-icon-button matTooltip="Add to wishlist" type="button">
-                <mat-icon svgIcon="favorite" />
+              <!-- BUTTON: Add to wishlist -->
+              <button
+                mat-icon-button
+                matTooltip="Add to wishlist"
+                i18n-matTooltip
+                type="button"
+                aria-label="Add to wishlist"
+                i18n-aria-label
+              >
+                <mat-icon svgIcon="favorite" aria-hidden="true" />
               </button>
             </mat-card-actions>
           </mat-card>
@@ -236,7 +244,12 @@
             </div>
 
             <mat-card-content class="p-0">
-              <div class="rating d-flex gap-8 mb-16" aria-label="Guest rating">
+              <div
+                class="rating d-flex gap-8 mb-16"
+                role="img"
+                aria-label="Guest rating"
+                i18n-aria-label
+              >
                 @for (star of getRatingArray(5); let index = $index; track $index) {
                   @if (index < testimonial.rating) {
                     <mat-icon class="star-filled" svgIcon="starFilled" aria-hidden="true" />
@@ -366,4 +379,4 @@
       </div>
     </div>
   </section>
-</main>
+</div>

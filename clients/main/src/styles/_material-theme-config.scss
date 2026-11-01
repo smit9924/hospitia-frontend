@@ -4,15 +4,19 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@use 'theme-colors';
+
+// Brand palettes generated from the Forest Sage accent #3D7A57 (see _theme-colors.scss).
+$hospitia-theme-color: (
+  primary: theme-colors.$primary-palette,
+  tertiary: theme-colors.$tertiary-palette,
+);
 
 html {
   height: 100%;
   @include mat.theme(
     (
-      color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
-      ),
+      color: $hospitia-theme-color,
       typography: FontFamilyUI,
       density: 0,
     )
@@ -28,7 +32,7 @@ body {
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
   // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
+  background-color: var(--app-color-page-ground);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
 
@@ -47,11 +51,4 @@ body {
 
 .theme-auto {
   color-scheme: light dark;
-}
-/* You can add global styles to this file, and also import other style files */
-
-// Set the fill color of all `mat-icon` components to the current text color. This allows
-// icons to automatically adapt to the color of their surrounding text
-mat-icon svg {
-  fill: currentColor;
 }

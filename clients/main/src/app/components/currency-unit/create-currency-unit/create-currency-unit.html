@@ -1,7 +1,7 @@
 <div class="w-100">
-  <app-secondary-navbar [titleText]="titleText()" [backButton]="true" />
+  <app-page-header [titleText]="titleText()" [backButton]="true" />
 
-  <main class="d-flex flex-column gap-24 p-24 w-100 align-center">
+  <div class="page-container page-container--form">
     @if (isEditMode() && isLoadingCurrencyUnit()) {
       <!-- STATE: Loading currency unit -->
       <section
@@ -136,7 +136,7 @@
             </mat-form-field>
 
             <!-- BUTTON: Save currency unit -->
-            <div class="d-flex justify-end gap-8 wrap">
+            <div class="form-actions">
               <button
                 matButton="filled"
                 type="submit"
@@ -149,5 +149,5 @@
         </mat-card-content>
       </mat-card>
     }
-  </main>
+  </div>
 </div>

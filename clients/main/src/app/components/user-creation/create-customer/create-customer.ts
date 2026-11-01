@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { filter, finalize, switchMap } from 'rxjs';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 import { Banner } from '../../common/banner/banner';
 import { appRoutes } from '../../../data/app-routes';
 import { Dialog } from '../../../services/dialog';
@@ -39,7 +39,7 @@ type CustomerForm = FormGroup<{
 @Component({
   selector: 'app-create-customer',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,

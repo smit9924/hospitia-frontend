@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+
+// Cards: one surface, soft border and shadow; used by forms and settings pages.
+:root {
+  @include mat.card-overrides(
+    (
+      elevated-container-shape: 16px,
+      elevated-container-color: var(--app-color-card),
+      elevated-container-elevation: var(--app-shadow-card),
+      outlined-container-shape: 16px,
+      outlined-container-color: var(--app-color-card),
+      outlined-outline-color: var(--app-color-border-subtle),
+      title-text-weight: 700,
+    )
+  );
+}

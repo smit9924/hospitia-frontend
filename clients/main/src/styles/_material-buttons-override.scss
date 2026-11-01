@@ -3,10 +3,36 @@
 html {
   @include mat.button-overrides(
     (
-      filled-container-shape: var(--mat-sys-corner-small),
-      outlined-container-shape: var(--mat-sys-corner-small),
-      tonal-container-shape: var(--mat-sys-corner-small),
-      text-container-shape: var(--mat-sys-corner-small),
+      filled-container-shape: 10px,
+      outlined-container-shape: 10px,
+      tonal-container-shape: 10px,
+      text-container-shape: 10px,
+      filled-container-height: 40px,
+      outlined-container-height: 40px,
+      tonal-container-height: 40px,
+      outlined-outline-color: var(--app-color-border-subtle),
+    )
+  );
+}
+
+// Quiet secondary action next to a filled primary action (e.g. Cancel beside Save).
+// Usage: <button matButton="outlined" class="button-quiet">.
+.button-quiet {
+  @include mat.button-overrides(
+    (
+      outlined-label-text-color: var(--mat-sys-on-surface),
+      outlined-container-shape: 10px,
+    )
+  );
+  background-color: var(--app-color-card);
+}
+
+// Icon button that holds the 36px profile avatar instead of a 24px icon, so Material computes
+// its padding for the avatar and keeps it centered like the other top bar buttons.
+.app-top-bar-avatar-button {
+  @include mat.icon-button-overrides(
+    (
+      icon-size: 36px,
     )
   );
 }

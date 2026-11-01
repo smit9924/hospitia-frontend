@@ -1,0 +1,198 @@
+<!-- Section: UI patterns -->
+<mat-card appearance="outlined">
+  <mat-card-header class="mb-24">
+    <mat-card-title>UI patterns</mat-card-title>
+    <mat-card-subtitle
+      >Global classes from styles/_page-patterns.scss and styles/_app-shell.scss. Reuse them instead
+      of writing component styles.</mat-card-subtitle
+    >
+  </mat-card-header>
+
+  <mat-card-content class="d-flex flex-column gap-32">
+    <!-- PATTERN: Page header -->
+    <section class="d-flex flex-column gap-8">
+      <h3 class="heading-tiny m-0">Page header <code class="body-small">app-page-header</code></h3>
+      <div class="surface-card">
+        <app-page-header
+          titleText="Room types"
+          description="The kinds of rooms you offer, with price and capacity."
+          [backButton]="true"
+        >
+          <button pageHeaderActions matButton="filled" type="button">Create room type</button>
+        </app-page-header>
+      </div>
+    </section>
+
+    <!-- PATTERN: Buttons -->
+    <section class="d-flex flex-column gap-8">
+      <h3 class="heading-tiny m-0">Buttons</h3>
+      <div class="d-flex wrap gap-8 align-center">
+        <button matButton="filled" type="button">Primary action</button>
+        <button matButton="outlined" class="button-quiet" type="button">
+          Secondary (.button-quiet)
+        </button>
+        <button matButton type="button">Text action</button>
+        <button matButton="filled" type="button" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <!-- PATTERN: Sidebar links -->
+    <section class="d-flex flex-column gap-8">
+      <h3 class="heading-tiny m-0">
+        Sidebar links <code class="body-small">.app-sidebar-link</code>
+      </h3>
+      <div class="ui-pattern-sidebar-preview surface-card p-16 d-flex flex-column gap-4">
+        <div class="app-sidebar-group-label">Property</div>
+        <span class="app-sidebar-link app-sidebar-link--active"
+          ><mat-icon svgIcon="bed" aria-hidden="true" />Room types (current)</span
+        >
+        <span class="app-sidebar-link"
+          ><mat-icon svgIcon="roomService" aria-hidden="true" />Room amenities</span
+        >
+      </div>
+    </section>
+
+    <!-- PATTERN: Listing table -->
+    <section class="d-flex flex-column gap-8">
+      <h3 class="heading-tiny m-0">
+        Listing <code class="body-small">.listing-card, .listing-table, data-label</code>
+      </h3>
+      <p class="body-medium text-secondary m-0">
+        Under 600px each row becomes a card; cells show their <code>data-label</code>.
+      </p>
+      <div class="listing-card p-16">
+        <div class="listing-table-frame">
+          <div class="listing-table-scroll w-100 overflow-x-auto">
+            <table class="listing-table w-100" mat-table [dataSource]="exampleRoomTypes">
+              <ng-container matColumnDef="name">
+                <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell>Name</th>
+                <td
+                  *matCellDef="let row"
+                  class="listing-col listing-col-name"
+                  mat-cell
+                  data-label="Name"
+                >
+                  {{ row.name }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="capacity">
+                <th *matHeaderCellDef class="listing-col listing-col-number" mat-header-cell>
+                  Capacity
+                </th>
+                <td
+                  *matCellDef="let row"
+                  class="listing-col listing-col-number"
+                  mat-cell
+                  data-label="Capacity"
+                >
+                  {{ row.capacity }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="costPerNight">
+                <th *matHeaderCellDef class="listing-col listing-col-number" mat-header-cell>
+                  Cost per night
+                </th>
+                <td
+                  *matCellDef="let row"
+                  class="listing-col listing-col-number"
+                  mat-cell
+                  data-label="Cost per night"
+                >
+                  {{ row.costPerNight }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th *matHeaderCellDef class="listing-col listing-col-status" mat-header-cell>
+                  Status
+                </th>
+                <td
+                  *matCellDef="let row"
+                  class="listing-col listing-col-status"
+                  mat-cell
+                  data-label="Status"
+                >
+                  @if (row.isBookable) {
+                    <span class="status-chip status-chip--active">Bookable</span>
+                  } @else {
+                    <span class="status-chip status-chip--inactive">No rooms yet</span>
+                  }
+                </td>
+              </ng-container>
+              <tr *matHeaderRowDef="exampleColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: exampleColumns" mat-row></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PATTERN: Form card -->
+    <section class="d-flex flex-column gap-8">
+      <h3 class="heading-tiny m-0">
+        Form <code class="body-small">.form-card, .selectable-chip-group, .form-actions</code>
+      </h3>
+      <mat-card class="form-card form-card--narrow w-100">
+        <mat-card-content class="d-flex flex-column gap-16">
+          <mat-form-field class="w-100" subscriptSizing="dynamic">
+            <mat-label>Name</mat-label>
+            <input matInput value="Deluxe double" />
+          </mat-form-field>
+          <fieldset class="form-fieldset p-16 d-flex flex-column gap-8">
+            <legend class="body-medium px-8">Amenities</legend>
+            <div class="selectable-chip-group">
+              @for (amenity of exampleAmenities; track amenity) {
+                <mat-checkbox [checked]="$first">{{ amenity }}</mat-checkbox>
+              }
+            </div>
+          </fieldset>
+          <div class="form-actions">
+            <button matButton="outlined" class="button-quiet" type="button">Cancel</button>
+            <button matButton="filled" type="button">Save</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </section>
+
+    <!-- PATTERN: Cards -->
+    <section class="d-flex flex-column gap-8">
+      <h3 class="heading-tiny m-0">
+        Cards <code class="body-small">.dashboard-shortcut, .settings-card</code>
+      </h3>
+      <div class="dashboard-shortcut-grid">
+        <span class="dashboard-shortcut surface-card">
+          <span class="dashboard-shortcut-icon" aria-hidden="true"><mat-icon svgIcon="bed" /></span>
+          <span class="d-flex flex-column gap-4">
+            <span class="body-large font-weight-bold">Room types</span>
+            <span class="body-medium text-secondary">Kinds of rooms you offer.</span>
+          </span>
+        </span>
+        <span class="settings-card d-flex align-center gap-16 p-16">
+          <span class="settings-card-icon" aria-hidden="true"><mat-icon svgIcon="keySolid" /></span>
+          <span class="d-flex flex-column gap-4">
+            <span class="body-large font-weight-bold">Change password</span>
+            <span class="body-medium text-secondary">Update your account password.</span>
+          </span>
+        </span>
+      </div>
+    </section>
+
+    <!-- PATTERN: Loading and empty states -->
+    <section class="d-flex flex-column gap-8">
+      <h3 class="heading-tiny m-0">
+        Loading and empty states <code class="body-small">.skeleton-line, .empty-state-icon</code>
+      </h3>
+      <div class="dashboard-shortcut-grid">
+        <div class="surface-card p-16 d-flex flex-column gap-8" role="status" aria-label="Loading">
+          <span class="skeleton-line w-100"></span>
+          <span class="skeleton-line ui-pattern-skeleton-medium"></span>
+          <span class="skeleton-line ui-pattern-skeleton-short"></span>
+        </div>
+        <div class="ui-pattern-empty-state surface-card p-16 status-page-text">
+          <mat-icon class="empty-state-icon" svgIcon="search" aria-hidden="true" />
+          <span class="body-large font-weight-bold">No room types found</span>
+          <span class="body-medium text-secondary">Try a different search term.</span>
+        </div>
+      </div>
+    </section>
+  </mat-card-content>
+</mat-card>

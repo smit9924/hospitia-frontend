@@ -3,7 +3,14 @@
 :root {
   @include mat.table-overrides(
     (
+      background-color: var(--app-color-card),
       header-headline-color: var(--mat-sys-on-surface-variant),
+      header-headline-size: 0.75rem,
+      header-headline-weight: 700,
+      header-headline-tracking: 0.06em,
+      header-container-height: 44px,
+      row-item-container-height: 56px,
+      row-item-outline-color: var(--app-color-border-subtle),
     )
   );
 }
@@ -14,5 +21,11 @@ table[mat-table] thead,
 table[mat-table] th[mat-header-cell],
 mat-table mat-header-row,
 mat-table mat-header-cell {
-  background-color: var(--mat-sys-surface-container);
+  background-color: var(--app-color-card-raised);
+  text-transform: uppercase;
+}
+
+// Row hover helps scanning; uses the public row selector.
+table[mat-table] tr[mat-row]:hover {
+  background-color: var(--app-color-card-raised);
 }

@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+
+:root {
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: 10px,
+      outlined-outline-color: var(--app-color-border-subtle),
+      outlined-hover-outline-color: var(--mat-sys-outline),
+    )
+  );
+}

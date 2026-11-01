@@ -23,7 +23,7 @@ import { RoomTypeListItem, RoomTypeSortBy } from '../../../types/interfaces/room
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
 import { Searchbar } from '../../common/searchbar/searchbar';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 
 const DEFAULT_SORT_BY: RoomTypeSortBy = 'name';
 
@@ -35,7 +35,7 @@ const DEFAULT_SORT_BY: RoomTypeSortBy = 'name';
 @Component({
   selector: 'app-room-type-listing',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     Searchbar,
     MatTableModule,
     MatSortModule,

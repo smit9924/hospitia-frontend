@@ -1,21 +1,19 @@
 <div class="w-100">
-  <app-secondary-navbar [titleText]="titleText" [backButton]="true" />
+  <app-page-header
+    i18n-description
+    description="Manage how the application looks and behaves for your comfort."
+    [titleText]="titleText"
+    [backButton]="true"
+  />
 
-  <main class="display-accessibility-page min-h-100 w-100 content">
-    <section class="section-container d-flex flex-column gap-24">
-      <div class="d-flex flex-column gap-8">
-        <h1 class="heading-large" i18n>Display & Accessibility</h1>
-        <p class="body-large text-secondary line-height-spaced" i18n>
-          Manage how the application looks and behaves for your comfort.
-        </p>
-      </div>
-
+  <div class="page-container">
+    <section class="d-flex flex-column gap-24">
       <div class="d-flex flex-column gap-24">
         <!-- CARD: Theme preference -->
-        <mat-card class="setting-card rounded-12">
+        <mat-card class="settings-card">
           <mat-card-content class="p-24">
             <div class="d-flex align-flex-start gap-16 wrap justify-center">
-              <div class="setting-icon d-flex justify-center align-center rounded-full shrink-0">
+              <div class="settings-card-icon">
                 <mat-icon svgIcon="devices" aria-hidden="true"></mat-icon>
               </div>
 
@@ -33,15 +31,13 @@
           </mat-card-content>
         </mat-card>
 
-        <div class="settings-grid gap-24">
+        <div class="settings-card-grid">
           <!-- CARD: Increase text size -->
-          <mat-card class="setting-card rounded-12">
+          <mat-card class="settings-card">
             <mat-card-content class="p-24 h-100">
               <div class="d-flex flex-column gap-24 h-100">
                 <div class="d-flex align-flex-start gap-16 wrap justify-center">
-                  <div
-                    class="setting-icon d-flex justify-center align-center rounded-full shrink-0"
-                  >
+                  <div class="settings-card-icon">
                     <mat-icon svgIcon="visibility" aria-hidden="true"></mat-icon>
                   </div>
 
@@ -66,13 +62,11 @@
           </mat-card>
 
           <!-- CARD: High contrast focus -->
-          <mat-card class="setting-card rounded-12">
+          <mat-card class="settings-card">
             <mat-card-content class="p-24 h-100">
               <div class="d-flex flex-column gap-24 h-100">
                 <div class="d-flex align-flex-start gap-16 wrap justify-center">
-                  <div
-                    class="setting-icon d-flex justify-center align-center rounded-full shrink-0"
-                  >
+                  <div class="settings-card-icon">
                     <mat-icon svgIcon="success" aria-hidden="true"></mat-icon>
                   </div>
 
@@ -112,5 +106,5 @@
         </div>
       </div>
     </section>
-  </main>
+  </div>
 </div>

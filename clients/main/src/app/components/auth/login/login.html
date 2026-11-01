@@ -1,4 +1,4 @@
-<main class="login-container min-h-100 min-w-100 content d-flex justify-center align-center">
+<div class="login-container min-h-100 min-w-100 content d-flex justify-center align-center">
   <mat-card class="login-card">
     <mat-card-header class="d-flex justify-center mb-24">
       <mat-card-title>
@@ -19,7 +19,7 @@
           <!-- TEXT FIELD: Email -->
           <mat-form-field class="w-100">
             <mat-label i18n>Email</mat-label>
-            <mat-icon svgIcon="person" aria-hidden="false" class="login-icon" matPrefix></mat-icon>
+            <mat-icon svgIcon="person" aria-hidden="true" class="login-icon" matPrefix></mat-icon>
             <input
               matInput
               formControlName="email"
@@ -38,7 +38,7 @@
           <!-- TEXT FIELD: Password -->
           <mat-form-field class="w-100">
             <mat-label i18n>Password</mat-label>
-            <mat-icon svgIcon="lock" aria-hidden="false" class="login-icon" matPrefix></mat-icon>
+            <mat-icon svgIcon="lock" aria-hidden="true" class="login-icon" matPrefix></mat-icon>
             <input
               type="{{ showPassword ? 'text' : 'password' }}"
               matInput
@@ -147,4 +147,4 @@
       </form>
     </mat-card-content>
   </mat-card>
-</main>
+</div>

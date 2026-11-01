@@ -24,7 +24,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { filter, finalize, switchMap } from 'rxjs';
 import { Banner } from '../../common/banner/banner';
 import { MinimalHeader } from '../../common/minimal-header/minimal-header';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 import { OwnerSelectionDialog } from '../owner-selection-dialog/owner-selection-dialog';
 import { appRoutes } from '../../../data/app-routes';
 import { Dialog } from '../../../services/dialog';
@@ -65,7 +65,7 @@ type OrganizationForm = FormGroup<{
 @Component({
   selector: 'app-create-organization',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     MinimalHeader,
     MatCardModule,
     MatFormFieldModule,

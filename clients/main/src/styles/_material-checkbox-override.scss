@@ -1,0 +1,32 @@
+@use '@angular/material' as mat;
+
+// Group of checkboxes shown as selectable pills (e.g. room type amenities).
+// Usage: wrap mat-checkbox elements in an element with `.selectable-chip-group`.
+// The checkbox stays the form control, so keyboard, forms and screen readers work as before.
+.selectable-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  mat-checkbox {
+    border: 1px solid var(--app-color-border-subtle);
+    border-radius: 999px;
+    padding-inline-end: 12px;
+    background-color: var(--app-color-page-ground);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+
+    &:hover {
+      border-color: var(--mat-sys-outline);
+    }
+
+    // Selected pill. Material exposes no token for a checked host, so this uses its internal
+    // `mat-mdc-checkbox-checked` state class; keep internal selectors in this file only.
+    &.mat-mdc-checkbox-checked {
+      border-color: var(--mat-sys-primary);
+      background-color: var(--mat-sys-primary-container);
+      color: var(--mat-sys-on-primary-container);
+    }
+  }
+}

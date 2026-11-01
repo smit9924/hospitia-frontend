@@ -1,265 +1,47 @@
-<nav class="nav d-flex align-center justify-center w-100 px-16 py-8 position-sticky top-0 z-3">
-  <div class="nav-inner-width justify-space-between align-center d-flex gap-16">
-    <!-- Left section -->
-    <div class="d-flex align-center gap-16">
-      <!-- Button: Menu -->
+<nav class="public-header" aria-label="Main" i18n-aria-label>
+  <div class="public-header-inner">
+    <!-- Brand Logo -->
+    <img
+      ngSrc="assets/logo/logo-full.png"
+      class="public-header-logo"
+      width="126"
+      height="42"
+      alt="Hospitia"
+      i18n-alt
+      priority
+    />
+
+    @if (authService.isLoggedIn) {
+      <!-- BUTTON: Go to dashboard -->
+      <a matButton="filled" i18n [routerLink]="dashboardLink()">Go to dashboard</a>
+    } @else {
+      <!-- Section: Auth actions (desktop) -->
+      <div class="public-header-actions">
+        <!-- BUTTON: Log in -->
+        <a matButton="filled" i18n [routerLink]="loginLink">Log in</a>
+        <!-- BUTTON: Sign up -->
+        <a matButton="outlined" class="button-quiet" i18n [routerLink]="signupLink">Sign up</a>
+      </div>
+
+      <!-- BUTTON: Menu (mobile) -->
       <button
-        mat-icon-button
+        matIconButton
+        type="button"
+        class="public-header-menu-button"
         aria-label="Menu"
-        i18n-aria-label="navigation menu button"
+        i18n-aria-label
         matTooltip="Menu"
-        i18n-matTooltip="navigation menu button"
-        class="rounded-4 button-menu d-flex align-items-center justify-content-center"
-        [matMenuTriggerFor]="navLinksMenu"
+        i18n-matTooltip
+        [matMenuTriggerFor]="publicLinksMenu"
       >
-        <mat-icon svgIcon="menu" aria-hidden="true" class="d-flex align-center justify-center" />
+        <mat-icon svgIcon="menu" aria-hidden="true" />
       </button>
 
-      <!-- Menu: Links -->
-      <mat-menu #navLinksMenu="matMenu">
-        @if (authService.isLoggedIn) {
-          @if (activeOrganization(); as organization) {
-            <!-- TEXT: Active organization (Mobile) -->
-            <div class="active-organization-menu-header d-flex align-center gap-8 px-16 py-8">
-              <mat-icon
-                svgIcon="businessCenter"
-                aria-hidden="true"
-                class="active-organization-icon shrink-0"
-              />
-              <span class="body-medium wb-break-word">
-                <span class="visually-hidden" i18n>Active organization:</span>
-                {{ organization.name }}
-              </span>
-            </div>
-          }
-          <div mat-menu-item>
-            <a matButton i18n [routerLink]="dashboardLink()">Dashboard</a>
-          </div>
-          @if (showUsersMenu()) {
-            <button mat-menu-item type="button" [matMenuTriggerFor]="usersNavMenu">
-              <div class="d-flex align-center gap-4 justify-content-center">
-                <span i18n>Users</span>
-              </div>
-            </button>
-          }
-          @if (showOrganizationMenu()) {
-            <button mat-menu-item type="button" [matMenuTriggerFor]="organizationNavMenu">
-              <div class="d-flex align-center gap-4 justify-content-center">
-                <span i18n>Organization</span>
-              </div>
-            </button>
-          }
-          @if (showCurrencyUnitsLink()) {
-            <!-- LINK: Currency units (Mobile) -->
-            <div mat-menu-item>
-              <a matButton i18n [routerLink]="currencyUnitsLink">Currency Units</a>
-            </div>
-          }
-        } @else {
-          <div mat-menu-item>
-            <a matButton i18n [routerLink]="loginLink">Log in</a>
-          </div>
-          <div mat-menu-item>
-            <a matButton i18n [routerLink]="signupLink">Sign up</a>
-          </div>
-        }
+      <!-- Menu: Auth links (mobile) -->
+      <mat-menu #publicLinksMenu="matMenu" xPosition="before">
+        <a mat-menu-item i18n [routerLink]="loginLink">Log in</a>
+        <a mat-menu-item i18n [routerLink]="signupLink">Sign up</a>
       </mat-menu>
-
-      <!-- Menu: Users(Mobile) -->
-      <mat-menu #usersNavMenu="matMenu">
-        @for (link of usersMenuLinks(); track link.route) {
-          <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
-        }
-      </mat-menu>
-
-      <!-- Menu: Organization(Mobile) -->
-      <mat-menu #organizationNavMenu="matMenu">
-        @for (link of organizationMenuLinks(); track link.route) {
-          <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
-        }
-      </mat-menu>
-
-      <!-- Brand Logo -->
-      <img
-        ngSrc="assets/logo/logo-full.png"
-        class="logo-full"
-        width="126"
-        height="42"
-        alt="'Logo'"
-        priority
-        i18n-alt
-      />
-      <img
-        ngSrc="assets/logo/logo-icon.png"
-        class="logo-icon"
-        width="42"
-        height="42"
-        alt="'Logo'"
-        priority
-        i18n-alt
-      />
-    </div>
-
-    @if (authService.isLoggedIn) {
-      <div class="link-container">
-        <ul class="list-style-none d-flex gap-16 p-0 m-0">
-          <li class="body-large">
-            <a matButton i18n [routerLink]="dashboardLink()">Dashboard</a>
-          </li>
-          @if (showUsersMenu()) {
-            <li class="body-large">
-              <button
-                #usersMenuTrigger="matMenuTrigger"
-                matButton
-                type="button"
-                aria-haspopup="menu"
-                aria-label="Users"
-                i18n-aria-label
-                [matMenuTriggerFor]="usersDesktopMenu"
-              >
-                <div class="d-flex align-center gap-4 justify-content-center">
-                  <span i18n>Users</span>
-                  <mat-icon
-                    class="d-flex align-center justify-center dropdown-icon"
-                    aria-hidden="true"
-                    [svgIcon]="usersMenuTrigger.menuOpen ? 'chevronUp' : 'chevronDown'"
-                  />
-                </div>
-              </button>
-            </li>
-          }
-          @if (showOrganizationMenu()) {
-            <li class="body-large">
-              <button
-                #organizationMenuTrigger="matMenuTrigger"
-                matButton
-                type="button"
-                aria-haspopup="menu"
-                aria-label="Organization"
-                i18n-aria-label
-                [matMenuTriggerFor]="organizationDesktopMenu"
-              >
-                <div class="d-flex align-center gap-4 justify-content-center">
-                  <span i18n>Organization</span>
-                  <mat-icon
-                    class="d-flex align-center justify-center dropdown-icon"
-                    aria-hidden="true"
-                    [svgIcon]="organizationMenuTrigger.menuOpen ? 'chevronUp' : 'chevronDown'"
-                  />
-                </div>
-              </button>
-            </li>
-          }
-          @if (showCurrencyUnitsLink()) {
-            <!-- LINK: Currency units (Desktop) -->
-            <li class="body-large">
-              <a matButton i18n [routerLink]="currencyUnitsLink">Currency Units</a>
-            </li>
-          }
-        </ul>
-
-        <!-- Menu: Users (Desktop) -->
-        <mat-menu #usersDesktopMenu="matMenu">
-          @for (link of usersMenuLinks(); track link.route) {
-            <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
-          }
-        </mat-menu>
-
-        <!-- Menu: Organization (Desktop) -->
-        <mat-menu #organizationDesktopMenu="matMenu">
-          @for (link of organizationMenuLinks(); track link.route) {
-            <a mat-menu-item [routerLink]="link.route">{{ link.label }}</a>
-          }
-        </mat-menu>
-      </div>
-    } @else {
-      <div class="auth-actions d-flex gap-8 align-center">
-        <a mat-raised-button matButton="filled" i18n [routerLink]="loginLink">Log in</a>
-        <a mat-raised-button matButton="outlined" class="bg-white" i18n [routerLink]="signupLink">
-          Sign up
-        </a>
-      </div>
-    }
-
-    @if (authService.isLoggedIn) {
-      <div class="d-flex align-center gap-8 profile-section">
-        @if (activeOrganization(); as organization) {
-          <!-- CHIP: Active organization -->
-          <div class="active-organization-chip body-medium">
-            <mat-icon
-              svgIcon="businessCenter"
-              aria-hidden="true"
-              class="active-organization-icon shrink-0"
-            />
-            <span class="visually-hidden" i18n>Active organization:</span>
-            <span
-              class="active-organization-name clamp-1"
-              [customMatTooltip]="organization.name"
-              [tooltipOnlyOnEllipsis]="true"
-              >{{ organization.name }}</span
-            >
-          </div>
-        }
-
-        <!-- Button: Profile -->
-        <button
-          mat-icon-button
-          class="d-flex justify-center align-center profile-button rounded-full overflow-hidden"
-          aria-label="Profile options"
-          i18n-aria-label
-          matTooltip="Profile options"
-          i18n-matTooltip="Profile options tooltip"
-          [matMenuTriggerFor]="menu"
-        >
-          <!-- Image: User profile -->
-          <!-- <img
-            ngSrc="assets/images/john-profile-pic.jpg"
-            width="40"
-            height="40"
-            alt="User profile"
-            priority
-            i18n-alt
-          /> -->
-
-          <mat-icon
-            svgIcon="accountCircle"
-            aria-hidden="true"
-            class="d-flex align-center justify-center user-icon"
-          />
-        </button>
-        <!-- Menu: Profile -->
-        <mat-menu #menu="matMenu">
-          <!-- Menu Item: Display and Accessibility -->
-          <button mat-menu-item (click)="navigateToProfile()">
-            <mat-icon
-              svgIcon="accountCircle"
-              aria-hidden="true"
-              class="d-flex align-center justify-center"
-            />
-            <span i18n>Profile</span>
-          </button>
-
-          <!-- Menu Item: Settings -->
-          <button mat-menu-item (click)="navigateToSettings()">
-            <mat-icon
-              svgIcon="settings"
-              aria-hidden="true"
-              class="d-flex align-center justify-center"
-            />
-            <span i18n>Account Settings</span>
-          </button>
-
-          <!-- Menu Item: Log out -->
-          <button mat-menu-item (click)="logout()">
-            <mat-icon
-              svgIcon="logout"
-              aria-hidden="true"
-              class="d-flex align-center justify-center"
-            />
-            <span i18n>Log out</span>
-          </button>
-        </mat-menu>
-      </div>
     }
   </div>
 </nav>

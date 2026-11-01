@@ -7,7 +7,7 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Searchbar } from '../../common/searchbar/searchbar';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 import { CustomMatTooltip } from '../../../directives/custom-mat-tooltip/custom-mat-tooltip';
 import { appRoutes } from '../../../data/app-routes';
 import { User } from '../../../services/user/user';
@@ -21,7 +21,7 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-customer-listing',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     Searchbar,
     MatTableModule,
     MatSortModule,

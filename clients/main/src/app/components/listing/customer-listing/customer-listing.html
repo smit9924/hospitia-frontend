@@ -1,7 +1,7 @@
 <div class="w-100">
-  <app-secondary-navbar [titleText]="titleText" />
+  <app-page-header [titleText]="titleText" />
 
-  <main class="d-flex flex-column gap-16 p-24 w-100">
+  <div class="page-container">
     @if (showSearchbar()) {
       <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
         <div class="d-flex wrap align-center justify-space-between gap-8">
@@ -90,7 +90,13 @@
                 >
                   First name
                 </th>
-                <td *matCellDef="let user" class="listing-col listing-col-name" mat-cell>
+                <td
+                  *matCellDef="let user"
+                  class="listing-col listing-col-name"
+                  mat-cell
+                  data-label="First name"
+                  i18n-data-label
+                >
                   <span
                     class="clamp-1"
                     [customMatTooltip]="user.firstName"
@@ -111,7 +117,13 @@
                 >
                   Last name
                 </th>
-                <td *matCellDef="let user" class="listing-col listing-col-name" mat-cell>
+                <td
+                  *matCellDef="let user"
+                  class="listing-col listing-col-name"
+                  mat-cell
+                  data-label="Last name"
+                  i18n-data-label
+                >
                   <span
                     class="clamp-1"
                     [customMatTooltip]="user.lastName"
@@ -132,7 +144,13 @@
                 >
                   Username
                 </th>
-                <td *matCellDef="let user" class="listing-col listing-col-name" mat-cell>
+                <td
+                  *matCellDef="let user"
+                  class="listing-col listing-col-name"
+                  mat-cell
+                  data-label="Username"
+                  i18n-data-label
+                >
                   <span
                     class="clamp-1"
                     [customMatTooltip]="user.username"
@@ -153,7 +171,13 @@
                 >
                   Email
                 </th>
-                <td *matCellDef="let user" class="listing-col listing-col-email" mat-cell>
+                <td
+                  *matCellDef="let user"
+                  class="listing-col listing-col-email"
+                  mat-cell
+                  data-label="Email"
+                  i18n-data-label
+                >
                   <span
                     class="clamp-1"
                     [customMatTooltip]="user.email"
@@ -212,5 +236,5 @@
         </div>
       }
     </section>
-  </main>
+  </div>
 </div>

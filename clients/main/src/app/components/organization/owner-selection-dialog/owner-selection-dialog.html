@@ -20,17 +20,20 @@
       <p class="body-medium m-0" i18n>Loading...</p>
     </div>
   } @else if (!hasOwners()) {
-    <div class="d-flex flex-column align-center justify-center gap-8 p-24 text-center" role="status">
+    <div
+      class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+      role="status"
+    >
       <mat-icon class="empty-state-icon" aria-hidden="true" svgIcon="person" />
       <p class="body-medium m-0" i18n>No eligible owners found.</p>
     </div>
   } @else {
-    <div class="owner-table-scroll overflow-x-auto">
-      <table class="owner-table w-100" mat-table [dataSource]="owners()">
+    <div class="selection-table-scroll overflow-x-auto">
+      <table class="selection-table w-100" mat-table [dataSource]="owners()">
         <!-- TABLE COLUMN: Select -->
         <ng-container matColumnDef="select">
-          <th *matHeaderCellDef class="owner-col-select" mat-header-cell></th>
-          <td *matCellDef="let owner" class="owner-col-select" mat-cell>
+          <th *matHeaderCellDef class="selection-col-select" mat-header-cell></th>
+          <td *matCellDef="let owner" class="selection-col-select" mat-cell>
             <mat-radio-button
               [checked]="isSelected(owner)"
               [attr.aria-label]="owner.username"
@@ -67,7 +70,7 @@
         <tr
           *matRowDef="let row; columns: displayedColumns"
           mat-row
-          class="owner-row"
+          class="selection-row"
           (click)="selectOwner(row)"
         ></tr>
       </table>

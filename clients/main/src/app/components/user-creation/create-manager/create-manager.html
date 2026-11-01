@@ -1,10 +1,10 @@
 <div class="w-100">
-  <app-secondary-navbar [titleText]="titleText()" [backButton]="true" />
+  <app-page-header [titleText]="titleText()" [backButton]="true" />
 
-  <main class="d-flex flex-column gap-24 p-24 w-100 align-center">
+  <div class="page-container page-container--form">
     @if (isEditMode() && isLoadingUser()) {
       <section
-        class="user-form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        class="form-card form-card--narrow rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
         role="status"
         aria-live="polite"
       >
@@ -12,7 +12,7 @@
       </section>
     } @else if (userNotFound()) {
       <section
-        class="user-form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        class="form-card form-card--narrow rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
         role="status"
       >
         <mat-icon class="empty-state-icon text-secondary" aria-hidden="true" svgIcon="person" />
@@ -22,7 +22,7 @@
         </p>
       </section>
     } @else if (showForm()) {
-      <mat-card class="user-form-card w-100">
+      <mat-card class="form-card form-card--narrow w-100">
         <mat-card-header class="mb-16">
           <mat-card-title>
             <h2 class="heading-extra-small m-0">
@@ -177,7 +177,7 @@
               </mat-form-field>
             }
 
-            <div class="d-flex justify-end gap-8 wrap">
+            <div class="form-actions">
               <button
                 matButton="filled"
                 type="submit"
@@ -190,5 +190,5 @@
         </mat-card-content>
       </mat-card>
     }
-  </main>
+  </div>
 </div>

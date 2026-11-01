@@ -1,0 +1,76 @@
+<header class="app-top-bar">
+  <!-- BUTTON: Toggle sidebar -->
+  <button
+    matIconButton
+    type="button"
+    aria-controls="app-sidebar"
+    aria-label="Toggle navigation"
+    i18n-aria-label
+    matTooltip="Toggle navigation"
+    i18n-matTooltip
+    [attr.aria-expanded]="sidebarService.isNavigationExpanded()"
+    (click)="toggleNavigation()"
+  >
+    <mat-icon aria-hidden="true" [svgIcon]="navigationToggleIcon()" />
+  </button>
+
+  <span class="app-top-bar-spacer"></span>
+
+  <div class="app-top-bar-actions">
+    <!-- BUTTON: Toggle light/dark theme -->
+    <button
+      matIconButton
+      type="button"
+      [attr.aria-label]="themeToggleLabel()"
+      [matTooltip]="themeToggleLabel()"
+      (click)="toggleTheme()"
+    >
+      <mat-icon aria-hidden="true" [svgIcon]="isDarkThemeActive() ? 'lightMode' : 'darkMode'" />
+    </button>
+
+    <!-- BUTTON: Profile menu -->
+    <button
+      matIconButton
+      type="button"
+      class="app-top-bar-avatar-button"
+      aria-label="Profile options"
+      i18n-aria-label
+      matTooltip="Profile options"
+      i18n-matTooltip
+      [matMenuTriggerFor]="profileMenu"
+    >
+      @if (userInitials()) {
+        <span class="app-top-bar-avatar" aria-hidden="true">{{ userInitials() }}</span>
+      } @else {
+        <mat-icon aria-hidden="true" svgIcon="accountCircle" />
+      }
+    </button>
+
+    <!-- Menu: Profile -->
+    <mat-menu #profileMenu="matMenu" xPosition="before">
+      <!-- TEXT: Signed-in user -->
+      <div class="app-top-bar-menu-header">
+        <span class="body-medium font-weight-bold clamp-1">{{ userDisplayName() }}</span>
+        <span class="body-small text-secondary clamp-1">{{ userProfile()?.email }}</span>
+      </div>
+
+      <!-- MENU ITEM: Profile -->
+      <button mat-menu-item type="button" (click)="navigateToProfile()">
+        <mat-icon svgIcon="accountCircle" aria-hidden="true" />
+        <span i18n>Profile</span>
+      </button>
+
+      <!-- MENU ITEM: Account settings -->
+      <button mat-menu-item type="button" (click)="navigateToSettings()">
+        <mat-icon svgIcon="settings" aria-hidden="true" />
+        <span i18n>Account Settings</span>
+      </button>
+
+      <!-- MENU ITEM: Log out -->
+      <button mat-menu-item type="button" (click)="logout()">
+        <mat-icon svgIcon="logout" aria-hidden="true" />
+        <span i18n>Log out</span>
+      </button>
+    </mat-menu>
+  </div>
+</header>

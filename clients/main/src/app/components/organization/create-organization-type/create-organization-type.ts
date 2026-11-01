@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, finalize, switchMap } from 'rxjs';
 import { Banner } from '../../common/banner/banner';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 import { appRoutes } from '../../../data/app-routes';
 import { Dialog } from '../../../services/dialog';
 import { Snackbar } from '../../../services/snackbar';
@@ -34,7 +34,7 @@ type OrganizationTypeForm = FormGroup<{
 @Component({
   selector: 'app-create-organization-type',
   imports: [
-    SecondaryNavbar,
+    PageHeader,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,

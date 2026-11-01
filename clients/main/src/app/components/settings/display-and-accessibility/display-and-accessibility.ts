@@ -11,7 +11,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ThemeToggle } from '../../common/theme-toggle/theme-toggle';
-import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar';
+import { PageHeader } from '../../common/page-header/page-header';
 import { DisplayAndAccessibility as DisplayAndAccessibilityService } from '../../../services/display-and-accessibility/display-and-accessibility';
 
 @Component({
@@ -24,7 +24,7 @@ import { DisplayAndAccessibility as DisplayAndAccessibilityService } from '../..
     MatIconModule,
     MatSlideToggleModule,
     ThemeToggle,
-    SecondaryNavbar,
+    PageHeader,
   ],
   templateUrl: './display-and-accessibility.html',
   styleUrl: './display-and-accessibility.scss',
