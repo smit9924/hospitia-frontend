@@ -35,6 +35,12 @@ import { OrganizationListingAdmin } from './components/organization/organization
 import { OrganizationListingOwner } from './components/organization/organization-listing-owner/organization-listing-owner';
 import { OrganizationListingManager } from './components/organization/organization-listing-manager/organization-listing-manager';
 import { CreateOrganization } from './components/organization/create-organization/create-organization';
+import { RoomTypeListing } from './components/room-type/room-type-listing/room-type-listing';
+import { CreateRoomType } from './components/room-type/create-room-type/create-room-type';
+import { RoomAmenityListing } from './components/room-amenity/room-amenity-listing/room-amenity-listing';
+import { CreateRoomAmenity } from './components/room-amenity/create-room-amenity/create-room-amenity';
+import { CurrencyUnitListing } from './components/currency-unit/currency-unit-listing/currency-unit-listing';
+import { CreateCurrencyUnit } from './components/currency-unit/create-currency-unit/create-currency-unit';
 import { NoOrganization } from './components/onboarding/no-organization/no-organization';
 import { organizationOnboardingGuard } from './guards/organization-onboarding/organization-onboarding-guard';
 
@@ -333,10 +339,7 @@ export const routes: Routes = [
         children: [
           {
             path: 'listing',
-            loadComponent: () =>
-              import('./components/room-type/room-type-listing/room-type-listing').then(
-                (module) => module.RoomTypeListing,
-              ),
+            component: RoomTypeListing,
             canActivate: [permissionGuard],
             data: {
               requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
@@ -346,10 +349,7 @@ export const routes: Routes = [
           },
           {
             path: 'create',
-            loadComponent: () =>
-              import('./components/room-type/create-room-type/create-room-type').then(
-                (module) => module.CreateRoomType,
-              ),
+            component: CreateRoomType,
             canActivate: [permissionGuard],
             data: {
               requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
@@ -364,10 +364,7 @@ export const routes: Routes = [
         children: [
           {
             path: 'listing',
-            loadComponent: () =>
-              import('./components/room-amenity/room-amenity-listing/room-amenity-listing').then(
-                (module) => module.RoomAmenityListing,
-              ),
+            component: RoomAmenityListing,
             canActivate: [permissionGuard],
             data: {
               requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
@@ -377,10 +374,7 @@ export const routes: Routes = [
           },
           {
             path: 'create',
-            loadComponent: () =>
-              import('./components/room-amenity/create-room-amenity/create-room-amenity').then(
-                (module) => module.CreateRoomAmenity,
-              ),
+            component: CreateRoomAmenity,
             canActivate: [permissionGuard],
             data: {
               requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
@@ -470,10 +464,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'listing',
-        loadComponent: () =>
-          import('./components/currency-unit/currency-unit-listing/currency-unit-listing').then(
-            (module) => module.CurrencyUnitListing,
-          ),
+        component: CurrencyUnitListing,
         canActivate: [permissionGuard],
         data: {
           requiredPermission: [UserType.ADMIN],
@@ -483,10 +474,7 @@ export const routes: Routes = [
       },
       {
         path: 'create',
-        loadComponent: () =>
-          import('./components/currency-unit/create-currency-unit/create-currency-unit').then(
-            (module) => module.CreateCurrencyUnit,
-          ),
+        component: CreateCurrencyUnit,
         canActivate: [permissionGuard],
         data: {
           requiredPermission: [UserType.ADMIN],
