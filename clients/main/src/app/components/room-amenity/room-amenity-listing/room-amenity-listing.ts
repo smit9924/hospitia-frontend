@@ -27,9 +27,10 @@ import { SecondaryNavbar } from '../../common/secondary-navbar/secondary-navbar'
 const DEFAULT_SORT_BY: RoomAmenitySortBy = 'name';
 
 /**
- * Listing of room amenities. Admins see every amenity with its
- * organization; owners and managers see the defaults plus their active
- * organization's custom amenities, and can change only the custom ones.
+ * Listing of room amenities. Admins see every amenity (default and custom)
+ * with its organization; owners and managers see only their active
+ * organization's custom amenities. Default amenities reach owners and
+ * managers solely as options in the room type form.
  */
 @Component({
   selector: 'app-room-amenity-listing',
@@ -60,11 +61,15 @@ export class RoomAmenityListing implements OnInit {
   protected readonly isAdmin = computed(
     () => this.profileService.userProfile()?.role === UserType.ADMIN,
   );
-  /** The organization column only matters to admins, who see every organization. */
+  /**
+   * The type and organization columns only matter to admins, who see default
+   * amenities and every organization; owners and managers see only their
+   * own organization's custom amenities.
+   */
   protected readonly displayedColumns = computed(() =>
     this.isAdmin()
       ? ['name', 'description', 'availability', 'organization', 'actions']
-      : ['name', 'description', 'availability', 'actions'],
+      : ['name', 'description', 'actions'],
   );
 
   protected readonly roomAmenities = signal<RoomAmenityListItem[]>([]);
@@ -87,7 +92,11 @@ export class RoomAmenityListing implements OnInit {
     this.loadRoomAmenities();
   }
 
-  /** Admins change any amenity; owners and managers only their organization's custom ones. */
+  /**
+   * Admins change any amenity; owners and managers only their organization's
+   * custom ones. The backend no longer lists defaults to owners and managers,
+   * so this guard is only a fallback.
+   */
   protected canModify(roomAmenity: RoomAmenityListItem): boolean {
     return this.isAdmin() || !roomAmenity.isDefault;
   }

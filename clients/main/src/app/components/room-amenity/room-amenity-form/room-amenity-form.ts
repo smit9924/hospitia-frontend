@@ -50,7 +50,9 @@ type RoomAmenityFormGroup = FormGroup<{
  * - Owners and managers always create custom amenities of their active
  *   organization.
  *
- * Owners and managers see default amenities read-only.
+ * Owners and managers cannot open default amenities: the backend refuses
+ * them (e.g. a GUID typed into the URL), and the form then shows a
+ * "managed by admins" message instead of the fields.
  */
 @Component({
   selector: 'app-room-amenity-form',
@@ -119,11 +121,8 @@ export class RoomAmenityForm implements OnInit {
   protected readonly isSubmitting = signal(false);
   /** Amenity being edited, used to describe its scope. */
   protected readonly loadedAmenity = signal<RoomAmenityListItem | null>(null);
-  /** Owners and managers cannot change default amenities. */
-  protected readonly isReadOnly = computed(() => {
-    const amenity = this.loadedAmenity();
-    return !!amenity && amenity.isDefault && !this.isAdmin();
-  });
+  /** Set when an owner or manager opens a default amenity, which only admins manage. */
+  protected readonly amenityManagedByAdmins = signal(false);
   /** Admins pick the scope of a new amenity unless the organization is fixed. */
   protected readonly showAvailabilityChoice = computed(
     () => this.isAdmin() && !this.isEditMode() && !this.organizationForNewAmenity(),
@@ -161,9 +160,6 @@ export class RoomAmenityForm implements OnInit {
   }
 
   protected onSubmit(): void {
-    if (this.isReadOnly()) {
-      return;
-    }
     if (!this.amenityForm.valid) {
       this.amenityForm.markAllAsTouched();
       return;
@@ -208,6 +204,7 @@ export class RoomAmenityForm implements OnInit {
   private loadAmenity(guid: string): void {
     this.isLoadingAmenity.set(true);
     this.amenityNotFound.set(false);
+    this.amenityManagedByAdmins.set(false);
 
     this.roomAmenityService
       .getRoomAmenity(guid)
@@ -219,11 +216,12 @@ export class RoomAmenityForm implements OnInit {
             name: amenity.name,
             description: amenity.description ?? '',
           });
-          if (this.isReadOnly()) {
-            this.amenityForm.disable();
-          }
         },
         error: (error: HttpErrorResponse) => {
+          if (this.isManagedByAdminsError(error)) {
+            this.amenityManagedByAdmins.set(true);
+            return;
+          }
           if (this.isNotFoundError(error)) {
             this.amenityNotFound.set(true);
             return;
@@ -295,8 +293,8 @@ export class RoomAmenityForm implements OnInit {
       this.showErrorBanner(errorResponse.message);
       return;
     }
-    if (errorResponse?.errorCode === ErrorCodes.ROOM_AMENITY_MODIFICATION_FORBIDDEN) {
-      this.showErrorBanner($localize`Only admins can change default room amenities.`);
+    if (this.isManagedByAdminsError(error)) {
+      this.amenityManagedByAdmins.set(true);
       return;
     }
     if (errorResponse?.errorCode === ErrorCodes.ORGANIZATION_NOT_FOUND) {
@@ -311,6 +309,14 @@ export class RoomAmenityForm implements OnInit {
     }
 
     throw error;
+  }
+
+  /** The backend refuses default amenities to owners and managers. */
+  private isManagedByAdminsError(error: HttpErrorResponse): boolean {
+    return (
+      (error.error as ApiErrorResponse<unknown> | null)?.errorCode ===
+      ErrorCodes.ROOM_AMENITY_MODIFICATION_FORBIDDEN
+    );
   }
 
   private isNotFoundError(error: HttpErrorResponse): boolean {

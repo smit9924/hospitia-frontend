@@ -16,6 +16,16 @@
       The requested room amenity could not be found. It may have been removed.
     </p>
   </div>
+} @else if (amenityManagedByAdmins()) {
+  <!-- STATE: Default amenity managed by admins -->
+  <div class="d-flex flex-column align-center justify-center gap-8 p-24 text-center" role="status">
+    <mat-icon class="form-state-icon text-secondary" aria-hidden="true" svgIcon="star" />
+    <p class="heading-extra-small m-0" i18n>Managed by admins</p>
+    <p class="body-medium text-secondary m-0" i18n>
+      This is a default room amenity. Only admins can view or change it. It is already available to
+      select in the room type form.
+    </p>
+  </div>
 } @else {
   <div class="mb-24">
     <app-banner #formBanner>
@@ -30,9 +40,6 @@
       <p class="body-medium text-secondary m-0" role="note">
         @if (amenity.isDefault) {
           <span i18n>Default amenity, offered to every organization.</span>
-          @if (isReadOnly()) {
-            <span i18n> Only admins can change it.</span>
-          }
         } @else {
           <span i18n>Custom amenity of {{ amenity.organization?.name }}.</span>
         }
@@ -112,19 +119,17 @@
     </mat-form-field>
 
     <!-- Section: Form actions -->
-    @if (!isReadOnly()) {
-      <div class="d-flex justify-end gap-8 wrap">
-        @if (showCancelButton()) {
-          <!-- BUTTON: Cancel -->
-          <button matButton="outlined" type="button" (click)="onCancel()">
-            <span i18n>Cancel</span>
-          </button>
-        }
-        <!-- BUTTON: Save amenity -->
-        <button matButton="filled" type="submit" [disabled]="!amenityForm.valid || isSubmitting()">
-          <span>{{ submitLabel() }}</span>
+    <div class="d-flex justify-end gap-8 wrap">
+      @if (showCancelButton()) {
+        <!-- BUTTON: Cancel -->
+        <button matButton="outlined" type="button" (click)="onCancel()">
+          <span i18n>Cancel</span>
         </button>
-      </div>
-    }
+      }
+      <!-- BUTTON: Save amenity -->
+      <button matButton="filled" type="submit" [disabled]="!amenityForm.valid || isSubmitting()">
+        <span>{{ submitLabel() }}</span>
+      </button>
+    </div>
   </form>
 }

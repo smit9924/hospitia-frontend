@@ -2,6 +2,14 @@
   <app-secondary-navbar [titleText]="titleText" />
 
   <main class="d-flex flex-column gap-16 p-24 w-100">
+    <!-- TEXT: Default amenities note (owner/manager) -->
+    @if (!isAdmin()) {
+      <p class="body-medium text-secondary m-0" role="note" i18n>
+        Default amenities are managed by admins and are already available to select in the room type
+        form. Only your organization's custom amenities are listed here.
+      </p>
+    }
+
     <!-- Section: Room amenity filters -->
     @if (showSearchbar()) {
       <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
