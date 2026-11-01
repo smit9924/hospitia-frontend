@@ -1,7 +1,14 @@
 import { Directive, ElementRef, inject, input, OnInit } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
-import { fromEvent, Subscription, tap, throttleTime } from 'rxjs';
 
+/**
+ * Material tooltip that, with `tooltipOnlyOnEllipsis`, only appears when the host's text is
+ * cut off (e.g. a long name clamped with an ellipsis).
+ *
+ * The overflow is measured when the tooltip is about to show, not during change detection,
+ * so layout changes (sidebar collapse, window resize) can never change a bound value between
+ * Angular's check passes (NG0100).
+ */
 @Directive({
   selector: '[customMatTooltip]',
 })
@@ -9,7 +16,6 @@ export class CustomMatTooltip extends MatTooltip implements OnInit {
   customMatTooltip = input<string | number | null | undefined>(null);
   tooltipOnlyOnEllipsis = input<boolean>(false);
   private elementRef = inject(ElementRef);
-  private resizeEvent: Subscription | null = null;
 
   constructor() {
     super();
@@ -17,33 +23,17 @@ export class CustomMatTooltip extends MatTooltip implements OnInit {
 
   ngOnInit(): void {
     this.message = this.customMatTooltip();
-    this.setTooltipVisibility();
-    this.attachResizeObserver();
   }
 
-  override ngOnDestroy(): void {
-    super.ngOnDestroy();
-    this.resizeEvent?.unsubscribe();
-  }
-
-  private attachResizeObserver(): void {
-    this.resizeEvent = fromEvent(window, 'resize')
-      .pipe(
-        throttleTime(300),
-        tap(() => this.setTooltipVisibility()),
-      )
-      .subscribe();
-  }
-
-  private setTooltipVisibility(): void {
+  /** Shows the tooltip, unless it is ellipsis-only and the text currently fits. */
+  override show(delay?: number, origin?: { x: number; y: number }): void {
     if (this.tooltipOnlyOnEllipsis() && !this.isEllipsisVisible()) {
-      this.disabled = true;
-    } else {
-      this.disabled = false;
+      return;
     }
+    super.show(delay, origin);
   }
 
-  private isEllipsisVisible() {
+  private isEllipsisVisible(): boolean {
     const element = this.elementRef?.nativeElement;
 
     // 2px tolerance added to fix the tooltip in firefox
