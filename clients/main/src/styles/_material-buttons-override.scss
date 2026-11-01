@@ -26,3 +26,13 @@ html {
   );
   background-color: var(--app-color-card);
 }
+
+// Icon button that holds the 36px profile avatar instead of a 24px icon, so Material computes
+// its padding for the avatar and keeps it centered like the other top bar buttons.
+.app-top-bar-avatar-button {
+  @include mat.icon-button-overrides(
+    (
+      icon-size: 36px,
+    )
+  );
+}

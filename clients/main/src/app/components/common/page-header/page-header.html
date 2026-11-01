@@ -1,5 +1,5 @@
 <header class="page-header">
-  <div class="page-header-heading">
+  <div class="page-header-heading" [class.page-header-heading--with-back]="backButton()">
     @if (backButton()) {
       <!-- BUTTON: Back -->
       <button

@@ -41,18 +41,29 @@
   padding: 24px 28px 20px;
 }
 
+// Grid so the back button centers on the title line only; the description sits under the
+// title (not under the button).
 .page-header-heading {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 2px;
   min-width: 0;
 }
 
+.page-header-heading--with-back {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+// The title and description become grid items of the heading.
 .page-header-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+  display: contents;
+}
+
+.page-header-title,
+.page-header-description {
+  grid-column: -2;
 }
 
 .page-header-title {
