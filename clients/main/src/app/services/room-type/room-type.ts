@@ -7,6 +7,7 @@ import {
   RoomTypeListQuery,
   RoomTypeListResponse,
   RoomTypeCreateRequest,
+  RoomTypeOption,
   RoomTypeUpdateRequest,
 } from '../../types/interfaces/room-type';
 
@@ -36,6 +37,17 @@ export class RoomType {
         pageNumber: query.pageNumber,
         searchTerm: query.searchTerm ?? '',
       },
+    });
+  }
+
+  /**
+   * Room types a room of the organization may use. Admins pass the chosen
+   * organization (an empty list comes back without one); owners and
+   * managers get their active organization's room types.
+   */
+  listOptions(organizationGuid: string | null): Observable<RoomTypeOption[]> {
+    return this.http.get<RoomTypeOption[]>(apiRoutes.roomType.options, {
+      params: organizationGuid ? { organizationGuid } : {},
     });
   }
 

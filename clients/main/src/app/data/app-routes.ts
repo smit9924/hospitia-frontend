@@ -56,6 +56,8 @@ export const appRoutes = {
   createRoomAmenity: '/organization/room-amenity/create',
   roomTypeListing: '/organization/room-type/listing',
   createRoomType: '/organization/room-type/create',
+  roomListing: '/organization/room/listing',
+  createRoom: '/organization/room/create',
   // *** End Organization ***
 
   // Currency units

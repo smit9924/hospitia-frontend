@@ -41,6 +41,12 @@ export interface RoomTypeUpdateRequest extends RoomTypeAttributes {
   guid: string;
 }
 
+/** Compact room type offered for selection (e.g. the room form's room type drop-down). */
+export interface RoomTypeOption {
+  guid: string;
+  name: string;
+}
+
 export type RoomTypeListQuery = PaginatedQuery<RoomTypeSortBy>;
 
 export type RoomTypeListResponse = PaginatedResponse<RoomTypeListItem>;
