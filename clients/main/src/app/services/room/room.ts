@@ -4,9 +4,11 @@ import { Observable } from 'rxjs';
 import { apiRoutes } from '../../data/api-routes';
 import {
   RoomCreateRequest,
+  RoomFloorOverviewResponse,
   RoomListItem,
   RoomListQuery,
   RoomListResponse,
+  RoomStatusUpdateRequest,
   RoomUpdateRequest,
 } from '../../types/interfaces/room';
 
@@ -46,6 +48,16 @@ export class Room {
   /** Updates the room identified by `payload.guid`. */
   update(payload: RoomUpdateRequest): Observable<RoomListItem> {
     return this.http.put<RoomListItem>(apiRoutes.room.update, payload);
+  }
+
+  /** Every active room of the active organization for the dashboard floor chart. */
+  getFloorOverview(): Observable<RoomFloorOverviewResponse> {
+    return this.http.get<RoomFloorOverviewResponse>(apiRoutes.room.floorOverview);
+  }
+
+  /** Changes only the status of the room identified by `payload.guid`. */
+  updateStatus(payload: RoomStatusUpdateRequest): Observable<RoomListItem> {
+    return this.http.put<RoomListItem>(apiRoutes.room.updateStatus, payload);
   }
 
   delete(guid: string): Observable<void> {
