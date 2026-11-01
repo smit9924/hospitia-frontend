@@ -1,0 +1,35 @@
+<!-- Section: Design tokens -->
+<mat-card appearance="outlined">
+  <mat-card-header class="mb-24">
+    <mat-card-title>Design tokens</mat-card-title>
+    <mat-card-subtitle
+      >Defined in styles/colors.scss and the Material theme. Use the token, never a raw
+      color.</mat-card-subtitle
+    >
+  </mat-card-header>
+
+  <mat-card-content class="d-flex flex-column gap-24">
+    @for (group of colorTokenGroups; track group.title) {
+      <section class="d-flex flex-column gap-8">
+        <!-- TEXT: Token group -->
+        <h3 class="heading-tiny m-0">{{ group.title }}</h3>
+        <ul class="dashboard-shortcut-grid list-style-none p-0 m-0">
+          @for (swatch of group.swatches; track swatch.token) {
+            <li class="surface-card d-flex flex-column overflow-hidden">
+              <!-- SWATCH: Color token -->
+              <div
+                class="design-token-swatch w-100"
+                [style.background]="tokenValue(swatch.token)"
+              ></div>
+              <div class="d-flex flex-column gap-4 p-16">
+                <span class="body-medium font-weight-bold">{{ swatch.name }}</span>
+                <code class="body-small">{{ swatch.token }}</code>
+                <span class="body-small text-secondary">{{ swatch.usage }}</span>
+              </div>
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  </mat-card-content>
+</mat-card>
