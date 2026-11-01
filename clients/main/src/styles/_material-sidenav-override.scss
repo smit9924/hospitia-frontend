@@ -10,7 +10,7 @@
       container-divider-color: var(--app-color-border-subtle),
       content-background-color: var(--app-color-page-ground),
       content-text-color: var(--mat-sys-on-surface),
-      scrim-color: light-dark(#0f0d0a6b, #0000008f),
+      scrim-color: var(--app-color-scrim),
     )
   );
 }

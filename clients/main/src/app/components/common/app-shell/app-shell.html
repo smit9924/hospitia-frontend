@@ -4,7 +4,8 @@
 >
 
 <!-- Layout: App shell -->
-<mat-sidenav-container class="app-shell" autosize>
+<!-- Escape closes the phone/tablet drawer even before focus has moved into it. -->
+<mat-sidenav-container class="app-shell" autosize (keydown.escape)="sidebarService.closeDrawer()">
   @if (showsNavigation()) {
     <!-- Section: Sidebar -->
     <mat-sidenav
