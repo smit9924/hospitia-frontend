@@ -148,17 +148,23 @@ export class RoomTypeListing implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           const errorCode = (error.error as ApiErrorResponse<unknown> | null)?.errorCode;
-          this.showSnackbar(
-            errorCode === ErrorCodes.ROOM_TYPE_NOT_FOUND
-              ? $localize`This room type was already deleted.`
-              : $localize`Failed to delete room type. Please try again.`,
-            GenericSnackbarType.ERROR,
-          );
+          this.showSnackbar(this.getDeleteErrorMessage(errorCode), GenericSnackbarType.ERROR);
           // Refresh on error too: the row may already be gone, or state may
           // have changed from another session — keep the table consistent.
           this.loadRoomTypes();
         },
       });
+  }
+
+  private getDeleteErrorMessage(errorCode: ErrorCodes | undefined): string {
+    switch (errorCode) {
+      case ErrorCodes.ROOM_TYPE_NOT_FOUND:
+        return $localize`This room type was already deleted.`;
+      case ErrorCodes.ROOM_TYPE_IN_USE:
+        return $localize`This room type has rooms and cannot be deleted.`;
+      default:
+        return $localize`Failed to delete room type. Please try again.`;
+    }
   }
 
   private loadRoomTypes(): void {

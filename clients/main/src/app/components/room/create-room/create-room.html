@@ -1,0 +1,212 @@
+<div class="w-100">
+  <app-page-header [titleText]="titleText" [backButton]="true" />
+
+  <div class="page-container page-container--form">
+    @if (isLoadingRoom()) {
+      <!-- STATE: Loading room -->
+      <section
+        class="form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <p class="heading-extra-small m-0" i18n>Loading...</p>
+      </section>
+    } @else if (roomNotFound()) {
+      <!-- STATE: Room not found -->
+      <section
+        class="form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+      >
+        <mat-icon class="form-state-icon text-secondary" aria-hidden="true" svgIcon="meetingRoom" />
+        <p class="heading-extra-small m-0" i18n>Room not found</p>
+        <p class="body-medium text-secondary m-0" i18n>
+          The requested room could not be found. It may have been removed.
+        </p>
+      </section>
+    } @else {
+      <!-- CARD: Room -->
+      <mat-card class="form-card w-100">
+        <mat-card-header class="mb-16">
+          <mat-card-title>
+            <h2 class="heading-extra-small m-0">
+              @if (isEditMode) {
+                <span i18n>Room details</span>
+              } @else {
+                <span i18n>New room details</span>
+              }
+            </h2>
+          </mat-card-title>
+          <mat-card-subtitle class="body-medium text-secondary mt-8">
+            <span i18n
+              >A room is one bookable room, e.g. room 101 of the "Deluxe double" type.</span
+            >
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="mb-24">
+            <app-banner #formBanner>
+              <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+            </app-banner>
+          </div>
+
+          <!-- Form: Room -->
+          <form class="d-flex flex-column gap-24" [formGroup]="roomForm" (ngSubmit)="onSubmit()">
+            @if (isAdmin()) {
+              @if (isEditMode) {
+                <!-- TEXT: Organization (fixed after creation) -->
+                <p class="body-medium m-0" role="note">
+                  <span class="text-secondary" i18n>Organization: </span>
+                  <span>{{ roomOrganization()?.name }}</span>
+                </p>
+              } @else {
+                <!-- FIELD: Organization (admin) -->
+                <app-organization-selection-field
+                  i18n-hint
+                  hint="The room belongs to this organization."
+                  [control]="roomForm.controls.organization"
+                />
+              }
+            }
+
+            <div class="d-flex wrap align-flex-start gap-16">
+              <!-- TEXT FIELD: Room number -->
+              <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+                <mat-label i18n>Room number</mat-label>
+                <input
+                  matInput
+                  formControlName="roomNumber"
+                  type="text"
+                  autocomplete="off"
+                  placeholder="e.g. 101 or A-12"
+                  i18n-placeholder
+                  [maxlength]="roomNumberMaxLength"
+                />
+                <mat-hint i18n>Letters, digits, - or /</mat-hint>
+                @if (
+                  roomForm.controls.roomNumber.hasError('required') ||
+                  roomForm.controls.roomNumber.hasError('pattern')
+                ) {
+                  <mat-error i18n>Room number is required</mat-error>
+                } @else if (roomForm.controls.roomNumber.hasError('maxlength')) {
+                  <mat-error i18n>Room number can be at most 20 characters</mat-error>
+                } @else if (roomForm.controls.roomNumber.hasError('roomNumberCharacters')) {
+                  <mat-error i18n>Use letters, digits, - or / only</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- NUMBER FIELD: Floor -->
+              <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+                <mat-label i18n>Floor</mat-label>
+                <input
+                  matInput
+                  formControlName="floor"
+                  type="number"
+                  step="1"
+                  placeholder="e.g. 1"
+                  i18n-placeholder
+                  [min]="minFloor"
+                  [max]="maxFloor"
+                />
+                <mat-hint>
+                  <span i18n
+                    >0 is the ground floor. Use negative numbers for basements (−1 = B1).</span
+                  >
+                  @if (hasValidFloor()) {
+                    <!-- TEXT: Floor preview -->
+                    <span class="d-flex font-weight-bold" aria-live="polite" i18n
+                      >Shown as {{ floorValue() | floorLabel }} ({{
+                        floorValue() | floorLabel: 'description'
+                      }})</span
+                    >
+                  }
+                </mat-hint>
+                @if (roomForm.controls.floor.hasError('required')) {
+                  <mat-error i18n>Floor is required</mat-error>
+                } @else if (roomForm.controls.floor.hasError('wholeNumber')) {
+                  <mat-error i18n>Floor must be a whole number</mat-error>
+                } @else if (
+                  roomForm.controls.floor.hasError('min') || roomForm.controls.floor.hasError('max')
+                ) {
+                  <mat-error i18n>Floor must be between −500 and 500</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <!-- SELECT: Room type -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Room type</mat-label>
+              <mat-select formControlName="roomTypeGuid">
+                @for (roomType of roomTypeOptions(); track roomType.guid) {
+                  <mat-option [value]="roomType.guid">{{ roomType.name }}</mat-option>
+                }
+              </mat-select>
+              @if (!canChooseRoomType()) {
+                <mat-hint i18n>Choose an organization to see its room types.</mat-hint>
+              } @else if (isLoadingRoomTypes()) {
+                <mat-hint i18n>Loading room types...</mat-hint>
+              }
+              @if (roomForm.controls.roomTypeGuid.hasError('required')) {
+                <mat-error i18n>Room type is required</mat-error>
+              }
+            </mat-form-field>
+
+            @if (hasNoRoomTypes()) {
+              <!-- TEXT: No room types yet -->
+              <p class="body-medium text-secondary m-0" role="note">
+                <span i18n>This organization has no room types yet. </span>
+                <a i18n [routerLink]="roomTypeListingRoute">Create a room type first.</a>
+              </p>
+            }
+
+            <!-- RADIO GROUP: Status -->
+            <div class="d-flex flex-column gap-8">
+              <span id="room-status-label" class="body-medium" i18n>Status</span>
+              <mat-radio-group
+                class="d-flex wrap gap-16"
+                formControlName="status"
+                aria-labelledby="room-status-label"
+              >
+                @for (statusOption of statusOptions; track statusOption.value) {
+                  <mat-radio-button [value]="statusOption.value">{{
+                    statusOption.label
+                  }}</mat-radio-button>
+                }
+              </mat-radio-group>
+            </div>
+
+            <!-- TEXT FIELD: Notes -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Notes</mat-label>
+              <textarea
+                matInput
+                formControlName="notes"
+                rows="3"
+                placeholder="Optional, e.g. sea view, near the lift"
+                i18n-placeholder
+              ></textarea>
+              <mat-hint align="end"
+                >{{ roomForm.controls.notes.value.length | number }} /
+                {{ notesMaxLength | number }}</mat-hint
+              >
+              @if (roomForm.controls.notes.hasError('maxlength')) {
+                <mat-error i18n>Notes must be at most 500 characters</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- BUTTON: Save room -->
+            <div class="form-actions">
+              <button
+                matButton="filled"
+                type="submit"
+                [disabled]="isSubmitting() || hasNoRoomTypes()"
+              >
+                <span>{{ submitLabel }}</span>
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</div>

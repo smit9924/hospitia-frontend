@@ -535,6 +535,12 @@
     background-color: var(--mat-sys-secondary-container);
     color: var(--mat-sys-on-secondary-container);
   }
+
+  // Needs attention but not an error, e.g. a room under maintenance.
+  .status-chip--warning {
+    background-color: var(--mat-sys-warning-container);
+    color: var(--mat-sys-on-warning-container);
+  }
   /* ***End*** */
 
   /* Utility class for content announced to screen readers only */

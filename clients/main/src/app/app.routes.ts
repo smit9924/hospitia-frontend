@@ -37,6 +37,8 @@ import { OrganizationListingManager } from './components/organization/organizati
 import { CreateOrganization } from './components/organization/create-organization/create-organization';
 import { RoomTypeListing } from './components/room-type/room-type-listing/room-type-listing';
 import { CreateRoomType } from './components/room-type/create-room-type/create-room-type';
+import { RoomListing } from './components/room/room-listing/room-listing';
+import { CreateRoom } from './components/room/create-room/create-room';
 import { RoomAmenityListing } from './components/room-amenity/room-amenity-listing/room-amenity-listing';
 import { CreateRoomAmenity } from './components/room-amenity/create-room-amenity/create-room-amenity';
 import { CurrencyUnitListing } from './components/currency-unit/currency-unit-listing/currency-unit-listing';
@@ -351,6 +353,31 @@ export const routes: Routes = [
           {
             path: 'create',
             component: CreateRoomType,
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+        ],
+      },
+      {
+        path: 'room',
+        children: [
+          {
+            path: 'listing',
+            component: RoomListing,
+            canActivate: [permissionGuard],
+            data: {
+              requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+              showNavbar: true,
+              showFooter: true,
+            },
+          },
+          {
+            path: 'create',
+            component: CreateRoom,
             canActivate: [permissionGuard],
             data: {
               requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],

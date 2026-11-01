@@ -259,4 +259,8 @@ export const IconList = [
     name: 'leftPanelOpen',
     src: 'assets/icons/left-panel-open.svg',
   },
+  {
+    name: 'meetingRoom',
+    src: 'assets/icons/meeting-room.svg',
+  },
 ];

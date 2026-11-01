@@ -67,7 +67,16 @@ export const apiRoutes = {
     update: `${apiBaseUrls.booking}/room-type/update`,
     delete: `${apiBaseUrls.booking}/room-type/delete`,
     list: `${apiBaseUrls.booking}/room-type`,
+    options: `${apiBaseUrls.booking}/room-type/options`,
     get: `${apiBaseUrls.booking}/room-type/detail`,
+  },
+
+  room: {
+    create: `${apiBaseUrls.booking}/room/create`,
+    update: `${apiBaseUrls.booking}/room/update`,
+    delete: `${apiBaseUrls.booking}/room/delete`,
+    list: `${apiBaseUrls.booking}/room`,
+    get: `${apiBaseUrls.booking}/room/detail`,
   },
 
   roomAmenity: {

@@ -1,0 +1,248 @@
+<div class="w-100">
+  <app-page-header [titleText]="titleText" />
+
+  <div class="page-container">
+    <!-- Section: Room search -->
+    @if (showSearchbar()) {
+      <section class="listing-card rounded-12 pr-16 pl-16 pt-16 pb-16 w-100">
+        <div class="d-flex wrap align-center justify-space-between gap-8">
+          <!-- SEARCH: Rooms -->
+          <app-searchbar
+            class="listing-searchbar max-w-100"
+            i18n-placeholder
+            placeholder="Search by room number"
+            [compact]="true"
+            (searchChanged)="onSearch($event)"
+          />
+
+          <!-- BUTTON: Create room -->
+          <button
+            class="listing-create-button shrink-0"
+            matButton="filled"
+            type="button"
+            (click)="createRoom()"
+          >
+            <span i18n>Create room</span>
+          </button>
+        </div>
+      </section>
+    }
+
+    <section class="listing-card rounded-12 p-16 d-flex flex-column gap-16 w-100">
+      <!-- Section: Room results -->
+      @if (isInitialLoad()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+          aria-live="polite"
+        >
+          <p class="heading-extra-small m-0" i18n>Loading...</p>
+        </div>
+      } @else if (!hasRooms()) {
+        <!-- EMPTY STATE: Rooms -->
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+        >
+          <mat-icon
+            class="empty-state-icon"
+            aria-hidden="true"
+            [svgIcon]="isEmptySearch() ? 'search' : 'meetingRoom'"
+          />
+
+          @if (isEmptySearch()) {
+            <p class="heading-extra-small m-0" i18n>No rooms found</p>
+            <p>
+              <span class="body-medium text-secondary" i18n>No room number matched </span>
+              <span class="body-medium text-secondary" i18n>"{{ searchTerm() }}"</span>
+              <span class="body-medium text-secondary" i18n>Try a different search term.</span>
+            </p>
+          } @else {
+            <p class="heading-extra-small m-0" i18n>No rooms yet</p>
+            <p class="body-medium text-secondary m-0" i18n>
+              Add the rooms you offer, e.g. room 101 on the first floor.
+            </p>
+            <button
+              class="listing-create-button shrink-0 mt-8"
+              matButton="filled"
+              type="button"
+              (click)="createRoom()"
+            >
+              <span i18n>Create room</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <!-- TABLE: Rooms -->
+        <div class="listing-table-frame rounded-8 overflow-hidden">
+          <div class="listing-table-scroll w-100 overflow-x-auto">
+            <table
+              class="listing-table w-100"
+              mat-table
+              matSort
+              matSortActive="roomNumber"
+              matSortDirection="asc"
+              matSortDisableClear
+              [dataSource]="rooms()"
+              (matSortChange)="onSortChange($event)"
+            >
+              <!-- TABLE COLUMN: Room number -->
+              <ng-container matColumnDef="roomNumber">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-name"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Room no.
+                </th>
+                <td
+                  *matCellDef="let room"
+                  class="listing-col listing-col-name"
+                  mat-cell
+                  data-label="Room no."
+                  i18n-data-label
+                >
+                  {{ room.roomNumber }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Floor -->
+              <ng-container matColumnDef="floor">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-number"
+                  mat-header-cell
+                  mat-sort-header
+                  i18n
+                >
+                  Floor
+                </th>
+                <td
+                  *matCellDef="let room"
+                  class="listing-col listing-col-number"
+                  mat-cell
+                  data-label="Floor"
+                  i18n-data-label
+                >
+                  {{ room.floor | floorLabel }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Room type -->
+              <ng-container matColumnDef="roomType">
+                <th *matHeaderCellDef class="listing-col listing-col-wide" mat-header-cell i18n>
+                  Room type
+                </th>
+                <td
+                  *matCellDef="let room"
+                  class="listing-col listing-col-wide"
+                  mat-cell
+                  data-label="Room type"
+                  i18n-data-label
+                >
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="room.roomType.name"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ room.roomType.name }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Status -->
+              <ng-container matColumnDef="status">
+                <th *matHeaderCellDef class="listing-col listing-col-status" mat-header-cell i18n>
+                  Status
+                </th>
+                <td
+                  *matCellDef="let room"
+                  class="listing-col listing-col-status"
+                  mat-cell
+                  data-label="Status"
+                  i18n-data-label
+                >
+                  <span class="status-chip" [class]="statusOption(room.status).chipClass">
+                    {{ statusOption(room.status).label }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Organization (admin) -->
+              <ng-container matColumnDef="organization">
+                <th *matHeaderCellDef class="listing-col listing-col-wide" mat-header-cell i18n>
+                  Organization
+                </th>
+                <td
+                  *matCellDef="let room"
+                  class="listing-col listing-col-wide"
+                  mat-cell
+                  data-label="Organization"
+                  i18n-data-label
+                >
+                  <span
+                    class="clamp-1"
+                    [customMatTooltip]="room.organization.name"
+                    [tooltipOnlyOnEllipsis]="true"
+                  >
+                    {{ room.organization.name }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Actions -->
+              <ng-container matColumnDef="actions">
+                <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
+                  Actions
+                </th>
+                <td *matCellDef="let room" class="listing-col listing-col-actions" mat-cell>
+                  <!-- BUTTON: Room actions -->
+                  <button
+                    matIconButton
+                    type="button"
+                    [attr.aria-label]="getActionsMenuLabel(room)"
+                    [matMenuTriggerFor]="actionsMenu"
+                  >
+                    <mat-icon svgIcon="moreVert" aria-hidden="true" />
+                  </button>
+                  <mat-menu #actionsMenu="matMenu">
+                    <!-- MENU ITEM: Edit -->
+                    <button mat-menu-item type="button" (click)="editRoom(room)">
+                      <mat-icon svgIcon="edit" aria-hidden="true" />
+                      <span i18n>Edit</span>
+                    </button>
+                    <!-- MENU ITEM: Delete -->
+                    <button mat-menu-item type="button" (click)="deleteRoom(room)">
+                      <mat-icon svgIcon="delete" aria-hidden="true" />
+                      <span i18n>Delete</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr *matHeaderRowDef="displayedColumns()" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns()" mat-row></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGINATION: Rooms -->
+        <div class="d-flex justify-flex-end">
+          <mat-paginator
+            class="listing-paginator max-w-100"
+            aria-label="Room list paginator"
+            i18n-aria-label
+            [length]="totalCount()"
+            [pageIndex]="pageIndex()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="false"
+            (page)="onPageChange($event)"
+          />
+        </div>
+      }
+    </section>
+  </div>
+</div>
