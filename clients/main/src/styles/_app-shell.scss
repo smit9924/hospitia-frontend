@@ -310,16 +310,17 @@
   gap: 8px;
 }
 
-.public-header-menu-button {
+// Scoped under .public-header so it wins over Material's own icon-button display rule.
+.public-header .public-header-menu-button {
   display: none;
 }
 
 @media screen and (max-width: 599.98px) {
-  .public-header-actions {
+  .public-header .public-header-actions {
     display: none;
   }
 
-  .public-header-menu-button {
+  .public-header .public-header-menu-button {
     display: inline-flex;
   }
 }

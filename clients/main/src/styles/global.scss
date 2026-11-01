@@ -11,3 +11,9 @@ router-outlet ~ * {
   outline: 4px solid var(--mat-sys-primary);
   outline-offset: 4px;
 }
+
+// Set the fill color of all `mat-icon` components to the current text color. This allows
+// icons to automatically adapt to the color of their surrounding text
+mat-icon svg {
+  fill: currentColor;
+}
