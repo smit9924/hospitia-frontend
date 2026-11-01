@@ -39,6 +39,14 @@ export const sidebarNavigationGroups: readonly SidebarNavigationGroup[] = [
         activeRoutePrefixes: ['/organization/room-type'],
       },
       {
+        label: $localize`Rooms`,
+        description: $localize`Individual rooms with their number, floor and status.`,
+        icon: 'meetingRoom',
+        route: appRoutes.roomListing,
+        allowedRoles: organizationMemberRoles,
+        activeRoutePrefixes: ['/organization/room/'],
+      },
+      {
         label: $localize`Room amenities`,
         description: $localize`Facilities that room types can include.`,
         icon: 'roomService',
