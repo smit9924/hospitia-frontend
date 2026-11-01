@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { merge } from 'rxjs';
 import { OrganizationReference } from '../../../types/interfaces/room-amenity';
 import {
   AdminOrganizationSelectionDialog,
@@ -48,7 +47,8 @@ export class OrganizationSelectionField implements OnInit {
   ngOnInit(): void {
     const control = this.control();
     this.syncStateFromControl();
-    merge(control.valueChanges, control.statusChanges, control.events)
+    // `events` covers value, status (validity, disabled) and touched changes.
+    control.events
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.syncStateFromControl());
   }

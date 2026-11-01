@@ -292,20 +292,19 @@ export class CreateRoomType implements OnInit {
       });
   }
 
-  private loadCurrencyOptions(preferredCurrencyGuid: string | null = null): void {
+  /** Loads the currencies and preselects INR unless an available currency is already chosen. */
+  private loadCurrencyOptions(): void {
     this.currencyUnitService.listOptions().subscribe((currencies) => {
       this.currencyOptions.set(currencies);
       const currencyControl = this.roomTypeForm.controls.currencyUnitGuid;
-      const preferredGuid =
-        preferredCurrencyGuid ??
-        currencies.find((currency) => currency.currencyCode === appConstants.defaultCurrencyCode)
-          ?.guid ??
-        null;
-      const keepsCurrentChoice = currencies.some(
+      const isChosenCurrencyAvailable = currencies.some(
         (currency) => currency.guid === currencyControl.value,
       );
-      if (!keepsCurrentChoice) {
-        currencyControl.setValue(preferredGuid);
+      if (!isChosenCurrencyAvailable) {
+        const defaultCurrency = currencies.find(
+          (currency) => currency.currencyCode === appConstants.defaultCurrencyCode,
+        );
+        currencyControl.setValue(defaultCurrency?.guid ?? null);
       }
       this.updateSelectedCurrencyCode(currencyControl.value);
     });
@@ -359,7 +358,7 @@ export class CreateRoomType implements OnInit {
       currencyUnitGuid: roomType.currencyUnit.guid,
     });
     this.selectedAmenityGuids.set(new Set(roomType.amenities.map((amenity) => amenity.guid)));
-    this.loadCurrencyOptions(roomType.currencyUnit.guid);
+    this.loadCurrencyOptions();
     this.loadAmenityOptions(this.isAdmin() ? roomType.organization.guid : null);
   }
 
