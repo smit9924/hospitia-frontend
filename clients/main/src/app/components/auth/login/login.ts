@@ -1,7 +1,7 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { AuthLayout } from '../auth-layout/auth-layout';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,7 +29,7 @@ import { Profile } from '../../../services/profile';
 @Component({
   selector: 'app-login',
   imports: [
-    MatCardModule,
+    AuthLayout,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
