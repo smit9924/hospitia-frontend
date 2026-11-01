@@ -38,6 +38,27 @@ export interface RoomUpdateRequest extends RoomAttributes {
   guid: string;
 }
 
+/** A room as drawn on the dashboard floor chart. */
+export interface RoomFloorOverviewItem {
+  guid: string;
+  roomNumber: string;
+  floor: number;
+  status: RoomStatus;
+  notes: string | null;
+  roomType: RoomTypeOption;
+}
+
+/** Every active room of the active organization, top floor first. */
+export interface RoomFloorOverviewResponse {
+  rooms: RoomFloorOverviewItem[];
+}
+
+/** Changes only the status of the room identified by `guid`. */
+export interface RoomStatusUpdateRequest {
+  guid: string;
+  status: RoomStatus;
+}
+
 export type RoomListQuery = PaginatedQuery<RoomSortBy>;
 
 export type RoomListResponse = PaginatedResponse<RoomListItem>;

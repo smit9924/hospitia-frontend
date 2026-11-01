@@ -1,0 +1,58 @@
+<!-- Layout: Auth (brand panel + form panel) -->
+<div class="auth-layout">
+  <!-- Section: Brand panel (wide screens) -->
+  <section class="auth-brand-panel" aria-label="About Hospitia" i18n-aria-label>
+    <div class="auth-brand-content">
+      <!-- IMAGE: Logo -->
+      <div class="auth-logo auth-logo--brand">
+        <img ngSrc="assets/logo/logo-icon.png" width="46" height="44" alt="" priority />
+        <span class="auth-logo-name">Hospitia</span>
+      </div>
+
+      <div class="auth-brand-message">
+        <p class="auth-brand-eyebrow" i18n>Guest house management for NGOs</p>
+        <p class="auth-brand-headline" i18n>Every room, guest and team member in one calm place.</p>
+        <p class="auth-brand-text" i18n>
+          Hospitia keeps your guest houses running smoothly, so your team can focus on the people
+          you host.
+        </p>
+      </div>
+
+      <!-- ILLUSTRATION: Rooms by floor (decorative) -->
+      <div class="auth-brand-illustration" aria-hidden="true">
+        @for (floor of illustrationFloors; track $index) {
+          <div class="auth-brand-illustration-floor">
+            @for (statusClass of floor; track $index) {
+              <span class="auth-brand-illustration-room" [class]="statusClass"></span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- LIST: Benefits -->
+      <ul class="auth-brand-benefits">
+        @for (benefit of benefits; track benefit.icon) {
+          <li class="auth-brand-benefit">
+            <span class="auth-brand-benefit-icon" aria-hidden="true">
+              <mat-icon [svgIcon]="benefit.icon" />
+            </span>
+            <span>{{ benefit.text }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Section: Form panel -->
+  <div class="auth-form-panel">
+    <!-- IMAGE: Logo (tablets and phones) -->
+    <div class="auth-logo auth-compact-logo">
+      <img ngSrc="assets/logo/logo-icon.png" width="38" height="36" alt="" />
+      <span class="auth-logo-name">Hospitia</span>
+    </div>
+
+    <div class="auth-form-container">
+      <ng-content />
+    </div>
+  </div>
+</div>

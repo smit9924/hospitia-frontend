@@ -1,0 +1,159 @@
+<!-- Section: Rooms by floor -->
+<section class="room-floor-chart surface-card" aria-labelledby="room-floor-chart-title">
+  <!-- Section: Chart header -->
+  <header class="room-floor-chart-header">
+    <div class="d-flex flex-column gap-4">
+      <h2 id="room-floor-chart-title" class="room-floor-chart-title" i18n>Rooms by floor</h2>
+      <p class="body-medium text-secondary m-0" i18n>
+        Live status of every room. Select a room to change its status.
+      </p>
+    </div>
+
+    @if (rooms().length > 0) {
+      <!-- SELECT: Room type filter -->
+      <mat-form-field class="room-floor-chart-filter" subscriptSizing="dynamic">
+        <mat-label i18n>Room type</mat-label>
+        <mat-select [value]="selectedRoomTypeGuid()" (valueChange)="onRoomTypeFilterChange($event)">
+          <mat-option i18n [value]="allRoomTypes">All room types</mat-option>
+          @for (roomType of roomTypeFilterOptions(); track roomType.guid) {
+            <mat-option [value]="roomType.guid">{{ roomType.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+  </header>
+
+  @if (isLoading()) {
+    <!-- STATE: Loading -->
+    <div
+      class="d-flex flex-column gap-12 py-8"
+      role="status"
+      aria-label="Loading rooms"
+      i18n-aria-label
+    >
+      <span class="skeleton-line w-100"></span>
+      <span class="skeleton-line w-100"></span>
+      <span class="skeleton-line w-100"></span>
+    </div>
+  } @else if (hasLoadError()) {
+    <!-- STATE: Load error -->
+    <div class="status-page-text room-floor-chart-state" role="alert">
+      <mat-icon class="empty-state-icon" svgIcon="error" aria-hidden="true" />
+      <p class="body-large font-weight-bold m-0" i18n>Rooms could not be loaded</p>
+      <button matButton="outlined" type="button" i18n (click)="loadRooms()">Retry</button>
+    </div>
+  } @else if (rooms().length === 0) {
+    <!-- STATE: No rooms yet -->
+    <div class="status-page-text room-floor-chart-state" role="status">
+      <mat-icon class="empty-state-icon" svgIcon="meetingRoom" aria-hidden="true" />
+      <p class="body-large font-weight-bold m-0" i18n>No rooms yet</p>
+      <p class="body-medium text-secondary m-0" i18n>
+        Add your rooms to see their status floor by floor.
+      </p>
+      <a matButton="filled" i18n [routerLink]="createRoomRoute">Create room</a>
+    </div>
+  } @else {
+    <!-- Section: Status summary -->
+    <div class="room-status-summary">
+      <ul class="status-count-grid list-style-none p-0 m-0">
+        @for (count of statusCounts(); track count.label) {
+          <li class="status-count-tile" [class]="count.statusClass">
+            <span class="status-count-icon" aria-hidden="true">
+              <mat-icon [svgIcon]="count.icon" />
+            </span>
+            <span class="d-flex flex-column">
+              <span class="status-count-value">{{ count.count }}</span>
+              <span class="body-small">{{ count.label }}</span>
+            </span>
+            @if (!$first) {
+              <span class="status-count-percent body-small">{{ count.percent }}%</span>
+            }
+          </li>
+        }
+      </ul>
+
+      <!-- CHART: Status distribution (decorative; counts above carry the values) -->
+      <div class="room-status-distribution" aria-hidden="true">
+        @for (count of statusCounts().slice(1); track count.label) {
+          @if (count.count > 0) {
+            <span
+              class="room-status-distribution-segment"
+              [class]="count.statusClass"
+              [style.flex-grow]="count.count"
+            ></span>
+          }
+        }
+      </div>
+    </div>
+
+    @if (floorRows().length === 0) {
+      <!-- STATE: Filter has no rooms -->
+      <p class="body-medium text-secondary text-center m-0 py-16" role="status" i18n>
+        No rooms of this type.
+      </p>
+    } @else {
+      <!-- CHART: Building (one row per floor, top floor first) -->
+      <div class="room-building">
+        @for (row of floorRows(); track row.floor) {
+          @if (row.startsBelowGround) {
+            <!-- DIVIDER: Ground level -->
+            <div class="room-ground-line" role="separator">
+              <span class="room-ground-line-label body-small" i18n>Ground level</span>
+            </div>
+          }
+          <div class="room-floor-row" [class.room-floor-row--basement]="row.floor < 0">
+            <!-- TEXT: Floor label -->
+            <div class="room-floor-rail">
+              <span class="room-floor-label">{{ row.label }}</span>
+              <span class="body-small text-secondary" i18n
+                >{{ row.availableCount }}/{{ row.rooms.length }} available</span
+              >
+            </div>
+
+            <!-- LIST: Rooms on this floor -->
+            <ul
+              class="room-tile-list list-style-none m-0"
+              [attr.aria-label]="floorRowAriaLabel(row)"
+            >
+              @for (room of row.rooms; track room.guid) {
+                <li>
+                  <!-- BUTTON: Room tile -->
+                  <button
+                    type="button"
+                    class="room-tile"
+                    [class]="statusOption(room.status).statusClass"
+                    [attr.aria-label]="tileLabel(room)"
+                    [attr.aria-busy]="isSaving(room)"
+                    [disabled]="isSaving(room)"
+                    [matTooltip]="statusOption(room.status).label"
+                    (click)="openRoom(room)"
+                  >
+                    <span class="room-tile-number">{{ room.roomNumber }}</span>
+                    <mat-icon
+                      class="room-tile-icon"
+                      aria-hidden="true"
+                      [svgIcon]="statusOption(room.status).icon"
+                    />
+                    <span class="room-tile-type">{{ room.roomType.name }}</span>
+                  </button>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Section: Legend -->
+    <ul class="room-status-legend list-style-none p-0 m-0" aria-label="Legend" i18n-aria-label>
+      @for (option of statusOptions; track option.value) {
+        <li class="room-status-legend-item">
+          <span class="room-status-legend-swatch" aria-hidden="true" [class]="option.statusClass">
+            <mat-icon [svgIcon]="option.icon" />
+          </span>
+          <span class="body-small">{{ option.label }}</span>
+        </li>
+      }
+    </ul>
+  }
+</section>

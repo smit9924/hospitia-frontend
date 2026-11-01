@@ -34,4 +34,10 @@ export class GenericSnackbar {
   dismiss(): void {
     this.snackbarRef.dismiss();
   }
+
+  /** Runs the optional action (e.g. Undo) and closes the snackbar. */
+  runAction(): void {
+    this.data.onAction?.();
+    this.snackbarRef.dismissWithAction();
+  }
 }

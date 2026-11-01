@@ -1,0 +1,269 @@
+// Split-screen frame for the sign-in and sign-up pages.
+// Wide screens: brand panel | form. Tablets: compact logo + form card. Phones: compact logo + form.
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+}
+
+.auth-layout {
+  display: grid;
+  grid-template-columns: minmax(400px, 5fr) 7fr;
+  min-height: 100dvh;
+  background-color: var(--app-color-page-ground);
+}
+
+/* ---- Brand panel ---- */
+
+// Stays in view while a long form (sign-up) scrolls.
+.auth-brand-panel {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+  color: var(--app-color-on-brand-panel);
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      color-mix(in srgb, var(--app-color-on-brand-panel) 16%, transparent),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      color-mix(in srgb, var(--mat-sys-tertiary) 22%, transparent),
+      transparent 50%
+    ),
+    var(--app-color-brand-panel);
+
+  // Subtle dotted grid texture.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--app-color-on-brand-panel) 14%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+}
+
+.auth-brand-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  height: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+  padding: 48px 48px 40px;
+  overflow-y: auto;
+}
+
+// Logo mark + product name (live text, so it stays readable on any background).
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-logo-name {
+  font: var(--mat-sys-headline-small);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.auth-logo--brand {
+  color: var(--app-color-on-brand-panel);
+}
+
+.auth-brand-message {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-brand-eyebrow {
+  margin: 0;
+  font: var(--mat-sys-label-large);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth-brand-headline {
+  margin: 0;
+  font: var(--mat-sys-headline-medium);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.auth-brand-text {
+  margin: 0;
+  font: var(--mat-sys-body-large);
+}
+
+// A tiny "rooms by floor" chart: three floors of status-colored rooms on a building card.
+.auth-brand-illustration {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(100%, 300px);
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--app-color-on-brand-panel) 24%, transparent);
+  border-top: 4px solid var(--app-color-on-brand-panel);
+  border-radius: 16px;
+  background-color: color-mix(in srgb, var(--app-color-on-brand-panel) 8%, transparent);
+  box-shadow: var(--app-shadow-overlay);
+}
+
+.auth-brand-illustration-floor {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+
+  & + .auth-brand-illustration-floor {
+    padding-top: 8px;
+    border-top: 1px dashed color-mix(in srgb, var(--app-color-on-brand-panel) 24%, transparent);
+  }
+}
+
+.auth-brand-illustration-room {
+  position: relative;
+  height: 30px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--room-status-pattern), var(--room-status-surface);
+
+  // Status accent strip, as on the dashboard tiles.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background-color: var(--room-status-accent);
+  }
+}
+
+.auth-brand-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--mat-sys-body-large);
+}
+
+.auth-brand-benefit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-brand-benefit-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background-color: color-mix(in srgb, var(--app-color-on-brand-panel) 14%, transparent);
+
+  mat-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ---- Form panel ---- */
+
+.auth-form-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 48px 32px;
+}
+
+.auth-form-container {
+  width: 100%;
+  max-width: 460px;
+}
+
+// Shown only when the brand panel is hidden.
+.auth-compact-logo {
+  display: none;
+  color: var(--mat-sys-on-surface);
+
+  .auth-logo-name {
+    font: var(--mat-sys-title-large);
+    font-weight: 800;
+  }
+}
+
+/* ---- Short wide screens: tighter brand panel ---- */
+
+@media screen and (min-width: 1024px) and (max-height: 760px) {
+  .auth-brand-content {
+    gap: 20px;
+    padding-block: 32px 28px;
+  }
+
+  .auth-brand-illustration {
+    display: none;
+  }
+}
+
+/* ---- Tablets: no brand panel, form in a card ---- */
+
+@media screen and (max-width: 1023.98px) {
+  .auth-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .auth-brand-panel {
+    display: none;
+  }
+
+  .auth-compact-logo {
+    display: flex;
+  }
+
+  .auth-form-panel {
+    justify-content: flex-start;
+    padding: 40px 24px;
+  }
+
+  .auth-form-container {
+    max-width: 520px;
+    padding: 32px;
+    border: 1px solid var(--app-color-border-subtle);
+    border-radius: 20px;
+    background-color: var(--app-color-card);
+    box-shadow: var(--app-shadow-card);
+  }
+}
+
+/* ---- Phones: full-width form ---- */
+
+@media screen and (max-width: 599.98px) {
+  .auth-form-panel {
+    gap: 20px;
+    padding: 28px 16px 32px;
+  }
+
+  .auth-form-container {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+}

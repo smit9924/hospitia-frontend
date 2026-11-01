@@ -263,4 +263,12 @@ export const IconList = [
     name: 'meetingRoom',
     src: 'assets/icons/meeting-room.svg',
   },
+  {
+    name: 'build',
+    src: 'assets/icons/build.svg',
+  },
+  {
+    name: 'block',
+    src: 'assets/icons/block.svg',
+  },
 ];

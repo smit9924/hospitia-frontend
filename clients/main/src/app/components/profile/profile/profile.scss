@@ -1,3 +1,12 @@
 .profile-photo {
   border: 2px solid var(--color-border);
 }
+
+// Field that takes half a row (two per row) on wide screens; full width on phones.
+.form-field-half {
+  max-width: calc(50% - 12px); // half of the row minus half of the 24px gap
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+  }
+}

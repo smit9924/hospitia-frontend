@@ -1,0 +1,82 @@
+<!-- Dialog: Room status -->
+<h2 mat-dialog-title class="d-flex align-center gap-12">
+  <span class="room-status-dialog-badge" aria-hidden="true" [class]="currentStatus.statusClass">
+    <mat-icon [svgIcon]="currentStatus.icon" />
+  </span>
+  <span i18n>Room {{ room.roomNumber }}</span>
+</h2>
+
+<mat-dialog-content class="d-flex flex-column gap-16">
+  <!-- Section: Room details -->
+  <dl class="room-status-dialog-details m-0">
+    <div>
+      <dt class="body-small text-secondary" i18n>Floor</dt>
+      <dd class="body-large m-0">
+        {{ room.floor | floorLabel }}
+        <span class="body-small text-secondary"
+          >({{ room.floor | floorLabel: 'description' }})</span
+        >
+      </dd>
+    </div>
+    <div>
+      <dt class="body-small text-secondary" i18n>Room type</dt>
+      <dd class="body-large m-0">{{ room.roomType.name }}</dd>
+    </div>
+    <div>
+      <dt class="body-small text-secondary" i18n>Status</dt>
+      <dd class="body-large m-0">{{ currentStatus.label }}</dd>
+    </div>
+    @if (room.notes) {
+      <div class="room-status-dialog-notes">
+        <dt class="body-small text-secondary" i18n>Notes</dt>
+        <dd class="body-medium m-0 wb-break-word">{{ room.notes }}</dd>
+      </div>
+    }
+  </dl>
+
+  <!-- Section: Quick status change -->
+  <div class="d-flex flex-column gap-8">
+    <span id="room-status-dialog-options-label" class="body-medium font-weight-bold" i18n
+      >Change status</span
+    >
+    <div
+      class="room-status-options"
+      role="radiogroup"
+      aria-labelledby="room-status-dialog-options-label"
+    >
+      @for (option of statusOptions; track option.value) {
+        <!-- BUTTON: Status option -->
+        <button
+          type="button"
+          role="radio"
+          class="room-status-option"
+          [class]="option.statusClass"
+          [attr.aria-checked]="option.value === room.status"
+          [class.room-status-option--current]="option.value === room.status"
+          (click)="chooseStatus(option.value)"
+        >
+          <mat-icon aria-hidden="true" [svgIcon]="option.icon" />
+          <span>{{ option.label }}</span>
+          @if (option.value === room.status) {
+            <span class="body-small" i18n>Current</span>
+          }
+        </button>
+      }
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <!-- LINK: Edit room -->
+  <a
+    matButton="outlined"
+    class="button-quiet"
+    i18n
+    [routerLink]="editRoomRoute"
+    [queryParams]="{ guid: room.guid }"
+    (click)="close()"
+    >Edit room</a
+  >
+  <!-- BUTTON: Close -->
+  <button matButton="filled" type="button" i18n (click)="close()">Close</button>
+</mat-dialog-actions>

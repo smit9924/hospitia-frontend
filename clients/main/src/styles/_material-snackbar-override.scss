@@ -82,3 +82,13 @@ html {
     }
   }
 }
+
+// Optional action button (e.g. "Undo") takes the snackbar's text color in every variant.
+.snackbar-action-button {
+  @include mat.button-overrides(
+    (
+      text-label-text-color: currentColor,
+      text-label-text-weight: 700,
+    )
+  );
+}
