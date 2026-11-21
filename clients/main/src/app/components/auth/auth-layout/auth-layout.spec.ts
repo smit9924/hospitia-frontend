@@ -35,14 +35,6 @@ describe('AuthLayout', () => {
     expect(brandPanel?.querySelectorAll('.auth-brand-benefit').length).toBe(3);
   });
 
-  it('draws a decorative floor illustration colored with the room status classes', () => {
-    const illustration = element.querySelector('.auth-brand-illustration');
-    expect(illustration?.getAttribute('aria-hidden')).toBe('true');
-    const rooms = [...element.querySelectorAll('.auth-brand-illustration-room')];
-    expect(rooms.length).toBe(12);
-    expect(rooms.every((room) => /room-status--/.test(room.className))).toBe(true);
-  });
-
   it('keeps logo images decorative because the name is shown as text', () => {
     const logos = [...element.querySelectorAll<HTMLImageElement>('.auth-logo img')];
     expect(logos.length).toBe(2);

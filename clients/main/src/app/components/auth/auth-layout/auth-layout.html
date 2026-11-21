@@ -18,17 +18,6 @@
         </p>
       </div>
 
-      <!-- ILLUSTRATION: Rooms by floor (decorative) -->
-      <div class="auth-brand-illustration" aria-hidden="true">
-        @for (floor of illustrationFloors; track $index) {
-          <div class="auth-brand-illustration-floor">
-            @for (statusClass of floor; track $index) {
-              <span class="auth-brand-illustration-room" [class]="statusClass"></span>
-            }
-          </div>
-        }
-      </div>
-
       <!-- LIST: Benefits -->
       <ul class="auth-brand-benefits">
         @for (benefit of benefits; track benefit.icon) {

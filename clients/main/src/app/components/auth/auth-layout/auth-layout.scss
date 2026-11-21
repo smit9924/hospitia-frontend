@@ -108,48 +108,6 @@
   font: var(--mat-sys-body-large);
 }
 
-// A tiny "rooms by floor" chart: three floors of status-colored rooms on a building card.
-.auth-brand-illustration {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: min(100%, 300px);
-  padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--app-color-on-brand-panel) 24%, transparent);
-  border-top: 4px solid var(--app-color-on-brand-panel);
-  border-radius: 16px;
-  background-color: color-mix(in srgb, var(--app-color-on-brand-panel) 8%, transparent);
-  box-shadow: var(--app-shadow-overlay);
-}
-
-.auth-brand-illustration-floor {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-
-  & + .auth-brand-illustration-floor {
-    padding-top: 8px;
-    border-top: 1px dashed color-mix(in srgb, var(--app-color-on-brand-panel) 24%, transparent);
-  }
-}
-
-.auth-brand-illustration-room {
-  position: relative;
-  height: 30px;
-  border-radius: 8px;
-  overflow: hidden;
-  background: var(--room-status-pattern), var(--room-status-surface);
-
-  // Status accent strip, as on the dashboard tiles.
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 4px;
-    background-color: var(--room-status-accent);
-  }
-}
-
 .auth-brand-benefits {
   display: flex;
   flex-direction: column;
@@ -214,10 +172,6 @@
   .auth-brand-content {
     gap: 20px;
     padding-block: 32px 28px;
-  }
-
-  .auth-brand-illustration {
-    display: none;
   }
 }
 
