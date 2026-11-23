@@ -14,7 +14,7 @@ import {
   RoomStatusOption,
   roomStatusOptions,
 } from '../../../data/room-status-options';
-import { formatFloorLabel } from '../../../pipes/floor-label/floor-label-pipe';
+import { nameFloor } from '../../../pipes/floor-label/floor-label-pipe';
 import { Organization } from '../../../services/organization/organization';
 import { Room } from '../../../services/room/room';
 import { Snackbar } from '../../../services/snackbar';
@@ -24,6 +24,7 @@ import { RoomFloorOverviewItem } from '../../../types/interfaces/room';
 import { RoomTypeOption } from '../../../types/interfaces/room-type';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { GenericSnackbarConfigData } from '../../../types/models/common/generic-snackbar/generic-snackbar-config-data';
+import { todayIsoDate } from '../../../utils/iso-date';
 import { RoomStatusDialog, RoomStatusDialogData } from '../room-status-dialog/room-status-dialog';
 
 /** One building floor of the chart with its (filtered) rooms. */
@@ -45,6 +46,10 @@ interface RoomStatusCount {
   percent: number;
   statusClass: string;
 }
+
+/** Rooms holding a guest booking today (see `RoomFloorOverviewItem.occupancy`). */
+const OCCUPIED_LABEL = $localize`Occupied`;
+const OCCUPIED_COUNT_CLASS = 'status-count-tile--occupied';
 
 /** Room type filter value meaning "every room type". */
 const ALL_ROOM_TYPES = '';
@@ -83,6 +88,7 @@ export class RoomFloorChart {
   protected readonly allRoomTypes = ALL_ROOM_TYPES;
   protected readonly statusOptions = roomStatusOptions;
   protected readonly createRoomRoute = appRoutes.createRoom;
+  protected readonly occupiedLabel = OCCUPIED_LABEL;
 
   protected readonly rooms = signal<RoomFloorOverviewItem[]>([]);
   protected readonly isLoading = signal(true);
@@ -109,7 +115,7 @@ export class RoomFloorChart {
       : this.rooms().filter((room) => room.roomType.guid === roomTypeGuid);
   });
 
-  /** Total and per-status count tiles for the shown rooms. */
+  /** Total and per-status counts for the shown rooms (also drawn as the distribution bar). */
   protected readonly statusCounts = computed((): RoomStatusCount[] => {
     const rooms = this.visibleRooms();
     const percentOf = (count: number) =>
@@ -135,6 +141,22 @@ export class RoomFloorChart {
     ];
   });
 
+  /** Rooms of the shown ones that hold a guest booking today. */
+  protected readonly occupiedCount = computed((): RoomStatusCount => {
+    const rooms = this.visibleRooms();
+    const count = rooms.filter((room) => room.occupancy !== null).length;
+    return {
+      label: OCCUPIED_LABEL,
+      icon: 'bed',
+      count,
+      percent: rooms.length === 0 ? 0 : Math.round((count / rooms.length) * 100),
+      statusClass: OCCUPIED_COUNT_CLASS,
+    };
+  });
+
+  /** Count tiles: total, each status, then occupied today. */
+  protected readonly summaryTiles = computed(() => [...this.statusCounts(), this.occupiedCount()]);
+
   /** Floor rows of the shown rooms, top floor first. */
   protected readonly floorRows = computed((): RoomFloorRow[] => {
     const rows: RoomFloorRow[] = [];
@@ -145,7 +167,7 @@ export class RoomFloorChart {
       } else {
         rows.push({
           floor: room.floor,
-          label: this.floorRowLabel(room.floor),
+          label: nameFloor(room.floor),
           rooms: [room],
           availableCount: 0,
           startsBelowGround: false,
@@ -178,9 +200,33 @@ export class RoomFloorChart {
     return this.savingRoomGuids().has(room.guid);
   }
 
-  /** Accessible name of a tile, e.g. "Room 201, Deluxe double, Available". */
+  /** Accessible name of a tile, e.g. "Room 201, Deluxe double, Available, Occupied". */
   protected tileLabel(room: RoomFloorOverviewItem): string {
-    return $localize`Room ${room.roomNumber}, ${room.roomType.name}, ${this.statusOption(room.status).label}`;
+    const label = $localize`Room ${room.roomNumber}, ${room.roomType.name}, ${this.statusOption(room.status).label}`;
+    const occupancy = this.occupancyLabel(room);
+    return occupancy ? `${label}, ${occupancy}` : label;
+  }
+
+  /** Tooltip of a tile: its status, and its occupancy today if any. */
+  protected tileTooltip(room: RoomFloorOverviewItem): string {
+    const occupancy = this.occupancyLabel(room);
+    const status = this.statusOption(room.status).label;
+    return occupancy ? `${status} · ${occupancy}` : status;
+  }
+
+  /** "Occupied", "Arriving today", "Departing today" or "Turnover today"; null when free. */
+  protected occupancyLabel(room: RoomFloorOverviewItem): string | null {
+    const occupancy = room.occupancy;
+    if (!occupancy) {
+      return null;
+    }
+    if (occupancy.isArriving && occupancy.isDeparting) {
+      return $localize`Turnover today`;
+    }
+    if (occupancy.isDeparting) {
+      return $localize`Departing today`;
+    }
+    return occupancy.isArriving ? $localize`Arriving today` : OCCUPIED_LABEL;
   }
 
   protected floorRowAriaLabel(row: RoomFloorRow): string {
@@ -208,7 +254,7 @@ export class RoomFloorChart {
   protected loadRooms(): void {
     this.isLoading.set(true);
     this.hasLoadError.set(false);
-    this.roomService.getFloorOverview().subscribe({
+    this.roomService.getFloorOverview(todayIsoDate()).subscribe({
       next: (response) => {
         this.rooms.set(response.rooms);
         const isFilterStillOffered = response.rooms.some(
@@ -292,11 +338,6 @@ export class RoomFloorChart {
       }
       return updated;
     });
-  }
-
-  /** "Floor 2" for upper floors, "Ground" and "B1" otherwise. */
-  private floorRowLabel(floor: number): string {
-    return floor > 0 ? $localize`Floor ${floor}` : formatFloorLabel(floor);
   }
 
   private showSnackbar(text: string, type: GenericSnackbarType, onUndo?: () => void): void {

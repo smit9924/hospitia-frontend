@@ -6,11 +6,15 @@ import { Profile } from '../../../services/profile';
 import { SidebarNavigation } from '../../../services/sidebar-navigation/sidebar-navigation';
 import { UserType } from '../../../types/enums/auth';
 import { UserProfileModel } from '../../../types/models/users/user-profile-model';
+import { BookingTodaySummaryTiles } from '../../booking/booking-today-summary/booking-today-summary';
 import { RoomFloorChart } from '../../room/room-floor-chart/room-floor-chart';
 import { DashboardOverview } from './dashboard-overview';
 
 @Component({ selector: 'app-room-floor-chart', template: '' })
 class RoomFloorChartStub {}
+
+@Component({ selector: 'app-booking-today-summary', template: '' })
+class BookingTodaySummaryStub {}
 
 describe('DashboardOverview', () => {
   const userProfile = signal(new UserProfileModel({ firstName: 'Asha', role: UserType.ADMIN }));
@@ -71,8 +75,8 @@ describe('DashboardOverview', () => {
       ],
     })
       .overrideComponent(DashboardOverview, {
-        remove: { imports: [RoomFloorChart] },
-        add: { imports: [RoomFloorChartStub] },
+        remove: { imports: [RoomFloorChart, BookingTodaySummaryTiles] },
+        add: { imports: [RoomFloorChartStub, BookingTodaySummaryStub] },
       })
       .compileComponents();
   });
@@ -100,23 +104,25 @@ describe('DashboardOverview', () => {
   });
 
   it.each([UserType.OWNER, UserType.MANAGER])(
-    'shows the rooms by floor chart to role %s',
+    "shows today's bookings and the rooms by floor chart to role %s",
     async (role) => {
       userProfile.set(new UserProfileModel({ firstName: 'Asha', role }));
       const fixture = TestBed.createComponent(DashboardOverview);
       await fixture.whenStable();
 
-      expect(
-        (fixture.nativeElement as HTMLElement).querySelector('app-room-floor-chart'),
-      ).not.toBeNull();
+      const element = fixture.nativeElement as HTMLElement;
+      expect(element.querySelector('app-booking-today-summary')).not.toBeNull();
+      expect(element.querySelector('app-room-floor-chart')).not.toBeNull();
     },
   );
 
-  it('does not show the chart to admins', async () => {
+  it("does not show today's bookings or the chart to admins", async () => {
     userProfile.set(new UserProfileModel({ firstName: 'Asha', role: UserType.ADMIN }));
     const fixture = TestBed.createComponent(DashboardOverview);
     await fixture.whenStable();
 
-    expect((fixture.nativeElement as HTMLElement).querySelector('app-room-floor-chart')).toBeNull();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('app-booking-today-summary')).toBeNull();
+    expect(element.querySelector('app-room-floor-chart')).toBeNull();
   });
 });

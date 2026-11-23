@@ -10,6 +10,14 @@
   --room-status-pattern: none;
 }
 
+// Rooms holding a guest booking today use the tertiary color, apart from the statuses.
+.status-count-tile--occupied {
+  --room-status-accent: var(--mat-sys-tertiary);
+  --room-status-surface: var(--mat-sys-tertiary-container);
+  --room-status-on-surface: var(--mat-sys-on-tertiary-container);
+  --room-status-pattern: none;
+}
+
 .room-floor-chart {
   display: flex;
   flex-direction: column;
@@ -51,7 +59,7 @@
 
 .status-count-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 12px;
 }
 
@@ -256,6 +264,35 @@
   width: 20px;
   height: 20px;
   color: var(--room-status-accent);
+}
+
+// "Occupied" (or arriving / departing today) pill on a room tile and in the legend.
+.room-tile-occupancy {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 1px 8px 1px 4px;
+  border-radius: 999px;
+  background-color: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+  font: var(--mat-sys-label-small);
+  font-weight: 700;
+  white-space: nowrap;
+
+  mat-icon {
+    width: 14px;
+    height: 14px;
+    flex: none;
+  }
+
+  .room-tile & {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .room-tile-type {

@@ -56,7 +56,7 @@
     <!-- Section: Status summary -->
     <div class="room-status-summary">
       <ul class="status-count-grid list-style-none p-0 m-0">
-        @for (count of statusCounts(); track count.label) {
+        @for (count of summaryTiles(); track count.label) {
           <li class="status-count-tile" [class]="count.statusClass">
             <span class="status-count-icon" aria-hidden="true">
               <mat-icon [svgIcon]="count.icon" />
@@ -125,7 +125,7 @@
                     [attr.aria-label]="tileLabel(room)"
                     [attr.aria-busy]="isSaving(room)"
                     [disabled]="isSaving(room)"
-                    [matTooltip]="statusOption(room.status).label"
+                    [matTooltip]="tileTooltip(room)"
                     (click)="openRoom(room)"
                   >
                     <span class="room-tile-number">{{ room.roomNumber }}</span>
@@ -135,6 +135,13 @@
                       [svgIcon]="statusOption(room.status).icon"
                     />
                     <span class="room-tile-type">{{ room.roomType.name }}</span>
+                    @if (occupancyLabel(room); as occupancy) {
+                      <!-- TEXT: Occupancy today -->
+                      <span class="room-tile-occupancy" aria-hidden="true">
+                        <mat-icon svgIcon="bed" />
+                        <span>{{ occupancy }}</span>
+                      </span>
+                    }
                   </button>
                 </li>
               }
@@ -154,6 +161,12 @@
           <span class="body-small">{{ option.label }}</span>
         </li>
       }
+      <li class="room-status-legend-item">
+        <span class="room-tile-occupancy" aria-hidden="true">
+          <mat-icon svgIcon="bed" />
+        </span>
+        <span class="body-small" i18n>Occupied today</span>
+      </li>
     </ul>
   }
 </section>

@@ -51,8 +51,11 @@ export class Room {
   }
 
   /** Every active room of the active organization for the dashboard floor chart. */
-  getFloorOverview(): Observable<RoomFloorOverviewResponse> {
-    return this.http.get<RoomFloorOverviewResponse>(apiRoutes.room.floorOverview);
+  /** Every active room of the active organization, each with its occupancy on `onDate` (local date). */
+  getFloorOverview(onDate: string): Observable<RoomFloorOverviewResponse> {
+    return this.http.get<RoomFloorOverviewResponse>(apiRoutes.room.floorOverview, {
+      params: { onDate },
+    });
   }
 
   /** Changes only the status of the room identified by `payload.guid`. */

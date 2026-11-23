@@ -7,16 +7,17 @@ import { SidebarNavigation } from '../../../services/sidebar-navigation/sidebar-
 import { UserType } from '../../../types/enums/auth';
 import { ResolvedSidebarNavigationLink } from '../../../types/interfaces/sidebar-navigation';
 import { PageHeader } from '../../common/page-header/page-header';
+import { BookingTodaySummaryTiles } from '../../booking/booking-today-summary/booking-today-summary';
 import { RoomFloorChart } from '../../room/room-floor-chart/room-floor-chart';
 
 /**
- * Dashboard content shared by every role: a greeting, the "Rooms by floor" chart for owners
- * and managers, and shortcut cards to the pages the signed-in user can open (the same links
+ * Dashboard content shared by every role: a greeting, today's bookings and the "Rooms by
+ * floor" chart for owners and managers, and shortcut cards to the pages the signed-in user can open (the same links
  * as the sidebar, minus the dashboard itself).
  */
 @Component({
   selector: 'app-dashboard-overview',
-  imports: [MatIconModule, RouterLink, PageHeader, RoomFloorChart],
+  imports: [MatIconModule, RouterLink, PageHeader, BookingTodaySummaryTiles, RoomFloorChart],
   templateUrl: './dashboard-overview.html',
   styleUrl: './dashboard-overview.scss',
 })
@@ -25,7 +26,7 @@ export class DashboardOverview {
   private readonly organizationService = inject(Organization);
   private readonly sidebarNavigationService = inject(SidebarNavigation);
 
-  /** The floor chart shows the active organization's rooms, so only members see it. */
+  /** Today's bookings and the floor chart show the active organization's data, so only members see them. */
   protected readonly showsRoomFloorChart = computed(() => {
     const role = this.profileService.userProfile()?.role;
     return role === UserType.OWNER || role === UserType.MANAGER;
