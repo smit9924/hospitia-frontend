@@ -1,0 +1,37 @@
+// One guest of a booking as a compact card.
+.booking-guest-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--app-color-border-subtle);
+  border-radius: 12px;
+  background-color: var(--app-color-card-raised);
+}
+
+// Lets long names and emails wrap instead of pushing the actions out.
+.booking-guest-card-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.booking-guest-card-actions {
+  display: flex;
+  flex: none;
+  gap: 4px;
+
+  &:empty {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 599.98px) {
+  .booking-guest-card {
+    flex-direction: column;
+  }
+
+  .booking-guest-card-actions {
+    align-self: flex-end;
+  }
+}

@@ -1,0 +1,110 @@
+<!-- Section: Primary guest -->
+<section class="d-flex flex-column gap-12" aria-labelledby="primary-guest-heading">
+  <div class="d-flex wrap align-center justify-space-between gap-8">
+    <h3 id="primary-guest-heading" class="heading-extra-small m-0" i18n>Primary guest</h3>
+    @if (!primaryGuest()) {
+      <!-- BUTTON: Add primary guest -->
+      <button matButton="outlined" type="button" (click)="addOrEditPrimary()">
+        <mat-icon svgIcon="user" aria-hidden="true" />
+        <span i18n>Add primary guest</span>
+      </button>
+    }
+  </div>
+
+  @if (primaryGuest(); as guest) {
+    <app-booking-guest-summary [guest]="guest" [isPrimary]="true">
+      <!-- BUTTON: Edit primary guest -->
+      <button
+        guestActions
+        matIconButton
+        type="button"
+        [attr.aria-label]="editGuestLabel(guest)"
+        (click)="addOrEditPrimary()"
+      >
+        <mat-icon svgIcon="edit" aria-hidden="true" />
+      </button>
+    </app-booking-guest-summary>
+  } @else {
+    <!-- TEXT: No primary guest -->
+    <p
+      class="body-medium m-0"
+      [class.text-error]="showErrors()"
+      [class.text-secondary]="!showErrors()"
+      [attr.role]="showErrors() ? 'alert' : null"
+    >
+      @if (showErrors()) {
+        <span i18n>Add the primary guest.</span>
+      } @else {
+        <span i18n>The contact person for this booking, with phone and ID proof.</span>
+      }
+    </p>
+  }
+</section>
+
+<!-- Section: Secondary guests -->
+<section class="d-flex flex-column gap-12" aria-labelledby="secondary-guests-heading">
+  <div class="d-flex wrap align-center justify-space-between gap-8">
+    <h3 id="secondary-guests-heading" class="heading-extra-small m-0">
+      <span i18n>Secondary guests</span>
+      @if (capacity() !== null) {
+        <span class="text-secondary">
+          ({{ secondaryGuests().length }} of {{ secondaryLimit() }})</span
+        >
+      }
+    </h3>
+    <!-- BUTTON: Add guest -->
+    <button
+      matButton="outlined"
+      type="button"
+      aria-describedby="guest-capacity-status"
+      [disabled]="!canAddSecondary()"
+      (click)="addSecondary()"
+    >
+      <mat-icon svgIcon="group" aria-hidden="true" />
+      <span i18n>Add guest</span>
+    </button>
+  </div>
+
+  @for (guest of secondaryGuests(); track $index) {
+    <app-booking-guest-summary [guest]="guest">
+      <!-- BUTTON: Edit guest -->
+      <button
+        guestActions
+        matIconButton
+        type="button"
+        [attr.aria-label]="editGuestLabel(guest)"
+        (click)="editSecondary($index)"
+      >
+        <mat-icon svgIcon="edit" aria-hidden="true" />
+      </button>
+      <!-- BUTTON: Remove guest -->
+      <button
+        guestActions
+        matIconButton
+        type="button"
+        [attr.aria-label]="removeGuestLabel(guest)"
+        (click)="removeSecondary($index)"
+      >
+        <mat-icon svgIcon="delete" aria-hidden="true" />
+      </button>
+    </app-booking-guest-summary>
+  }
+
+  <!-- TEXT: Guest capacity -->
+  <p id="guest-capacity-status" class="body-medium m-0" aria-live="polite">
+    @if (capacity() === null) {
+      <span class="text-secondary" i18n>Choose a room first.</span>
+    } @else if (extraGuests() > 0) {
+      <span class="text-error" role="alert" i18n
+        >Room {{ roomNumber() }} fits {{ capacity() }} guests. Remove {{ extraGuests() }} guest(s)
+        or choose a larger room.</span
+      >
+    } @else if (isFull()) {
+      <span class="font-weight-bold" i18n
+        >Room capacity reached ({{ guestCount() }} of {{ capacity() }})</span
+      >
+    } @else {
+      <span class="text-secondary" i18n>Guests: {{ guestCount() }} of {{ capacity() }}</span>
+    }
+  </p>
+</section>

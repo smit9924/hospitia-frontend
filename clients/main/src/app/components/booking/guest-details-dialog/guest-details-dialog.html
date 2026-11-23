@@ -1,0 +1,210 @@
+<!-- Dialog: Guest details -->
+<h2 mat-dialog-title>{{ titleText }}</h2>
+
+<mat-dialog-content>
+  <p class="body-medium text-secondary mt-0 mb-16">
+    @if (isPrimary) {
+      <span i18n
+        >The primary guest is the contact person for this booking. Phone and ID proof are
+        required.</span
+      >
+    } @else {
+      <span i18n>Name, gender and date of birth are required.</span>
+    }
+  </p>
+
+  <!-- Form: Guest -->
+  <form
+    id="guest-details-form"
+    class="d-flex flex-column gap-16"
+    [formGroup]="guestForm"
+    (ngSubmit)="submit()"
+  >
+    <div class="d-flex wrap align-flex-start gap-16">
+      <!-- TEXT FIELD: First name -->
+      <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+        <mat-label i18n>First name</mat-label>
+        <input
+          matInput
+          formControlName="firstName"
+          autocomplete="off"
+          cdkFocusInitial
+          [maxlength]="nameMaxLength"
+        />
+        @if (
+          guestForm.controls.firstName.hasError('required') ||
+          guestForm.controls.firstName.hasError('pattern')
+        ) {
+          <mat-error i18n>First name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- TEXT FIELD: Last name -->
+      <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+        <mat-label i18n>Last name</mat-label>
+        <input matInput formControlName="lastName" autocomplete="off" [maxlength]="nameMaxLength" />
+        @if (
+          guestForm.controls.lastName.hasError('required') ||
+          guestForm.controls.lastName.hasError('pattern')
+        ) {
+          <mat-error i18n>Last name is required</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex wrap align-flex-start gap-16">
+      <!-- SELECT: Gender -->
+      <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+        <mat-label i18n>Gender</mat-label>
+        <mat-select formControlName="gender">
+          @for (option of genderOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+          }
+        </mat-select>
+        @if (guestForm.controls.gender.hasError('required')) {
+          <mat-error i18n>Gender is required</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- DATE FIELD: Date of birth -->
+      <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+        <mat-label i18n>Date of birth</mat-label>
+        <input
+          matInput
+          formControlName="dateOfBirth"
+          [matDatepicker]="birthDatePicker"
+          [min]="minBirthDate"
+          [max]="maxBirthDate"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="birthDatePicker" />
+        <mat-datepicker #birthDatePicker startView="multi-year" />
+        @if (guestForm.controls.dateOfBirth.hasError('required')) {
+          <mat-error i18n>Enter a valid date of birth</mat-error>
+        } @else if (
+          guestForm.controls.dateOfBirth.hasError('matDatepickerMax') ||
+          guestForm.controls.dateOfBirth.hasError('matDatepickerMin')
+        ) {
+          <mat-error i18n>Enter a valid date of birth</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex wrap align-flex-start gap-16">
+      <!-- TEXT FIELD: Phone -->
+      <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+        <mat-label i18n>Phone</mat-label>
+        <input
+          matInput
+          formControlName="phone"
+          type="tel"
+          autocomplete="off"
+          placeholder="e.g. +91 98450 12345"
+          i18n-placeholder
+          [maxlength]="phoneMaxLength"
+        />
+        @if (guestForm.controls.phone.hasError('required')) {
+          <mat-error i18n>Phone is required for the primary guest</mat-error>
+        } @else if (
+          guestForm.controls.phone.hasError('pattern') ||
+          guestForm.controls.phone.hasError('minlength')
+        ) {
+          <mat-error i18n>Enter 7 to 20 digits, spaces, +, -, ( or )</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- TEXT FIELD: Email -->
+      <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+        <mat-label i18n>Email (optional)</mat-label>
+        <input matInput formControlName="email" type="email" autocomplete="off" />
+        @if (isPrimary) {
+          <mat-hint i18n>Booking emails are sent here</mat-hint>
+        }
+        @if (
+          guestForm.controls.email.hasError('email') ||
+          guestForm.controls.email.hasError('maxlength')
+        ) {
+          <mat-error i18n>Enter a valid email address</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex wrap align-flex-start gap-16">
+      <!-- SELECT: ID proof type -->
+      <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+        <mat-label>
+          @if (isPrimary) {
+            <span i18n>ID proof</span>
+          } @else {
+            <span i18n>ID proof (optional)</span>
+          }
+        </mat-label>
+        <mat-select formControlName="idProofType">
+          @if (!isPrimary) {
+            <mat-option i18n [value]="null">None</mat-option>
+          }
+          @for (option of idProofTypeOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+          }
+        </mat-select>
+        @if (guestForm.controls.idProofType.hasError('required')) {
+          <mat-error i18n>ID proof is required for the primary guest</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- TEXT FIELD: ID proof number -->
+      <mat-form-field subscriptSizing="dynamic" class="form-field-flex">
+        <mat-label i18n>ID proof number</mat-label>
+        <input
+          matInput
+          formControlName="idProofNumber"
+          autocomplete="off"
+          [maxlength]="idProofNumberMaxLength"
+        />
+        @if (guestForm.controls.idProofNumber.hasError('required')) {
+          <mat-error i18n>ID proof number is required for the primary guest</mat-error>
+        } @else if (guestForm.controls.idProofNumber.hasError('pattern')) {
+          <mat-error i18n>Use letters, digits, spaces, - or / only</mat-error>
+        }
+        @if (hasIdProofPairError()) {
+          <!-- TEXT: ID proof type and number together -->
+          <mat-hint class="text-error" role="alert" i18n
+            >Enter both the ID proof type and number, or neither</mat-hint
+          >
+        }
+      </mat-form-field>
+    </div>
+
+    <!-- TEXT FIELD: Address -->
+    <mat-form-field subscriptSizing="dynamic" class="w-100">
+      <mat-label i18n>Address (optional)</mat-label>
+      <textarea
+        matInput
+        formControlName="address"
+        rows="2"
+        [maxlength]="addressMaxLength"
+      ></textarea>
+    </mat-form-field>
+
+    <!-- TEXT FIELD: Nationality -->
+    <mat-form-field subscriptSizing="dynamic" class="w-100">
+      <mat-label i18n>Nationality (optional)</mat-label>
+      <input
+        matInput
+        formControlName="nationality"
+        autocomplete="off"
+        placeholder="e.g. Indian"
+        i18n-placeholder
+        [maxlength]="nationalityMaxLength"
+      />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <!-- BUTTON: Cancel -->
+  <button matButton="outlined" class="button-quiet" type="button" i18n (click)="close()">
+    Cancel
+  </button>
+  <!-- BUTTON: Add or save guest -->
+  <button matButton="filled" type="submit" form="guest-details-form">{{ submitLabel }}</button>
+</mat-dialog-actions>
