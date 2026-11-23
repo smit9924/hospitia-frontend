@@ -57,6 +57,19 @@ export const sidebarNavigationGroups: readonly SidebarNavigationGroup[] = [
     ],
   },
   {
+    label: $localize`Bookings`,
+    links: [
+      {
+        label: $localize`Bookings`,
+        description: $localize`Stays booked in your rooms, with their guests.`,
+        icon: 'calendarMonth',
+        route: appRoutes.bookingListing,
+        allowedRoles: organizationMemberRoles,
+        activeRoutePrefixes: ['/booking/'],
+      },
+    ],
+  },
+  {
     label: $localize`Organization`,
     links: [
       {

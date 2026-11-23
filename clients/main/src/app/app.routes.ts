@@ -39,6 +39,9 @@ import { RoomTypeListing } from './components/room-type/room-type-listing/room-t
 import { CreateRoomType } from './components/room-type/create-room-type/create-room-type';
 import { RoomListing } from './components/room/room-listing/room-listing';
 import { CreateRoom } from './components/room/create-room/create-room';
+import { BookingListing } from './components/booking/booking-listing/booking-listing';
+import { CreateBooking } from './components/booking/create-booking/create-booking';
+import { BookingDetails } from './components/booking/booking-details/booking-details';
 import { RoomAmenityListing } from './components/room-amenity/room-amenity-listing/room-amenity-listing';
 import { CreateRoomAmenity } from './components/room-amenity/create-room-amenity/create-room-amenity';
 import { CurrencyUnitListing } from './components/currency-unit/currency-unit-listing/currency-unit-listing';
@@ -481,6 +484,42 @@ export const routes: Routes = [
         data: {
           requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
           readOnlyRoute: true,
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+    ],
+  },
+  {
+    // Bookings of the active organization (every organization's for admins).
+    path: 'booking',
+    children: [
+      {
+        path: 'listing',
+        component: BookingListing,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'create',
+        component: CreateBooking,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
+          showNavbar: true,
+          showFooter: true,
+        },
+      },
+      {
+        path: 'details',
+        component: BookingDetails,
+        canActivate: [permissionGuard],
+        data: {
+          requiredPermission: [UserType.ADMIN, UserType.OWNER, UserType.MANAGER],
           showNavbar: true,
           showFooter: true,
         },

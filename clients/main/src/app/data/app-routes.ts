@@ -58,6 +58,9 @@ export const appRoutes = {
   createRoomType: '/organization/room-type/create',
   roomListing: '/organization/room/listing',
   createRoom: '/organization/room/create',
+  bookingListing: '/booking/listing',
+  createBooking: '/booking/create',
+  bookingDetails: '/booking/details',
   // *** End Organization ***
 
   // Currency units

@@ -268,6 +268,10 @@ export const IconList = [
     src: 'assets/icons/build.svg',
   },
   {
+    name: 'calendarMonth',
+    src: 'assets/icons/calendar-month.svg',
+  },
+  {
     name: 'block',
     src: 'assets/icons/block.svg',
   },

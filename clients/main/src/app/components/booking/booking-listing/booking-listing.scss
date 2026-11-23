@@ -1,0 +1,49 @@
+// The booking search covers several fields, so it is wider than other listings'.
+.booking-searchbar {
+  width: 420px;
+}
+
+// Status and stay-date filters, wrapping on narrow screens.
+.booking-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.booking-filter-field {
+  flex: 0 1 260px;
+  min-width: 0;
+}
+
+// The booking table has more columns than most listings; it still fits a laptop screen.
+.booking-table {
+  min-width: 880px;
+}
+
+.listing-col-guest {
+  min-width: 160px;
+}
+
+.listing-col-stay {
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+.listing-col-booked-by {
+  min-width: 120px;
+  max-width: 180px;
+}
+
+@media screen and (max-width: 599.98px) {
+  .booking-searchbar,
+  .booking-filter-field {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  // Phones show cards (see the global listing pattern); no minimum width.
+  .booking-table {
+    min-width: 0;
+  }
+}

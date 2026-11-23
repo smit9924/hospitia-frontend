@@ -1,0 +1,31 @@
+// Both cards and the actions share the form card's width and center.
+.booking-form {
+  align-items: center;
+}
+
+// Back-dated booking notice.
+.booking-notice {
+  padding: 12px 16px;
+  border: 1px solid var(--mat-sys-warning);
+  border-radius: 12px;
+  background-color: var(--mat-sys-warning-container);
+  color: var(--mat-sys-on-warning-container);
+}
+
+.booking-notice-icon {
+  width: 20px;
+  height: 20px;
+  margin-inline-end: 8px;
+  vertical-align: middle;
+}
+
+// Read-only price line: label on the left, calculation on the right.
+.booking-price {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background-color: var(--app-color-card-raised);
+}
