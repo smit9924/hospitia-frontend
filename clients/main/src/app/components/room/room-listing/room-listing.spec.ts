@@ -1,7 +1,12 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { of, throwError } from 'rxjs';
+import { Dialog } from '../../../services/dialog';
+import { Snackbar } from '../../../services/snackbar';
+import { ErrorCodes } from '../../../types/enums/error-codes';
+import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
 import { Profile } from '../../../services/profile';
 import { Room } from '../../../services/room/room';
 import { UserType } from '../../../types/enums/auth';
@@ -26,6 +31,8 @@ describe('RoomListing', () => {
   let fixture: ComponentFixture<RoomListing>;
   let element: HTMLElement;
   const roomService = { list: vi.fn(), delete: vi.fn() };
+  const snackbarService = { open: vi.fn() };
+  const dialogService = { openConfirmDialog: vi.fn(() => ({ afterClosed: () => of(true) })) };
 
   const render = async (role: UserType) => {
     await TestBed.configureTestingModule({
@@ -33,6 +40,8 @@ describe('RoomListing', () => {
       providers: [
         provideRouter([]),
         { provide: Room, useValue: roomService },
+        { provide: Snackbar, useValue: snackbarService },
+        { provide: Dialog, useValue: dialogService },
         { provide: Profile, useValue: { userProfile: signal(new UserProfileModel({ role })) } },
       ],
     }).compileComponents();
@@ -82,5 +91,26 @@ describe('RoomListing', () => {
     expect(roomService.list).toHaveBeenCalledWith(
       expect.objectContaining({ sortBy: 'roomNumber', sortDirection: 'asc', pageNumber: 1 }),
     );
+  });
+
+  it('explains that a room with active bookings cannot be deleted', async () => {
+    roomService.delete.mockReturnValue(
+      throwError(
+        () =>
+          new HttpErrorResponse({
+            status: 409,
+            error: {
+              errorCode: ErrorCodes.ROOM_HAS_ACTIVE_BOOKINGS,
+              message: "Room B2-04 has active bookings and can't be deleted.",
+            },
+          }),
+      ),
+    );
+    await render(UserType.OWNER);
+
+    fixture.componentInstance['deleteRoom'](basementRoom);
+
+    const snackbar = (snackbarService.open.mock.lastCall?.[0] as GenericSnackbarConfig).data!;
+    expect(snackbar.text).toBe("Room B2-04 has active bookings and can't be deleted.");
   });
 });
