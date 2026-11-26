@@ -13,6 +13,14 @@
   min-height: 100%;
 }
 
+// Sign-in and sign-up pages always reserve the scrollbar's space in the scrolling
+// content area, so showing or hiding a message (e.g. the login error banner) that
+// makes the page scroll never shifts the layout sideways. No effect where scrollbars
+// overlay content (phones).
+.app-shell-content:has(app-auth-layout) {
+  scrollbar-gutter: stable;
+}
+
 // Main area below the top bar; routed pages fill it.
 .app-shell-main {
   display: flex;
@@ -322,5 +330,11 @@
 
   .public-header .public-header-menu-button {
     display: inline-flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-sidebar {
+    transition: none;
   }
 }

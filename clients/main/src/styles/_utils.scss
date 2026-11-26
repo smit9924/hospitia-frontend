@@ -275,6 +275,11 @@
     color: var(--mat-sys-on-surface-variant);
   }
 
+  // Decorative icon in the brand accent color (e.g. a field's leading icon).
+  .icon-accent {
+    color: var(--mat-sys-primary);
+  }
+
   /* ***End*** */
 
   /* Utility classes for background colors*/
@@ -540,6 +545,36 @@
   .status-chip--warning {
     background-color: var(--mat-sys-warning-container);
     color: var(--mat-sys-on-warning-container);
+  }
+  /* ***End*** */
+
+  /* Room status colors (room tiles, legend and status dialog). Each class sets the
+     --room-status-* properties that those elements read, so a room's status is styled
+     the same everywhere. */
+  .room-status--available {
+    --room-status-accent: var(--mat-sys-success);
+    --room-status-surface: var(--mat-sys-success-container);
+    --room-status-on-surface: var(--mat-sys-on-success-container);
+    --room-status-pattern: none;
+  }
+
+  .room-status--under-maintenance {
+    --room-status-accent: var(--mat-sys-warning);
+    --room-status-surface: var(--mat-sys-warning-container);
+    --room-status-on-surface: var(--mat-sys-on-warning-container);
+    --room-status-pattern: none;
+  }
+
+  // Unusable rooms are hatched as well as tinted, so the state never relies on color alone.
+  .room-status--out-of-service {
+    --room-status-accent: var(--mat-sys-outline);
+    --room-status-surface: var(--mat-sys-surface-container-high);
+    --room-status-on-surface: var(--mat-sys-on-surface-variant);
+    --room-status-pattern: repeating-linear-gradient(
+      135deg,
+      transparent 0 7px,
+      color-mix(in srgb, var(--mat-sys-outline) 22%, transparent) 7px 9px
+    );
   }
   /* ***End*** */
 

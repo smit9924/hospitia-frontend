@@ -1,6 +1,4 @@
 .signup-container {
-  background-color: var(--app-color-page-ground);
-
   .signup-tabs {
     width: 100%;
   }
@@ -39,33 +37,7 @@
   }
 }
 
-@media (min-width: 1400px) {
-  .signup-card {
-    width: 40%;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1400px) {
-  .signup-card {
-    width: 50%;
-  }
-}
-
-@media (min-width: 576px) and (max-width: 768px) {
-  .signup-container {
-    .signup-card {
-      width: 70%;
-    }
-  }
-}
-
 @media (max-width: 576px) {
-  .signup-container {
-    .signup-card {
-      width: 100%;
-    }
-  }
-
   .social-signup-buttons {
     .button-facebook,
     .button-x-twitter,

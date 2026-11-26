@@ -1,7 +1,7 @@
 import { Component, inject, signal, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { AuthLayout } from '../auth-layout/auth-layout';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,7 +47,7 @@ type SignupForm = FormGroup<{
   selector: 'app-signup',
   imports: [
     CommonModule,
-    MatCardModule,
+    AuthLayout,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,

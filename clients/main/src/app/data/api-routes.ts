@@ -77,6 +77,8 @@ export const apiRoutes = {
     delete: `${apiBaseUrls.booking}/room/delete`,
     list: `${apiBaseUrls.booking}/room`,
     get: `${apiBaseUrls.booking}/room/detail`,
+    floorOverview: `${apiBaseUrls.booking}/room/floor-overview`,
+    updateStatus: `${apiBaseUrls.booking}/room/update-status`,
   },
 
   roomAmenity: {

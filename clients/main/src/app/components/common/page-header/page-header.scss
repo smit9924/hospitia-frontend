@@ -1,0 +1,68 @@
+// Title bar at the top of every routed page: optional back button, title, description and actions.
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 16px;
+  width: 100%;
+  padding: 24px 28px 20px;
+}
+
+// Grid so the back button centers on the title line only; the description sits under the
+// title (not under the button).
+.page-header-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 2px;
+  min-width: 0;
+}
+
+.page-header-heading--with-back {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+// The title and description become grid items of the heading.
+.page-header-text {
+  display: contents;
+}
+
+.page-header-title,
+.page-header-description {
+  grid-column: -2;
+}
+
+.page-header-title {
+  margin: 0;
+  font: var(--mat-sys-headline-small);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--mat-sys-on-surface);
+}
+
+.page-header-description {
+  margin: 0;
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.page-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+@media screen and (max-width: 599.98px) {
+  .page-header {
+    padding: 16px 16px 16px;
+  }
+
+  .page-header-title {
+    font: var(--mat-sys-title-large);
+    font-weight: 700;
+  }
+}

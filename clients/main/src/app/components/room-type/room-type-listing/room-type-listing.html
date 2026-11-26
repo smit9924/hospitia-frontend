@@ -161,17 +161,12 @@
 
               <!-- TABLE COLUMN: Amenities -->
               <ng-container matColumnDef="amenities">
-                <th
-                  *matHeaderCellDef
-                  class="listing-col listing-col-amenities"
-                  mat-header-cell
-                  i18n
-                >
+                <th *matHeaderCellDef class="listing-col listing-col-wide" mat-header-cell i18n>
                   Amenities
                 </th>
                 <td
                   *matCellDef="let roomType"
-                  class="listing-col listing-col-amenities"
+                  class="listing-col listing-col-wide"
                   mat-cell
                   data-label="Amenities"
                   i18n-data-label

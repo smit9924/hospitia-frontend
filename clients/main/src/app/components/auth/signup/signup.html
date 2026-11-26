@@ -1,52 +1,61 @@
-<div class="signup-container min-h-100 min-w-100 content d-flex justify-center align-center">
-  <mat-card class="signup-card">
-    <mat-card-content>
-      <!-- Banner -->
-      <div class="mb-24">
-        <app-banner #signupBanner>
-          <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
-        </app-banner>
-      </div>
+<app-auth-layout>
+  <!-- Section: Sign up -->
+  <div class="signup-container">
+    <!-- Banner -->
+    <div [class.mb-24]="signupBanner.isVisible()">
+      <app-banner #signupBanner>
+        <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+      </app-banner>
+    </div>
 
-      @if (enableOwnerSignup) {
-        <h1 id="signup-heading" class="heading-large mb-24 d-flex justify-center">
+    @if (enableOwnerSignup) {
+      <!-- Section: Heading -->
+      <div class="d-flex flex-column gap-4 mb-16">
+        <h1 id="signup-heading" class="heading-large m-0">
           @if (selectedUserType() === UserType.CUSTOMER) {
-            <div i18n>Sign Up as Customer</div>
+            <span i18n>Sign Up as Customer</span>
           } @else {
-            <div i18n>Sign Up as Owner</div>
+            <span i18n>Sign Up as Owner</span>
           }
         </h1>
+        <p class="body-medium text-secondary m-0" i18n>
+          Create your account. Owners can also set up their guest house organization.
+        </p>
+      </div>
 
-        <mat-tab-group
-          class="signup-tabs"
-          dynamicHeight
-          aria-label="Select signup type"
-          i18n-aria-label
-          (selectedIndexChange)="onTabChange($event)"
-        >
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span i18n>Customer</span>
-            </ng-template>
-            <ng-container *ngTemplateOutlet="customerSignupPanel" />
-          </mat-tab>
+      <mat-tab-group
+        class="signup-tabs"
+        dynamicHeight
+        aria-label="Select signup type"
+        i18n-aria-label
+        (selectedIndexChange)="onTabChange($event)"
+      >
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span i18n>Customer</span>
+          </ng-template>
+          <ng-container *ngTemplateOutlet="customerSignupPanel" />
+        </mat-tab>
 
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span i18n>Owner</span>
-            </ng-template>
-            <ng-container *ngTemplateOutlet="ownerSignupPanel" />
-          </mat-tab>
-        </mat-tab-group>
-      } @else {
-        <h1 id="signup-heading" class="heading-large mb-24 d-flex justify-center" i18n>Sign Up</h1>
-        <ng-container *ngTemplateOutlet="customerSignupPanel" />
-      }
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span i18n>Owner</span>
+          </ng-template>
+          <ng-container *ngTemplateOutlet="ownerSignupPanel" />
+        </mat-tab>
+      </mat-tab-group>
+    } @else {
+      <!-- Section: Heading -->
+      <div class="d-flex flex-column gap-4 mb-8">
+        <h1 id="signup-heading" class="heading-large m-0" i18n>Sign Up</h1>
+        <p class="body-medium text-secondary m-0" i18n>Create your account to get started.</p>
+      </div>
+      <ng-container *ngTemplateOutlet="customerSignupPanel" />
+    }
 
-      <ng-container *ngTemplateOutlet="socialSignup" />
-    </mat-card-content>
-  </mat-card>
-</div>
+    <ng-container *ngTemplateOutlet="socialSignup" />
+  </div>
+</app-auth-layout>
 
 <ng-template #customerSignupPanel>
   <div class="signup-panel pt-24">

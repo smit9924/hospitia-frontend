@@ -39,6 +39,16 @@
   --app-color-skeleton: var(--mat-sys-surface-container-high);
   --app-color-scrim: light-dark(#0f0d0a6b, #0000008f);
 
+  /* Deep brand surface (sign-in / sign-up brand panel): dark green in both themes. */
+  --app-color-brand-panel: light-dark(
+    var(--mat-sys-on-primary-container),
+    var(--mat-sys-primary-container)
+  );
+  --app-color-on-brand-panel: light-dark(
+    var(--mat-sys-primary-container),
+    var(--mat-sys-on-primary-container)
+  );
+
   /* ============================================================
    BANNER / STATUS COLOR TOKENS
    Semantic colors are separate from the brand accent.

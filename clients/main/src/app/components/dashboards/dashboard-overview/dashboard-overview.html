@@ -2,6 +2,11 @@
   <app-page-header [titleText]="greeting()" [description]="description()" />
 
   <div class="page-container">
+    @if (showsRoomFloorChart()) {
+      <!-- Section: Rooms by floor (owner and manager) -->
+      <app-room-floor-chart />
+    }
+
     <!-- TEXT: Shortcuts heading -->
     <h2 class="dashboard-section-title" i18n>Shortcuts</h2>
 

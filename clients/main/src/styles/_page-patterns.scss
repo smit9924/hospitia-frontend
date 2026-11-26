@@ -1,6 +1,8 @@
-// Reusable page building blocks shared by every signed-in screen:
-// page container, page header, listing card and table, empty states, form card and actions,
-// dashboard tiles and skeletons. Components use these classes instead of their own SCSS.
+// Reusable page building blocks shared by several signed-in screens:
+// page container, cards, listing table, empty states, form card and actions, dashboard
+// shortcuts, skeletons, selection dialogs, settings cards and status pages.
+// Only patterns used by more than one component (or shown in the style guide) live here;
+// styles for a single component go in that component's own SCSS file.
 
 /* ============================================================
    PAGE CONTAINER
@@ -28,77 +30,6 @@
 }
 
 /* ============================================================
-   PAGE HEADER (components/common/page-header)
-   ============================================================ */
-
-.page-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px 16px;
-  width: 100%;
-  padding: 24px 28px 20px;
-}
-
-// Grid so the back button centers on the title line only; the description sits under the
-// title (not under the button).
-.page-header-heading {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-items: center;
-  column-gap: 8px;
-  row-gap: 2px;
-  min-width: 0;
-}
-
-.page-header-heading--with-back {
-  grid-template-columns: auto minmax(0, 1fr);
-}
-
-// The title and description become grid items of the heading.
-.page-header-text {
-  display: contents;
-}
-
-.page-header-title,
-.page-header-description {
-  grid-column: -2;
-}
-
-.page-header-title {
-  margin: 0;
-  font: var(--mat-sys-headline-small);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--mat-sys-on-surface);
-}
-
-.page-header-description {
-  margin: 0;
-  font: var(--mat-sys-body-medium);
-  color: var(--mat-sys-on-surface-variant);
-}
-
-.page-header-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-@media screen and (max-width: 599.98px) {
-  .page-header {
-    padding: 16px 16px 16px;
-  }
-
-  .page-header-title {
-    font: var(--mat-sys-title-large);
-    font-weight: 700;
-  }
-}
-
-/* ============================================================
    CARDS
    ============================================================ */
 
@@ -120,13 +51,9 @@
   box-shadow: var(--app-shadow-card);
 }
 
-// Narrower variants for short forms (users, organization types, password).
+// Narrower variant for short forms (users, organization types).
 .form-card--narrow {
   max-width: 640px;
-}
-
-.form-card--compact {
-  max-width: 480px;
 }
 
 // Large icon shown in a form page's loading/not-found states.
@@ -204,15 +131,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-.listing-col-wide,
-.listing-col-amenities {
+.listing-col-wide {
   min-width: 200px;
   max-width: 320px;
-}
-
-.listing-col-code {
-  min-width: 110px;
-  white-space: nowrap;
 }
 
 .listing-col-address {
@@ -394,12 +315,6 @@
   }
 }
 
-.dashboard-section-title {
-  margin: 8px 0 0;
-  font: var(--mat-sys-title-medium);
-  font-weight: 700;
-}
-
 /* ============================================================
    SKELETON LOADING
    ============================================================ */
@@ -432,7 +347,6 @@
     animation: none;
   }
 
-  .app-sidebar,
   .dashboard-shortcut {
     transition: none;
   }
@@ -448,34 +362,11 @@
   min-width: 0;
 }
 
-// Field that takes half a row (two per row) on wide screens; full width on phones.
-.form-field-half {
-  max-width: calc(50% - 12px); // half of the row minus half of the 24px gap
-
-  @media screen and (max-width: 768px) {
-    max-width: 100%;
-  }
-}
-
 // Bordered group of related controls with a legend (e.g. room type amenities).
 .form-fieldset {
   margin: 0;
   border: 1px solid var(--app-color-border-subtle);
   border-radius: 12px;
-}
-
-// Read-only value shown in place of an input (e.g. the chosen organization).
-.form-selection-value {
-  color: var(--mat-sys-on-surface);
-}
-
-.form-selection-error {
-  color: var(--mat-sys-error);
-}
-
-// Decorative icon in the brand accent color (e.g. a field's leading icon).
-.icon-accent {
-  color: var(--mat-sys-primary);
 }
 
 /* ============================================================
@@ -545,10 +436,6 @@
   }
 }
 
-.settings-preview {
-  background-color: var(--app-color-card-raised);
-}
-
 /* ============================================================
    STATUS PAGES (404, 403, account setup failed, no organization)
    ============================================================ */
@@ -570,20 +457,4 @@
   gap: 8px;
   max-width: 420px;
   text-align: center;
-}
-
-// Large round badge for a success outcome (e.g. password changed).
-.success-badge {
-  display: grid;
-  place-items: center;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background-color: var(--mat-sys-success-container);
-  color: var(--mat-sys-on-success-container);
-
-  mat-icon {
-    width: 64px;
-    height: 64px;
-  }
 }
