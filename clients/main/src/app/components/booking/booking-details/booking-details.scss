@@ -1,0 +1,51 @@
+// Stay and price side by side on wide screens; guests and history span the row.
+.booking-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.booking-details-wide {
+  grid-column: 1 / -1;
+}
+
+// Labelled facts of the stay (room, dates, nights, guests).
+.booking-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
+  gap: 16px 24px;
+}
+
+.booking-facts-wide {
+  grid-column: 1 / -1;
+}
+
+// Booking history: a vertical line with one dot per step.
+.booking-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-inline-start: 16px;
+  border-inline-start: 2px solid var(--app-color-border-subtle);
+}
+
+.booking-timeline-entry {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: -23px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--mat-sys-primary);
+  }
+}
+
+@media screen and (max-width: 840px) {
+  .booking-details-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

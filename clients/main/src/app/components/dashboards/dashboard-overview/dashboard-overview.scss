@@ -1,3 +1,10 @@
+// The owner and manager dashboard pages are flex rows (see the routed-page rule in
+// styles/global.scss); the overview fills the row instead of shrinking to its content.
+:host {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 // Heading above the shortcut grid.
 .dashboard-section-title {
   margin: 8px 0 0;

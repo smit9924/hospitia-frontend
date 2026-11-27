@@ -1,4 +1,5 @@
 import { RoomStatus } from '../enums/room';
+import { RoomOccupancy } from './booking';
 import { PaginatedQuery, PaginatedResponse } from './pagination';
 import { OrganizationReference } from './room-amenity';
 import { RoomTypeOption } from './room-type';
@@ -46,6 +47,8 @@ export interface RoomFloorOverviewItem {
   status: RoomStatus;
   notes: string | null;
   roomType: RoomTypeOption;
+  /** The booking holding the room on the requested date, if any. */
+  occupancy: RoomOccupancy | null;
 }
 
 /** Every active room of the active organization, top floor first. */

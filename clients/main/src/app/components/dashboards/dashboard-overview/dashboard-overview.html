@@ -3,6 +3,9 @@
 
   <div class="page-container">
     @if (showsRoomFloorChart()) {
+      <!-- Section: Today's bookings (owner and manager) -->
+      <app-booking-today-summary />
+
       <!-- Section: Rooms by floor (owner and manager) -->
       <app-room-floor-chart />
     }

@@ -1,0 +1,249 @@
+<div class="w-100">
+  <app-page-header [titleText]="titleText" [backButton]="true" />
+
+  <div class="page-container page-container--form">
+    @if (isLoadingBooking()) {
+      <!-- STATE: Loading booking -->
+      <section
+        class="form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <p class="heading-extra-small m-0" i18n>Loading...</p>
+      </section>
+    } @else if (bookingNotFound()) {
+      <!-- STATE: Booking not found -->
+      <section
+        class="form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+      >
+        <mat-icon class="form-state-icon text-secondary" aria-hidden="true" svgIcon="bed" />
+        <p class="heading-extra-small m-0" i18n>Booking not found</p>
+        <p class="body-medium text-secondary m-0" i18n>
+          The requested booking could not be found in this organization.
+        </p>
+        <a matButton="outlined" i18n [routerLink]="bookingListingRoute">Back to bookings</a>
+      </section>
+    } @else if (isReadOnly()) {
+      <!-- STATE: Booking can't be edited -->
+      <section
+        class="form-card rounded-12 p-24 w-100 d-flex flex-column align-center justify-center gap-8 text-center"
+        role="status"
+      >
+        <mat-icon class="form-state-icon text-secondary" aria-hidden="true" svgIcon="bed" />
+        <p class="heading-extra-small m-0" i18n>This booking can no longer be changed</p>
+        <p class="body-medium text-secondary m-0" i18n>
+          Checked-out and cancelled bookings are kept as they are.
+        </p>
+        <a matButton="outlined" i18n [routerLink]="bookingListingRoute">Back to bookings</a>
+      </section>
+    } @else {
+      <!-- Form: Booking -->
+      <form
+        class="booking-form d-flex flex-column gap-16 w-100"
+        [formGroup]="stayForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <!-- CARD: Stay -->
+        <mat-card class="form-card w-100">
+          <mat-card-header class="mb-16">
+            <mat-card-title>
+              <h2 class="heading-extra-small m-0" i18n>Stay</h2>
+            </mat-card-title>
+            <mat-card-subtitle class="body-medium text-secondary mt-8">
+              @if (isCheckedIn()) {
+                <span i18n
+                  >The guests are checked in: only the check-out date, guests and notes can
+                  change.</span
+                >
+              } @else {
+                <span i18n>Choose the dates first; then pick a room that is free for them.</span>
+              }
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content class="d-flex flex-column gap-24">
+            <app-banner #formBanner>
+              <div ngProjectAs="banner-content">{{ bannerMessage }}</div>
+            </app-banner>
+
+            @if (isAdmin()) {
+              @if (isEditMode) {
+                <!-- TEXT: Organization (fixed after creation) -->
+                <p class="body-medium m-0" role="note">
+                  <span class="text-secondary" i18n>Organization: </span>
+                  <span>{{ organization()?.name }}</span>
+                </p>
+              } @else {
+                <!-- FIELD: Organization (admin) -->
+                <app-organization-selection-field
+                  i18n-hint
+                  hint="The booking belongs to this organization."
+                  [control]="stayForm.controls.organization"
+                />
+              }
+            }
+
+            <!-- DATE RANGE FIELD: Check-in and check-out -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Check-in – check-out</mat-label>
+              <mat-date-range-input [rangePicker]="stayPicker" [max]="maxCheckInDate">
+                <input
+                  matStartDate
+                  formControlName="checkInDate"
+                  placeholder="Check-in"
+                  i18n-placeholder
+                  aria-label="Check-in date"
+                  i18n-aria-label
+                />
+                <input
+                  matEndDate
+                  formControlName="checkOutDate"
+                  placeholder="Check-out"
+                  i18n-placeholder
+                  aria-label="Check-out date"
+                  i18n-aria-label
+                />
+              </mat-date-range-input>
+              <mat-datepicker-toggle matIconSuffix [for]="stayPicker" />
+              <mat-date-range-picker #stayPicker />
+              @if (!canChooseStay()) {
+                <mat-hint i18n>Choose an organization first.</mat-hint>
+              } @else if (stayDates(); as dates) {
+                <mat-hint i18n>{{ dates.nights }} night(s)</mat-hint>
+              } @else {
+                <mat-hint i18n>Check-out is the day the guests leave.</mat-hint>
+              }
+              @if (
+                stayForm.controls.checkInDate.hasError('required') ||
+                stayForm.controls.checkOutDate.hasError('required')
+              ) {
+                <mat-error i18n>Check-in and check-out dates are required</mat-error>
+              } @else if (
+                stayForm.controls.checkInDate.hasError('matEndDateInvalid') ||
+                stayForm.controls.checkOutDate.hasError('matEndDateInvalid')
+              ) {
+                <mat-error i18n>Check-out must be after check-in</mat-error>
+              } @else if (stayForm.controls.checkInDate.hasError('matDatepickerMax')) {
+                <mat-error i18n>Check-in can be at most 2 years ahead</mat-error>
+              }
+            </mat-form-field>
+            @if (
+              stayForm.hasError('checkOutBeforeCheckIn') && stayForm.controls.checkOutDate.touched
+            ) {
+              <!-- TEXT: Stay length error -->
+              <p class="body-small text-error m-0" role="alert" i18n>
+                Check-out must be after check-in.
+              </p>
+            } @else if (stayForm.hasError('stayTooLong')) {
+              <p class="body-small text-error m-0" role="alert" i18n>
+                A booking can be at most 90 nights.
+              </p>
+            }
+
+            @if (isBackDated() && !isEditMode) {
+              <!-- NOTICE: Back-dated booking -->
+              <div class="booking-notice d-flex flex-column gap-8" role="note">
+                <p class="body-medium m-0">
+                  <mat-icon svgIcon="warning" class="booking-notice-icon" aria-hidden="true" />
+                  <span i18n>This booking is back-dated.</span>
+                </p>
+                @if (canRecordCompletedStay()) {
+                  <!-- CHECKBOX: Record as completed stay -->
+                  <mat-checkbox formControlName="recordAsCompletedStay" i18n
+                    >Record as completed stay (checked out)</mat-checkbox
+                  >
+                }
+              </div>
+            }
+
+            <!-- SELECT: Room -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Room</mat-label>
+              <mat-select formControlName="roomGuid">
+                @for (room of availableRooms(); track room.guid) {
+                  <mat-option [value]="room.guid">{{ formatRoomOption(room) }}</mat-option>
+                }
+              </mat-select>
+              @if (!canChooseStay()) {
+                <mat-hint i18n>Choose an organization first.</mat-hint>
+              } @else if (!stayDates()) {
+                <mat-hint i18n>Choose the dates first.</mat-hint>
+              } @else if (isLoadingRooms()) {
+                <mat-hint i18n>Loading free rooms...</mat-hint>
+              } @else if (availableRooms().length === 0) {
+                <mat-hint i18n>No rooms are free for these dates.</mat-hint>
+              }
+              @if (clearedRoomNumber(); as roomNumber) {
+                <mat-error i18n>Room {{ roomNumber }} is not free for the new dates.</mat-error>
+              } @else if (stayForm.controls.roomGuid.hasError('required')) {
+                <mat-error i18n>Room is required</mat-error>
+              }
+            </mat-form-field>
+
+            @if (price(); as stayPrice) {
+              <!-- TEXT: Price -->
+              <p class="booking-price body-medium m-0" aria-live="polite">
+                <span class="text-secondary" i18n>Price</span>
+                <span i18n
+                  >{{ stayPrice.nights }} night(s) × {{ stayPrice.currencyCode }}
+                  {{ stayPrice.costPerNight | number: '1.2-2' }} =
+                  <strong
+                    >{{ stayPrice.currencyCode }} {{ stayPrice.total | number: '1.2-2' }}</strong
+                  ></span
+                >
+              </p>
+            }
+
+            <!-- TEXT FIELD: Notes -->
+            <mat-form-field subscriptSizing="dynamic" class="w-100">
+              <mat-label i18n>Notes</mat-label>
+              <textarea
+                matInput
+                formControlName="notes"
+                rows="3"
+                placeholder="Optional, e.g. late arrival"
+                i18n-placeholder
+              ></textarea>
+              <mat-hint align="end"
+                >{{ stayForm.controls.notes.value.length | number }} /
+                {{ notesMaxLength | number }}</mat-hint
+              >
+              @if (stayForm.controls.notes.hasError('maxlength')) {
+                <mat-error i18n>Notes must be at most 1000 characters</mat-error>
+              }
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- CARD: Guests -->
+        <mat-card class="form-card w-100">
+          <mat-card-header class="mb-16">
+            <mat-card-title>
+              <h2 class="heading-extra-small m-0" i18n>Guests</h2>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-booking-guests-section
+              [capacity]="selectedRoom()?.roomType?.capacity ?? null"
+              [roomNumber]="selectedRoom()?.roomNumber ?? null"
+              [showErrors]="submitAttempted()"
+              [(primaryGuest)]="primaryGuest"
+              [(secondaryGuests)]="secondaryGuests"
+            />
+
+            <!-- BUTTON: Save booking -->
+            <div class="form-actions mt-24">
+              <a matButton="outlined" class="button-quiet" i18n [routerLink]="bookingListingRoute"
+                >Cancel</a
+              >
+              <button matButton="filled" type="submit" [disabled]="isSubmitting()">
+                <span>{{ submitLabel }}</span>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    }
+  </div>
+</div>

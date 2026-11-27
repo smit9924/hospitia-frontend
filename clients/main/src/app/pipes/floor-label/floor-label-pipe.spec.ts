@@ -22,6 +22,14 @@ describe('FloorLabelPipe', () => {
     expect(pipe.transform(floor, 'description')).toBe(description);
   });
 
+  it.each([
+    [2, 'Floor 2'],
+    [0, 'Ground'],
+    [-1, 'B1'],
+  ])('names floor %s "%s"', (floor, name) => {
+    expect(pipe.transform(floor, 'name')).toBe(name);
+  });
+
   it.each([null, undefined, 1.5])('renders %s as an empty label', (floor) => {
     expect(pipe.transform(floor)).toBe('');
   });

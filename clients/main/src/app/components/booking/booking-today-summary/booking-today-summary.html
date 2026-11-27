@@ -1,0 +1,32 @@
+<!-- Section: Today -->
+<section class="d-flex flex-column gap-12" aria-labelledby="booking-today-heading">
+  <h2 id="booking-today-heading" class="dashboard-today-title m-0" i18n>Today</h2>
+  @if (hasLoadError()) {
+    <p class="body-medium text-secondary m-0" role="status" i18n>
+      Today's bookings could not be loaded.
+    </p>
+  } @else {
+    <ul class="booking-today-grid list-style-none p-0 m-0">
+      @for (tile of tiles(); track tile.label) {
+        <li class="d-flex">
+          <!-- LINK: Today tile -->
+          <a
+            class="booking-today-tile surface-card w-100"
+            [routerLink]="bookingListingRoute"
+            [queryParams]="tile.queryParams"
+            [attr.aria-label]="tileLabel(tile)"
+          >
+            <span class="booking-today-icon" aria-hidden="true">
+              <mat-icon [svgIcon]="tile.icon" />
+            </span>
+            <span class="d-flex flex-column">
+              <span class="booking-today-count">{{ summary() ? tile.count : '–' }}</span>
+              <span class="body-medium font-weight-bold">{{ tile.label }}</span>
+              <span class="body-small text-secondary">{{ tile.description }}</span>
+            </span>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+</section>

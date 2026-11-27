@@ -80,6 +80,17 @@ export const apiRoutes = {
     floorOverview: `${apiBaseUrls.booking}/room/floor-overview`,
     updateStatus: `${apiBaseUrls.booking}/room/update-status`,
   },
+  booking: {
+    list: `${apiBaseUrls.booking}/booking`,
+    get: `${apiBaseUrls.booking}/booking/detail`,
+    create: `${apiBaseUrls.booking}/booking/create`,
+    update: `${apiBaseUrls.booking}/booking/update`,
+    availableRooms: `${apiBaseUrls.booking}/booking/available-rooms`,
+    checkIn: `${apiBaseUrls.booking}/booking/check-in`,
+    checkOut: `${apiBaseUrls.booking}/booking/check-out`,
+    cancel: `${apiBaseUrls.booking}/booking/cancel`,
+    todaySummary: `${apiBaseUrls.booking}/booking/today-summary`,
+  },
 
   roomAmenity: {
     create: `${apiBaseUrls.booking}/room-amenity/create`,

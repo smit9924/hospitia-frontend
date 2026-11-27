@@ -1,15 +1,18 @@
+import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { appRoutes } from '../../../data/app-routes';
+import { BookingStatusOption, getBookingStatusOption } from '../../../data/booking-options';
 import {
   getRoomStatusOption,
   RoomStatusOption,
   roomStatusOptions,
 } from '../../../data/room-status-options';
 import { FloorLabelPipe } from '../../../pipes/floor-label/floor-label-pipe';
+import { BookingStatus } from '../../../types/enums/booking';
 import { RoomStatus } from '../../../types/enums/room';
 import { RoomFloorOverviewItem } from '../../../types/interfaces/room';
 
@@ -21,11 +24,13 @@ export interface RoomStatusDialogData {
 /**
  * Details of one room from the dashboard floor chart, with quick status
  * buttons. Closes with the chosen status (the caller saves it), or with
- * null when dismissed. "Edit room" opens the full room form.
+ * null when dismissed. "Edit room" opens the full room form. A room with a
+ * guest booking today shows that booking (with a link to it) and a warning
+ * before its status is changed.
  */
 @Component({
   selector: 'app-room-status-dialog',
-  imports: [MatDialogModule, MatButtonModule, MatIconModule, RouterLink, FloorLabelPipe],
+  imports: [MatDialogModule, MatButtonModule, MatIconModule, RouterLink, FloorLabelPipe, DatePipe],
   templateUrl: './room-status-dialog.html',
   styleUrl: './room-status-dialog.scss',
 })
@@ -36,6 +41,11 @@ export class RoomStatusDialog {
   protected readonly statusOptions = roomStatusOptions;
   protected readonly currentStatus: RoomStatusOption = getRoomStatusOption(this.room.status);
   protected readonly editRoomRoute = appRoutes.createRoom;
+  protected readonly bookingDetailsRoute = appRoutes.bookingDetails;
+
+  protected bookingStatus(status: BookingStatus): BookingStatusOption {
+    return getBookingStatusOption(status);
+  }
 
   protected chooseStatus(status: RoomStatus): void {
     if (status === this.room.status) {

@@ -1,0 +1,29 @@
+<!-- CARD: Guest -->
+<article class="booking-guest-card">
+  <div class="booking-guest-card-text d-flex flex-column gap-4">
+    <!-- TEXT: Guest name -->
+    <p class="body-large font-weight-bold m-0 d-flex wrap align-center gap-8">
+      <span class="wb-break-word">{{ fullName() }}</span>
+      @if (isPrimary()) {
+        <span class="status-chip status-chip--primary" i18n>Primary</span>
+      }
+    </p>
+    <!-- TEXT: Guest details -->
+    <p class="body-medium text-secondary m-0 wb-break-word">{{ details().join(' · ') }}</p>
+    @if (idProof()) {
+      <!-- TEXT: ID proof -->
+      <p class="body-small text-secondary m-0">
+        <span i18n>ID proof: </span><span>{{ idProof() }}</span>
+      </p>
+    }
+    @if (origin()) {
+      <!-- TEXT: Nationality and address -->
+      <p class="body-small text-secondary m-0 wb-break-word">{{ origin() }}</p>
+    }
+  </div>
+
+  <!-- Section: Guest actions -->
+  <div class="booking-guest-card-actions">
+    <ng-content select="[guestActions]" />
+  </div>
+</article>

@@ -275,6 +275,11 @@
     color: var(--mat-sys-on-surface-variant);
   }
 
+  // Inline validation or conflict messages outside a form field's own error slot.
+  .text-error {
+    color: var(--mat-sys-error);
+  }
+
   // Decorative icon in the brand accent color (e.g. a field's leading icon).
   .icon-accent {
     color: var(--mat-sys-primary);

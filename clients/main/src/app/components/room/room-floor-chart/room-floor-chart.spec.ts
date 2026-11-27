@@ -7,9 +7,11 @@ import { of, throwError } from 'rxjs';
 import { Organization } from '../../../services/organization/organization';
 import { Room } from '../../../services/room/room';
 import { Snackbar } from '../../../services/snackbar';
+import { BookingStatus } from '../../../types/enums/booking';
 import { RoomStatus } from '../../../types/enums/room';
 import { RoomFloorOverviewItem } from '../../../types/interfaces/room';
 import { GenericSnackbarConfig } from '../../../types/models/common/generic-snackbar/generic-snackbar-config';
+import { todayIsoDate } from '../../../utils/iso-date';
 import { RoomFloorChart } from './room-floor-chart';
 
 const deluxe = { guid: 'type-deluxe', name: 'Deluxe double' };
@@ -24,6 +26,7 @@ const overviewRooms: RoomFloorOverviewItem[] = [
     status: RoomStatus.AVAILABLE,
     notes: null,
     roomType: deluxe,
+    occupancy: null,
   },
   {
     guid: 'r101',
@@ -32,6 +35,16 @@ const overviewRooms: RoomFloorOverviewItem[] = [
     status: RoomStatus.AVAILABLE,
     notes: null,
     roomType: deluxe,
+    occupancy: {
+      bookingGuid: 'b1',
+      reference: 'BK-2026-000001',
+      status: BookingStatus.CHECKED_IN,
+      primaryGuestName: 'Asha Rao',
+      checkInDate: '2026-11-20',
+      checkOutDate: '2026-11-23',
+      isArriving: false,
+      isDeparting: true,
+    },
   },
   {
     guid: 'r102',
@@ -40,6 +53,7 @@ const overviewRooms: RoomFloorOverviewItem[] = [
     status: RoomStatus.UNDER_MAINTENANCE,
     notes: null,
     roomType: dorm,
+    occupancy: null,
   },
   {
     guid: 'rg01',
@@ -48,6 +62,7 @@ const overviewRooms: RoomFloorOverviewItem[] = [
     status: RoomStatus.AVAILABLE,
     notes: null,
     roomType: dorm,
+    occupancy: null,
   },
   {
     guid: 'rb01',
@@ -56,6 +71,7 @@ const overviewRooms: RoomFloorOverviewItem[] = [
     status: RoomStatus.OUT_OF_SERVICE,
     notes: null,
     roomType: dorm,
+    occupancy: null,
   },
 ];
 
@@ -114,10 +130,29 @@ describe('RoomFloorChart', () => {
     ).toContain('B1');
   });
 
-  it('counts the rooms per status', async () => {
+  it('counts the rooms per status and the rooms occupied today', async () => {
     await render();
 
-    expect(countValues()).toEqual(['5', '3', '1', '1']);
+    expect(countValues()).toEqual(['5', '3', '1', '1', '1']);
+  });
+
+  it("asks for the rooms with today's occupancy in the user's local date", async () => {
+    await render();
+
+    expect(roomService.getFloorOverview).toHaveBeenCalledWith(todayIsoDate());
+  });
+
+  it('marks occupied rooms on their tile, in their name and in the legend', async () => {
+    await render();
+
+    expect(tile('101').querySelector('.room-tile-occupancy')?.textContent).toContain(
+      'Departing today',
+    );
+    expect(tile('101').getAttribute('aria-label')).toBe(
+      'Room 101, Deluxe double, Available, Departing today',
+    );
+    expect(tile('201').querySelector('.room-tile-occupancy')).toBeNull();
+    expect(element.querySelector('.room-status-legend')?.textContent).toContain('Occupied today');
   });
 
   it('names each tile with its number, room type and status', async () => {
@@ -134,7 +169,7 @@ describe('RoomFloorChart', () => {
     await fixture.whenStable();
 
     expect(floorLabels()).toEqual(['Floor 2', 'Floor 1']);
-    expect(countValues()).toEqual(['2', '2', '0', '0']);
+    expect(countValues()).toEqual(['2', '2', '0', '0', '1']);
   });
 
   it('saves a chosen status, updates the tile and offers Undo', async () => {
@@ -150,7 +185,7 @@ describe('RoomFloorChart', () => {
       status: RoomStatus.OUT_OF_SERVICE,
     });
     expect(tile('101').classList).toContain('room-status--out-of-service');
-    expect(countValues()).toEqual(['5', '2', '1', '2']);
+    expect(countValues()).toEqual(['5', '2', '1', '2', '1']);
     expect(lastSnackbar().text).toBe('Room 101 is now Out of service.');
     expect(lastSnackbar().actionLabel).toBe('Undo');
 

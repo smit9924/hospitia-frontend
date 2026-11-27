@@ -34,11 +34,55 @@
     }
   </dl>
 
+  @if (room.occupancy; as occupancy) {
+    <!-- Section: Current booking -->
+    <section
+      class="room-status-dialog-booking d-flex flex-column gap-4"
+      aria-labelledby="current-booking-heading"
+    >
+      <div class="d-flex wrap align-center justify-space-between gap-8">
+        <h3 id="current-booking-heading" class="body-medium font-weight-bold m-0" i18n>
+          Current booking
+        </h3>
+        <span class="status-chip" [class]="bookingStatus(occupancy.status).chipClass">{{
+          bookingStatus(occupancy.status).label
+        }}</span>
+      </div>
+      <p class="body-medium m-0">
+        {{ occupancy.reference }}
+        @if (occupancy.primaryGuestName) {
+          <span> · {{ occupancy.primaryGuestName }}</span>
+        }
+      </p>
+      <p class="body-small text-secondary m-0">
+        {{ occupancy.checkInDate | date: 'd MMM y' }} –
+        {{ occupancy.checkOutDate | date: 'd MMM y' }}
+      </p>
+      <!-- LINK: View booking -->
+      <a
+        matButton
+        class="room-status-dialog-booking-link"
+        i18n
+        [routerLink]="bookingDetailsRoute"
+        [queryParams]="{ guid: occupancy.bookingGuid }"
+        (click)="close()"
+        >View booking</a
+      >
+    </section>
+  }
+
   <!-- Section: Quick status change -->
   <div class="d-flex flex-column gap-8">
     <span id="room-status-dialog-options-label" class="body-medium font-weight-bold" i18n
       >Change status</span
     >
+    @if (room.occupancy) {
+      <!-- TEXT: Occupied room warning -->
+      <p class="room-status-dialog-warning body-small m-0" role="note">
+        <mat-icon svgIcon="warning" aria-hidden="true" />
+        <span i18n>This room has a guest booking today.</span>
+      </p>
+    }
     <div
       class="room-status-options"
       role="radiogroup"

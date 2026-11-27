@@ -1,0 +1,34 @@
+<!-- Dialog: Cancel booking -->
+<h2 mat-dialog-title i18n>Cancel booking {{ reference }}?</h2>
+
+<mat-dialog-content class="d-flex flex-column gap-16">
+  <p class="body-medium m-0" i18n>
+    The room becomes free for these dates. The primary guest is emailed if they gave an email
+    address. This can't be undone.
+  </p>
+
+  <!-- TEXT FIELD: Cancellation reason -->
+  <mat-form-field subscriptSizing="dynamic" class="w-100">
+    <mat-label i18n>Reason (optional)</mat-label>
+    <textarea
+      matInput
+      rows="3"
+      placeholder="e.g. Guest request"
+      i18n-placeholder
+      [formControl]="reason"
+    ></textarea>
+    <mat-hint align="end">{{ reason.value.length }} / {{ reasonMaxLength }}</mat-hint>
+    @if (reason.hasError('maxlength')) {
+      <mat-error i18n>Reason must be at most 500 characters</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <!-- BUTTON: Keep booking -->
+  <button matButton="outlined" class="button-quiet" type="button" i18n (click)="close()">
+    Keep booking
+  </button>
+  <!-- BUTTON: Cancel booking -->
+  <button matButton="filled" type="button" i18n (click)="confirm()">Cancel booking</button>
+</mat-dialog-actions>

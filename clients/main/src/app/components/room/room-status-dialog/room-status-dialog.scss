@@ -68,3 +68,31 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+// The booking holding the room today.
+.room-status-dialog-booking {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background-color: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+.room-status-dialog-booking-link {
+  align-self: flex-start;
+  margin-inline-start: -12px;
+}
+
+// Shown before changing the status of a room with a guest booking today.
+.room-status-dialog-warning {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    color: var(--mat-sys-warning);
+  }
+}

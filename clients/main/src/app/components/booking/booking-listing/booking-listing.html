@@ -1,0 +1,349 @@
+<div class="w-100">
+  <app-page-header [titleText]="titleText" [description]="descriptionText">
+    <!-- BUTTON: Create booking -->
+    <button pageHeaderActions matButton="filled" type="button" (click)="createBooking()">
+      <span i18n>Create booking</span>
+    </button>
+  </app-page-header>
+
+  <div class="page-container">
+    <!-- Section: Search and filters -->
+    <section
+      class="listing-card rounded-12 p-16 w-100 d-flex flex-column gap-24"
+      aria-label="Search and filters"
+      i18n-aria-label
+    >
+      <!-- SEARCH: Bookings -->
+      <app-searchbar
+        class="listing-searchbar booking-searchbar max-w-100"
+        i18n-placeholder
+        placeholder="Search reference, guest or room"
+        [compact]="true"
+        (searchChanged)="onSearch($event)"
+      />
+
+      <form class="booking-filters" [formGroup]="filters" (ngSubmit)="applyFilters()">
+        <!-- SELECT: Status filter -->
+        <mat-form-field subscriptSizing="dynamic" class="booking-filter-field">
+          <mat-label i18n>Status</mat-label>
+          <mat-select formControlName="statuses" multiple (selectionChange)="applyFilters()">
+            @for (option of statusOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <!-- DATE RANGE FIELD: Stay dates filter -->
+        <mat-form-field subscriptSizing="dynamic" class="booking-filter-field">
+          <mat-label i18n>Stay dates</mat-label>
+          <mat-date-range-input [rangePicker]="filterPicker">
+            <input
+              matStartDate
+              formControlName="fromDate"
+              placeholder="From"
+              i18n-placeholder
+              aria-label="From date"
+              i18n-aria-label
+            />
+            <input
+              matEndDate
+              formControlName="toDate"
+              placeholder="To"
+              i18n-placeholder
+              aria-label="To date"
+              i18n-aria-label
+              (dateChange)="applyFilters()"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="filterPicker" />
+          <mat-date-range-picker #filterPicker />
+        </mat-form-field>
+
+        @if (hasActiveFilters()) {
+          <!-- BUTTON: Clear filters -->
+          <button matButton type="button" i18n (click)="clearFilters()">Clear filters</button>
+        }
+      </form>
+    </section>
+
+    <section class="listing-card rounded-12 p-16 d-flex flex-column gap-16 w-100">
+      <!-- Section: Booking results -->
+      @if (isInitialLoad()) {
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+          aria-live="polite"
+        >
+          <p class="heading-extra-small m-0" i18n>Loading...</p>
+        </div>
+      } @else if (!hasBookings()) {
+        <!-- EMPTY STATE: Bookings -->
+        <div
+          class="d-flex flex-column align-center justify-center gap-8 p-24 text-center"
+          role="status"
+        >
+          <mat-icon
+            class="empty-state-icon"
+            aria-hidden="true"
+            [svgIcon]="isFilteredEmpty() ? 'search' : 'bed'"
+          />
+          @if (isFilteredEmpty()) {
+            <p class="heading-extra-small m-0" i18n>No bookings match these filters</p>
+            <p class="body-medium text-secondary m-0" i18n>
+              Try another search or clear the filters.
+            </p>
+            @if (hasActiveFilters()) {
+              <button matButton="outlined" type="button" i18n (click)="clearFilters()">
+                Clear filters
+              </button>
+            }
+          } @else {
+            <p class="heading-extra-small m-0" i18n>No bookings yet</p>
+            <p class="body-medium text-secondary m-0" i18n>
+              Book a room for your guests; it appears here and on the dashboard.
+            </p>
+            <button matButton="filled" type="button" class="mt-8" (click)="createBooking()">
+              <span i18n>Create booking</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <!-- TABLE: Bookings -->
+        <div class="listing-table-frame rounded-8 overflow-hidden">
+          <div class="listing-table-scroll w-100 overflow-x-auto">
+            <table
+              class="listing-table booking-table w-100"
+              mat-table
+              matSort
+              matSortActive="checkInDate"
+              matSortDirection="desc"
+              matSortDisableClear
+              [dataSource]="bookings()"
+              (matSortChange)="onSortChange($event)"
+            >
+              <!-- TABLE COLUMN: Booking (reference and room) -->
+              <ng-container matColumnDef="reference">
+                <th *matHeaderCellDef class="listing-col listing-col-name" mat-header-cell i18n>
+                  Booking
+                </th>
+                <td
+                  *matCellDef="let booking"
+                  class="listing-col listing-col-name"
+                  mat-cell
+                  data-label="Booking"
+                  i18n-data-label
+                >
+                  <span class="d-flex flex-column">
+                    <button class="text-link-button" type="button" (click)="viewBooking(booking)">
+                      {{ booking.reference }}
+                    </button>
+                    <span class="body-small text-secondary" i18n
+                      >Room {{ booking.room.roomNumber }} ·
+                      {{ booking.room.floor | floorLabel: 'name' }}</span
+                    >
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Primary guest -->
+              <ng-container matColumnDef="primaryGuest">
+                <th *matHeaderCellDef class="listing-col listing-col-guest" mat-header-cell i18n>
+                  Primary guest
+                </th>
+                <td
+                  *matCellDef="let booking"
+                  class="listing-col listing-col-guest"
+                  mat-cell
+                  data-label="Primary guest"
+                  i18n-data-label
+                >
+                  @if (booking.primaryGuest; as guest) {
+                    <span class="d-flex flex-column">
+                      <span>{{ guest.firstName }} {{ guest.lastName }}</span>
+                      <span class="body-small text-secondary">{{ guest.phone }}</span>
+                    </span>
+                  }
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Stay (check-in – check-out), sorted by check-in -->
+              <ng-container matColumnDef="stay">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-stay"
+                  mat-header-cell
+                  mat-sort-header="checkInDate"
+                  i18n
+                >
+                  Stay
+                </th>
+                <td
+                  *matCellDef="let booking"
+                  class="listing-col listing-col-stay"
+                  mat-cell
+                  data-label="Stay"
+                  i18n-data-label
+                >
+                  <span class="d-flex flex-column">
+                    <span
+                      >{{ booking.checkInDate | date: 'd MMM' }} –
+                      {{ booking.checkOutDate | date: 'd MMM y' }}</span
+                    >
+                    <span class="body-small text-secondary" i18n
+                      >{{ booking.nights }} night(s) · {{ booking.guestCount }} of
+                      {{ booking.room.roomType.capacity }} guests</span
+                    >
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Total -->
+              <ng-container matColumnDef="total">
+                <th *matHeaderCellDef class="listing-col listing-col-number" mat-header-cell i18n>
+                  Total
+                </th>
+                <td
+                  *matCellDef="let booking"
+                  class="listing-col listing-col-number"
+                  mat-cell
+                  data-label="Total"
+                  i18n-data-label
+                >
+                  {{ booking.currency.currencyCode }} {{ booking.totalAmount | number: '1.2-2' }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Status -->
+              <ng-container matColumnDef="status">
+                <th *matHeaderCellDef class="listing-col listing-col-status" mat-header-cell i18n>
+                  Status
+                </th>
+                <td
+                  *matCellDef="let booking"
+                  class="listing-col listing-col-status"
+                  mat-cell
+                  data-label="Status"
+                  i18n-data-label
+                >
+                  <span class="status-chip" [class]="statusOption(booking.status).chipClass">
+                    {{ statusOption(booking.status).label }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Booked by -->
+              <ng-container matColumnDef="bookedBy">
+                <th
+                  *matHeaderCellDef
+                  class="listing-col listing-col-booked-by"
+                  mat-header-cell
+                  i18n
+                >
+                  Booked by
+                </th>
+                <td
+                  *matCellDef="let booking"
+                  class="listing-col listing-col-booked-by"
+                  mat-cell
+                  data-label="Booked by"
+                  i18n-data-label
+                >
+                  <span class="clamp-1"
+                    >{{ booking.bookedBy.firstName }} {{ booking.bookedBy.lastName }}</span
+                  >
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Organization (admin) -->
+              <ng-container matColumnDef="organization">
+                <th *matHeaderCellDef class="listing-col listing-col-wide" mat-header-cell i18n>
+                  Organization
+                </th>
+                <td
+                  *matCellDef="let booking"
+                  class="listing-col listing-col-wide"
+                  mat-cell
+                  data-label="Organization"
+                  i18n-data-label
+                >
+                  {{ booking.organization.name }}
+                </td>
+              </ng-container>
+
+              <!-- TABLE COLUMN: Actions -->
+              <ng-container matColumnDef="actions">
+                <th *matHeaderCellDef class="listing-col listing-col-actions" mat-header-cell i18n>
+                  Actions
+                </th>
+                <td *matCellDef="let booking" class="listing-col listing-col-actions" mat-cell>
+                  <!-- BUTTON: Booking actions -->
+                  <button
+                    matIconButton
+                    type="button"
+                    [attr.aria-label]="getActionsMenuLabel(booking)"
+                    [matMenuTriggerFor]="actionsMenu"
+                  >
+                    <mat-icon svgIcon="moreVert" aria-hidden="true" />
+                  </button>
+                  <mat-menu #actionsMenu="matMenu">
+                    <!-- MENU ITEM: View -->
+                    <button mat-menu-item type="button" (click)="viewBooking(booking)">
+                      <mat-icon svgIcon="search" aria-hidden="true" />
+                      <span i18n>View</span>
+                    </button>
+                    @if (can(booking, BookingAction.EDIT)) {
+                      <!-- MENU ITEM: Edit -->
+                      <button mat-menu-item type="button" (click)="editBooking(booking)">
+                        <mat-icon svgIcon="edit" aria-hidden="true" />
+                        <span i18n>Edit</span>
+                      </button>
+                    }
+                    @if (can(booking, BookingAction.CHECK_IN)) {
+                      <!-- MENU ITEM: Check in -->
+                      <button mat-menu-item type="button" (click)="checkIn(booking)">
+                        <mat-icon svgIcon="arrowRight" aria-hidden="true" />
+                        <span i18n>Check in</span>
+                      </button>
+                    }
+                    @if (can(booking, BookingAction.CHECK_OUT)) {
+                      <!-- MENU ITEM: Check out -->
+                      <button mat-menu-item type="button" (click)="checkOut(booking)">
+                        <mat-icon svgIcon="logout" aria-hidden="true" />
+                        <span i18n>Check out</span>
+                      </button>
+                    }
+                    @if (can(booking, BookingAction.CANCEL)) {
+                      <!-- MENU ITEM: Cancel -->
+                      <button mat-menu-item type="button" (click)="cancel(booking)">
+                        <mat-icon svgIcon="cancel" aria-hidden="true" />
+                        <span i18n>Cancel</span>
+                      </button>
+                    }
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr *matHeaderRowDef="displayedColumns()" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns()" mat-row></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGINATION: Bookings -->
+        <div class="d-flex justify-flex-end">
+          <mat-paginator
+            class="listing-paginator max-w-100"
+            aria-label="Booking list paginator"
+            i18n-aria-label
+            [length]="totalCount()"
+            [pageIndex]="pageIndex()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="false"
+            (page)="onPageChange($event)"
+          />
+        </div>
+      }
+    </section>
+  </div>
+</div>

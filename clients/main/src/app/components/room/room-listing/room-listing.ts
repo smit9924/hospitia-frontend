@@ -139,17 +139,25 @@ export class RoomListing implements OnInit {
           this.loadRooms();
         },
         error: (error: HttpErrorResponse) => {
-          const errorCode = (error.error as ApiErrorResponse<unknown> | null)?.errorCode;
-          this.showSnackbar(
-            errorCode === ErrorCodes.ROOM_NOT_FOUND
-              ? $localize`This room was already deleted.`
-              : $localize`Failed to delete room. Please try again.`,
-            GenericSnackbarType.ERROR,
-          );
+          const errorResponse = error.error as ApiErrorResponse<unknown> | null;
+          this.showSnackbar(this.deleteErrorMessage(errorResponse), GenericSnackbarType.ERROR);
           // The row may already be gone or have changed elsewhere; keep the table consistent.
           this.loadRooms();
         },
       });
+  }
+
+  /** Message shown when a room can't be deleted. */
+  private deleteErrorMessage(errorResponse: ApiErrorResponse<unknown> | null): string {
+    switch (errorResponse?.errorCode) {
+      case ErrorCodes.ROOM_NOT_FOUND:
+        return $localize`This room was already deleted.`;
+      case ErrorCodes.ROOM_HAS_ACTIVE_BOOKINGS:
+        // The server names the room, e.g. "Room 201 has active bookings and can't be deleted."
+        return errorResponse.message;
+      default:
+        return $localize`Failed to delete room. Please try again.`;
+    }
   }
 
   private loadRooms(): void {

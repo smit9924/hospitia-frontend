@@ -1,0 +1,175 @@
+<div class="w-100">
+  <app-page-header [titleText]="titleText()" [backButton]="true">
+    @if (booking(); as current) {
+      <div pageHeaderActions class="d-flex wrap gap-8">
+        @if (can(BookingAction.EDIT)) {
+          <!-- LINK: Edit booking -->
+          <a
+            matButton="outlined"
+            i18n
+            [routerLink]="editBookingRoute"
+            [queryParams]="{ guid: current.guid }"
+            >Edit</a
+          >
+        }
+        @if (can(BookingAction.CHECK_IN)) {
+          <!-- BUTTON: Check in -->
+          <button matButton="filled" type="button" i18n (click)="checkIn(current)">Check in</button>
+        }
+        @if (can(BookingAction.CHECK_OUT)) {
+          <!-- BUTTON: Check out -->
+          <button matButton="filled" type="button" i18n (click)="checkOut(current)">
+            Check out
+          </button>
+        }
+        @if (can(BookingAction.CANCEL)) {
+          <!-- BUTTON: Cancel booking -->
+          <button
+            matButton="outlined"
+            class="button-quiet"
+            type="button"
+            i18n
+            (click)="cancel(current)"
+          >
+            Cancel booking
+          </button>
+        }
+      </div>
+    }
+  </app-page-header>
+
+  <div class="page-container">
+    @if (isLoading() && !booking()) {
+      <!-- STATE: Loading booking -->
+      <section class="listing-card rounded-12 p-24 text-center" role="status" aria-live="polite">
+        <p class="heading-extra-small m-0" i18n>Loading...</p>
+      </section>
+    } @else if (notFound()) {
+      <!-- STATE: Booking not found -->
+      <section
+        class="listing-card rounded-12 p-24 d-flex flex-column align-center gap-8 text-center"
+        role="status"
+      >
+        <mat-icon class="empty-state-icon" aria-hidden="true" svgIcon="bed" />
+        <p class="heading-extra-small m-0" i18n>Booking not found</p>
+        <p class="body-medium text-secondary m-0" i18n>
+          The requested booking could not be found in this organization.
+        </p>
+        <a matButton="outlined" i18n [routerLink]="bookingListingRoute">Back to bookings</a>
+      </section>
+    } @else if (booking(); as current) {
+      <div class="booking-details-grid">
+        <!-- Section: Stay -->
+        <section
+          class="listing-card rounded-12 p-24 d-flex flex-column gap-16"
+          aria-labelledby="stay-heading"
+        >
+          <div class="d-flex wrap align-center justify-space-between gap-8">
+            <h2 id="stay-heading" class="heading-extra-small m-0" i18n>Stay</h2>
+            <span class="status-chip" [class]="statusOption()?.chipClass">{{
+              statusOption()?.label
+            }}</span>
+          </div>
+          <dl class="booking-facts m-0">
+            @if (isAdmin()) {
+              <div>
+                <dt class="body-small text-secondary" i18n>Organization</dt>
+                <dd class="body-large m-0">{{ current.organization.name }}</dd>
+              </div>
+            }
+            <div>
+              <dt class="body-small text-secondary" i18n>Room</dt>
+              <dd class="body-large m-0">
+                {{ current.room.roomNumber }}
+                <span class="body-small text-secondary"
+                  >({{ current.room.floor | floorLabel: 'name' }} ·
+                  {{ current.room.roomType.name }})</span
+                >
+              </dd>
+            </div>
+            <div>
+              <dt class="body-small text-secondary" i18n>Check-in</dt>
+              <dd class="body-large m-0">{{ current.checkInDate | date: 'EEE, d MMM y' }}</dd>
+            </div>
+            <div>
+              <dt class="body-small text-secondary" i18n>Check-out</dt>
+              <dd class="body-large m-0">{{ current.checkOutDate | date: 'EEE, d MMM y' }}</dd>
+            </div>
+            <div>
+              <dt class="body-small text-secondary" i18n>Nights</dt>
+              <dd class="body-large m-0">{{ current.nights }}</dd>
+            </div>
+            <div>
+              <dt class="body-small text-secondary" i18n>Guests</dt>
+              <dd class="body-large m-0" i18n>
+                {{ current.guestCount }} of {{ current.room.roomType.capacity }}
+              </dd>
+            </div>
+            @if (current.notes) {
+              <div class="booking-facts-wide">
+                <dt class="body-small text-secondary" i18n>Notes</dt>
+                <dd class="body-medium m-0 wb-break-word">{{ current.notes }}</dd>
+              </div>
+            }
+          </dl>
+        </section>
+
+        <!-- Section: Price -->
+        <section
+          class="listing-card rounded-12 p-24 d-flex flex-column gap-16"
+          aria-labelledby="price-heading"
+        >
+          <h2 id="price-heading" class="heading-extra-small m-0" i18n>Price</h2>
+          <p class="body-medium m-0" i18n>
+            {{ current.nights }} night(s) × {{ current.currency.currencyCode }}
+            {{ current.costPerNight | number: '1.2-2' }}
+          </p>
+          <p class="heading-small m-0">
+            {{ current.currency.currencyCode }} {{ current.totalAmount | number: '1.2-2' }}
+          </p>
+          <p class="body-small text-secondary m-0" i18n>
+            Priced when booked; later room type price changes don't affect it.
+          </p>
+        </section>
+
+        <!-- Section: Guests -->
+        <section
+          class="listing-card rounded-12 p-24 d-flex flex-column gap-12 booking-details-wide"
+          aria-labelledby="guests-heading"
+        >
+          <h2 id="guests-heading" class="heading-extra-small m-0" i18n>Guests</h2>
+          @if (current.primaryGuest; as primary) {
+            <app-booking-guest-summary [guest]="primary" [isPrimary]="true" />
+          }
+          @for (guest of current.secondaryGuests; track guest.guid) {
+            <app-booking-guest-summary [guest]="guest" />
+          }
+        </section>
+
+        <!-- Section: History -->
+        <section
+          class="listing-card rounded-12 p-24 d-flex flex-column gap-12 booking-details-wide"
+          aria-labelledby="history-heading"
+        >
+          <h2 id="history-heading" class="heading-extra-small m-0" i18n>History</h2>
+          <ol class="booking-timeline list-style-none m-0 p-0">
+            @for (entry of timeline(); track entry.label) {
+              <li class="booking-timeline-entry">
+                <p class="body-medium font-weight-bold m-0">{{ entry.label }}</p>
+                <p class="body-small text-secondary m-0">
+                  {{ entry.at | date: 'd MMM y, HH:mm' }}
+                  @if (entry.by) {
+                    <span i18n> by {{ entry.by }}</span>
+                  }
+                </p>
+                @if (entry.note) {
+                  <p class="body-small m-0 wb-break-word" i18n>Reason: {{ entry.note }}</p>
+                }
+              </li>
+            }
+          </ol>
+        </section>
+      </div>
+    }
+  </div>
+</div>
