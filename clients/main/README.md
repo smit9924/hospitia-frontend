@@ -1,31 +1,13 @@
-## Typography
+# Main client
 
-The application **self-hosts its primary UI font** instead of loading it from Google Fonts at runtime.
+The main Hospitia web app (Angular 21, Angular Material). Part of [Hospitia](https://github.com/smit9924/hospitia-master).
 
-### Font Files
-- The **Roboto** font files are downloaded from Google Fonts.
-- They are stored locally under: `src/assets/fonts/Roboto`
-- This approach avoids external runtime dependencies and improves performance, reliability, and control over font loading.
+**Documentation:** [Frontend overview](https://github.com/smit9924/hospitia-master/blob/main/docs/frontend/index.md) · [Styling and theming](https://github.com/smit9924/hospitia-master/blob/main/docs/frontend/styling-and-theming.md) · [Typography](https://github.com/smit9924/hospitia-master/blob/main/docs/frontend/typography.md) · [Angular standards](https://github.com/smit9924/hospitia-master/blob/main/docs/standards/frontend-angular.md)
 
----
-
-### Font Registration
-- Global `@font-face` rules are defined in: `src/styles/_fonts.scss`
-- These rules register the local font files as web fonts for use throughout the application.
-
----
-
-### Generic Font Family Naming
-
-All `@font-face` declarations use a **generic, semantic font-family name**: `FontFamilyUI`, instead of referencing the physical font name (for e.g. `Roboto`) directly.
-
-#### Why this matters
-- **Future-proofing**: If the UI font changes in the future, only the `src` URLs in the `@font-face` declarations need to be updated.
-- **Zero refactors**: No changes are required in CSS, Angular Material typography configuration, or component styles.
-- **Single source of truth**: All typography (including Angular Material M3 theming) references `FontFamilyUI`.
-
-This ensures that the application’s typography remains consistent and maintainable over time.
-
-
-
-
+```bash
+npm ci
+npm start                 # ng serve on 0.0.0.0:8001 → http://main-client.localhost
+npm run lint
+npm test
+npm run build-production
+```
